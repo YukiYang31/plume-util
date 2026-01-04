@@ -30,6 +30,7 @@ import java.util.function.Predicate;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
@@ -71,7 +72,7 @@ public final class CollectionsPlume {
    * @param elements the elements to insert into c
    * @return true if the argument collection changed as a result of the call
    */
-  public static <T> boolean addAll(Collection<? super T> c, Iterable<? extends T> elements) {
+  public static <T> boolean addAll(@Modifiable Collection<? super T> c, Iterable<? extends T> elements) {
     boolean added = false;
     for (T elt : elements) {
       if (c.add(elt)) {
@@ -593,7 +594,7 @@ public final class CollectionsPlume {
     "signedness", // problem with clone()
     "nullness" // generics problem
   })
-  public static <T extends @Nullable Object, C extends @Nullable Collection<T>>
+  public static <T extends @Nullable Object, C extends @Modifiable @Nullable Collection<T>>
       @PolyNull C cloneElements(@PolyNull C orig) {
     if (orig == null) {
       return null;
@@ -618,7 +619,7 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"signedness", "nullness:argument"}) // problem with clone()
-  public static <T extends @Nullable DeepCopyable<T>, C extends @Nullable Collection<T>>
+  public static <T extends @Nullable DeepCopyable<T>, C extends @Modifiable @Nullable Collection<T>>
       @PolyNull C deepCopy(@PolyNull C orig) {
     if (orig == null) {
       return null;
@@ -1806,7 +1807,7 @@ public final class CollectionsPlume {
    */
   @Deprecated // 2025-06-28
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-      Map<K, Integer> m, K key) {
+      @Modifiable Map<K, Integer> m, K key) {
     return incrementMap(m, key, 1);
   }
 
@@ -1824,7 +1825,7 @@ public final class CollectionsPlume {
    */
   @Deprecated // 2025-06-28
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-      Map<K, Integer> m, K key, int count) {
+      @Modifiable Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
     return m.put(key, newTotal);
   }
@@ -1937,7 +1938,7 @@ public final class CollectionsPlume {
   public static <
           K extends @Nullable DeepCopyable<K>,
           V extends @Nullable DeepCopyable<V>,
-          M extends @Nullable Map<K, V>>
+          M extends @Modifiable @Nullable Map<K, V>>
       @PolyNull M deepCopy(@PolyNull M orig) {
     if (orig == null) {
       return null;
@@ -1966,7 +1967,7 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated // 2025-06-28
-  public static <K, V extends @Nullable DeepCopyable<V>, M extends @Nullable Map<K, V>>
+  public static <K, V extends @Nullable DeepCopyable<V>, M extends @Modifiable @Nullable Map<K, V>>
       @PolyNull M deepCopyValues(@PolyNull M orig) {
     if (orig == null) {
       return null;
@@ -2041,7 +2042,7 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated // 2025-06-28
-  public static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
     return cloneElements(orig, false);
   }
 
@@ -2057,7 +2058,7 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  private static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneElements(
+  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(
       @PolyNull M orig, boolean cloneKeys) {
     if (orig == null) {
       return null;
@@ -2308,7 +2309,7 @@ public final class CollectionsPlume {
    * @return true if the collection c changed (that is, if an element was added)
    */
   @SuppressWarnings("nullness:argument") // c might forbid null
-  public static <T> boolean adjoin(Collection<T> c, T e) {
+  public static <T> boolean adjoin(@Modifiable Collection<T> c, T e) {
     if (!c.contains(e)) {
       c.add(e);
       return true;
@@ -2328,7 +2329,7 @@ public final class CollectionsPlume {
    * @return true if the collection c changed (that is, if an element was added)
    */
   @SuppressWarnings("nullness:argument") // c might forbid null
-  public static <T> boolean adjoinAll(Collection<T> c, Collection<? extends T> toAdd) {
+  public static <T> boolean adjoinAll(@Modifiable Collection<T> c, Collection<? extends T> toAdd) {
     boolean result = false;
     for (T e : toAdd) {
       if (!c.contains(e)) {

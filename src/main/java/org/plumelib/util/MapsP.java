@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -59,7 +60,7 @@ public final class MapsP {
    * @throws Error if the key is in the Map but maps to a non-Integer
    */
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-      Map<K, Integer> m, K key, int count) {
+      @Modifiable Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
     return m.put(key, newTotal);
   }
@@ -158,7 +159,7 @@ public final class MapsP {
   public static <
           K extends @Nullable DeepCopyable<K>,
           V extends @Nullable DeepCopyable<V>,
-          M extends @Nullable Map<K, V>>
+          M extends @Modifiable @Nullable Map<K, V>>
       @PolyNull M deepCopy(@PolyNull M orig) {
     if (orig == null) {
       return null;
@@ -185,7 +186,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V extends @Nullable DeepCopyable<V>, M extends @Nullable Map<K, V>>
+  public static <K, V extends @Nullable DeepCopyable<V>, M extends @Modifiable @Nullable Map<K, V>>
       @PolyNull M deepCopyValues(@PolyNull M orig) {
     if (orig == null) {
       return null;
@@ -239,7 +240,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
     return cloneElements(orig, true);
   }
 
@@ -254,7 +255,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
     return cloneElements(orig, false);
   }
 
@@ -270,7 +271,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  private static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneElements(
+  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(
       @PolyNull M orig, boolean cloneKeys) {
     if (orig == null) {
       return null;

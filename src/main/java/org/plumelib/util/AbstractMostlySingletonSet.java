@@ -7,6 +7,10 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.UnknownModifiability;
+import org.checkerframework.checker.modifiability.qual.Unmodifiable;
+import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -159,7 +163,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
 
   @Override
   public boolean addAll(
-      @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<? extends T> c) {
+      @Modifiable @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<? extends T> c) {
     boolean res = false;
     for (T elem : c) {
       res |= add(elem);

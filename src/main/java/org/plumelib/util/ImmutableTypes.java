@@ -1,5 +1,7 @@
 package org.plumelib.util;
 
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,7 +22,7 @@ public final class ImmutableTypes {
    */
   // It might be more efficient to use Class objects rather than Strings, but that would require
   // everything in the list to be loaded into the JDK at run time.
-  public static Set<String> immutableTypeNames = new HashSet<>();
+  public static @Modifiable Set<String> immutableTypeNames = new HashSet<>();
 
   // The set contains nothing in package javax.management, which is littered with comments like
   // "Instances of this class are immutable.  Subclasses may be mutable but this is not
