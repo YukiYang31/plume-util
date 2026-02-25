@@ -14,6 +14,8 @@ import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -263,7 +265,7 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   // Bulk Operations
 
   @Override
-  public boolean addAll(Collection<? extends E> c) {
+  public boolean addAll(@Growable Collection<? extends E> c) {
     if (c.isEmpty()) {
       return false;
     }
@@ -271,7 +273,7 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   }
 
   @Override
-  public boolean removeAll(Collection<?> c) {
+  public boolean removeAll(@Shrinkable Collection<?> c) {
     if (c.isEmpty()) {
       return false;
     }

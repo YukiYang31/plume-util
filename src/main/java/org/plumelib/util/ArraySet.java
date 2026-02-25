@@ -18,6 +18,9 @@ import org.checkerframework.checker.index.qual.LTEqLengthOf;
 import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -58,7 +61,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "index", // TODO
   "lock" // not yet annotated for the Lock Checker
 })
-public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends AbstractSet<E>
+public @Modifiable class ArraySet<E extends @UnknownSignedness @Nullable Object> extends AbstractSet<E>
     implements Cloneable {
 
   /** The values. Null if capacity=0. */
@@ -363,7 +366,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   // iterators
 
   @Override
-  public Iterator<E> iterator() {
+  public @PolyModifiable Iterator<E> iterator(@PolyModifiable ArraySet<E> this) {
     return new ArraySetIterator();
   }
 

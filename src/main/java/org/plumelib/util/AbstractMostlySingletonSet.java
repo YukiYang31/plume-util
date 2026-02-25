@@ -8,6 +8,7 @@ import java.util.Set;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.UnknownModifiability;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.modifiability.qual.PolyModifiable;
@@ -49,7 +50,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
   protected @Nullable T value;
 
   /** The wrapped set, non-null when the state is ANY. */
-  protected @Nullable Set<T> set;
+  protected @Modifiable @Nullable Set<T> set;
 
   /**
    * Create an AbstractMostlySingletonSet.
@@ -108,7 +109,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
     "lock:override.receiver" // cannot specify the anonymous receiver type
   })
   @SideEffectFree
-  public Iterator<T> iterator() {
+  public @PolyModifiable Iterator<T> iterator(@PolyModifiable AbstractMostlySingletonSet<T> this) {
     switch (state) {
       case EMPTY:
         return Collections.emptyIterator();
@@ -163,7 +164,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
 
   @Override
   public boolean addAll(
-      @Modifiable @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<? extends T> c) {
+      @Growable @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<? extends T> c) {
     boolean res = false;
     for (T elem : c) {
       res |= add(elem);

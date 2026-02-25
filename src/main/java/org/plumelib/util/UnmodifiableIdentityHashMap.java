@@ -10,6 +10,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Unmodifiable;
+import org.checkerframework.checker.modifiability.qual.PolyShrink;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -53,7 +55,7 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
    * @param <K> the key type
    * @param <V> the value type
    */
-  public static <K, V> UnmodifiableIdentityHashMap<K, V> wrap(IdentityHashMap<K, V> map) {
+  public static <K, V> @Unmodifiable UnmodifiableIdentityHashMap<K, V> wrap(IdentityHashMap<K, V> map) {
     // avoid repeated wrapping
     if (map instanceof UnmodifiableIdentityHashMap) {
       return (UnmodifiableIdentityHashMap<K, V>) map;
@@ -128,17 +130,17 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
   }
 
   @Override
-  public Set<K> keySet(@GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Set<K> keySet(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
-  public Collection<V> values(@GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Collection<V> values(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
   @Override
-  public Set<Map.Entry<K, V>> entrySet(@GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Set<Map.Entry<K, V>> entrySet(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }
 

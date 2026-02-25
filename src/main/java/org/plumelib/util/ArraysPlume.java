@@ -25,6 +25,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.interning.qual.PolyInterned;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.mustcall.qual.PolyMustCall;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -4107,7 +4108,7 @@ public final class ArraysPlume {
    *
    * @param <T> the type of the elements of the sets
    */
-  static class Partitioning<T extends @NonNull Object> extends ArrayList<ArrayList<T>> {
+  static @Modifiable class Partitioning<T extends @NonNull Object> extends ArrayList<ArrayList<T>> {
 
     /** Unique identifier for serialization. If you add or remove fields, change this number. */
     static final long serialVersionUID = 20170418;

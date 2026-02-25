@@ -60,7 +60,7 @@ public final class MapsP {
    * @throws Error if the key is in the Map but maps to a non-Integer
    */
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-      @Modifiable Map<K, Integer> m, K key, int count) {
+     Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
     return m.put(key, newTotal);
   }
