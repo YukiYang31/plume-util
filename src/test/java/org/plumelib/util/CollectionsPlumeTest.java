@@ -568,6 +568,61 @@ final class CollectionsPlumeTest {
     assertTrue(CollectionsPlume.isSubsequenceMaybeNonContiguous(iota11, iota));
   }
 
+  /** Test isModifiable(). */
+  @Test
+  void test_isModifiable() {
+    // asList's result is fixed-size (cannot add or remove), but elements can be replaced.
+    List<Integer> unmodList = Arrays.asList(new Integer[] {0, 1, 2, 3, 4, 5, 6, 7, 8, 9});
+    List<Integer> modList = new ArrayList<>(unmodList);
+
+    assertUnmodifiable(unmodList);
+    assertModifiable(modList);
+
+    assertUnmodifiable(Collections.emptyList());
+    assertUnmodifiable(Collections.emptySet());
+
+    assertUnmodifiable(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+
+    // The implementation does not handle `subList()`.
+    // assertModifiable(modList.subList(3, 6));
+    // assertUnmodifiable(unmodList.subList(3, 6));
+
+    assertUnmodifiable(Collections.unmodifiableList(modList));
+    assertUnmodifiable(Collections.unmodifiableList(unmodList));
+    assertUnmodifiable(Collections.unmodifiableCollection(modList));
+    assertUnmodifiable(Collections.unmodifiableCollection(unmodList));
+
+    assertUnmodifiable(Collections.singletonList(1));
+    assertUnmodifiable(Collections.singleton(1));
+    assertUnmodifiable(Collections.nCopies(5, 1));
+    assertUnmodifiable(Set.of(1, 2, 3));
+
+    assertModifiable(new HashSet<>(modList));
+    assertModifiable(new TreeSet<>(modList));
+
+    // Collections.unmodifiableSequencedCollection() requires Java 21+.
+    // assertUnmodifiable(Collections.unmodifiableSequencedCollection(modList));
+    // assertUnmodifiable(Collections.unmodifiableSequencedCollection(unmodList));
+  }
+
+  /**
+   * Throws an exception if the collection is unmodifiable.
+   *
+   * @param c a collection
+   */
+  private void assertModifiable(Collection<?> c) {
+    assertTrue(CollectionsPlume.isModifiable(c));
+  }
+
+  /**
+   * Throws an exception if the collection is modifiable.
+   *
+   * @param c a collection
+   */
+  private void assertUnmodifiable(Collection<?> c) {
+    assertFalse(CollectionsPlume.isModifiable(c));
+  }
+
   // //////////////////////////////////////////////////////////////////////
   // SortedSet
   //
@@ -615,6 +670,32 @@ final class CollectionsPlumeTest {
     assertTrue(CollectionsPlume.sortedSetContainsAll(s4, s3));
     assertTrue(CollectionsPlume.sortedSetContainsAll(s4, s3a));
     assertTrue(CollectionsPlume.sortedSetContainsAll(s4, s4));
+
+    TreeSet<Integer> ts1 = new TreeSet<>(Arrays.asList(0, 1, 2));
+    TreeSet<Integer> ts2 = new TreeSet<>(Arrays.asList(2, 0));
+    assertTrue(CollectionsPlume.sortedSetContainsAll(ts1, ts2));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts2, ts1));
+
+    TreeSet<Integer> ts3 = new TreeSet<>(Arrays.asList(0, 1, 2, 3, 4));
+    TreeSet<Integer> ts4 = new TreeSet<>(Arrays.asList(1, 3));
+    assertTrue(CollectionsPlume.sortedSetContainsAll(ts3, ts4));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts4, ts3));
+
+    TreeSet<Integer> ts5 = new TreeSet<>(Arrays.asList(-1));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts3, ts5));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts5, ts3));
+    TreeSet<Integer> ts6 = new TreeSet<>(Arrays.asList(0));
+    assertTrue(CollectionsPlume.sortedSetContainsAll(ts3, ts6));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts6, ts3));
+    TreeSet<Integer> ts7 = new TreeSet<>(Arrays.asList(3));
+    assertTrue(CollectionsPlume.sortedSetContainsAll(ts3, ts7));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts7, ts3));
+    TreeSet<Integer> ts8 = new TreeSet<>(Arrays.asList(4));
+    assertTrue(CollectionsPlume.sortedSetContainsAll(ts3, ts8));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts8, ts3));
+    TreeSet<Integer> ts9 = new TreeSet<>(Arrays.asList(5));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts3, ts9));
+    assertFalse(CollectionsPlume.sortedSetContainsAll(ts9, ts3));
   }
 
   // Median of 5 runs with size=4: ratio = .90, meaning 10% speedup.

@@ -3,15 +3,40 @@
 ## 2.0.0 (????-??-??)
 
 * Require Java 11.
-* Renamed `*Plume` classes to `*P`, for brevity;
-  for example, use `CollectionsP` instead of `CollectionsPlume`.
-* Removed all deprecated classes and mehods.
+* Renamed `*Plume` classes to `*P`, for brevity; for example:
+  * use `CollectionsP` instead of `CollectionsPlume`.
+  * use `FilesP` instead of `FilesPlume`.
+* Removed all deprecated classes and methods.
+
+## 1.14.0 (2026-??-??)
+
+* In `CollectionsPlume`:
+  * New method `isModifiable(Collection)`.
+* In `EntryReader`:
+  * Replaced three arguments to constructors (`entryStartRegex`,
+    `entryStopRegex`, `twoBlankLines`) by a single `EntryFormat` value.  The old
+    constructors still exist but are deprecated.
+  * Replaced String/Pattern argument to constructor (`commentRegex`) by a
+    `CommentFormat` value.  This eases future extensions.  The old constructors
+    still exist but are deprecated.
+  * Removed `setEntryStartStop()` methods
+  * When `entryStartRegex` has no capturing group, the whole thing is discarded
+    rather than the whole thing being retained.
+  * EntryReader supports multiline comments.
+  * EntryReader supports fenced code blocks.
+* In `FilesPlume`:
+  * New methods `createDirectory()` and `createDirectories()`.
+
+## 1.13.0 (2026-01-20)
+
+* In `EntryReader`:
+  * Deprecated several constructors; there were an unwieldy number of them.
 
 ## 1.12.3 (2025-11-26)
 
 * In `ArraysPlume`:
-  * new method `prepend()` concatenates an element and an array into a new array.
-  * new methods `copyEmpty()` type-safely make an array of the same type.
+  * New method `prepend()` concatenates an element and an array into a new array.
+  * New methods `copyEmpty()` type-safely make an array of the same type.
 * In `CollectionsPlume`:
   * Renamed `sortList()` to `sorted()`.
   * Methods that now take a `Collection` rather than a `List` as input:
