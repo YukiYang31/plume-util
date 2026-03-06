@@ -14,6 +14,8 @@ import java.util.Objects;
 import java.util.StringJoiner;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -45,7 +47,7 @@ public final class MapsP {
    * @throws Error if the key is in the Map but maps to a non-Integer
    */
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-      Map<K, Integer> m, K key) {
+      @Growable @Replaceable Map<K, Integer> m, K key) {
     return incrementMap(m, key, 1);
   }
 
@@ -61,7 +63,7 @@ public final class MapsP {
    * @throws Error if the key is in the Map but maps to a non-Integer
    */
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-     Map<K, Integer> m, K key, int count) {
+     @Growable @Replaceable Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
     return m.put(key, newTotal);
   }
@@ -216,7 +218,7 @@ public final class MapsP {
   @SuppressWarnings(
       "PMD.UseDiamondOperator" // '<>' with anonymous inner classes is not supported in -source 8
   )
-  public static <K, V> Map<K, V> createLruCache(@Positive int size) {
+  public static <K, V> @Modifiable Map<K, V> createLruCache(@Positive int size) {
     return new LinkedHashMap<K, V>(size, .75F, true) {
 
       private static final long serialVersionUID = 5261489276168775084L;

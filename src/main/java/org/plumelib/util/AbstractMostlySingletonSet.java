@@ -109,7 +109,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
     "lock:override.receiver" // cannot specify the anonymous receiver type
   })
   @SideEffectFree
-  public @PolyModifiable Iterator<T> iterator(@PolyModifiable AbstractMostlySingletonSet<T> this) {
+  public Iterator<T> iterator(AbstractMostlySingletonSet<T> this) {
     switch (state) {
       case EMPTY:
         return Collections.emptyIterator();

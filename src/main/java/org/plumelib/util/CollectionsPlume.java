@@ -852,7 +852,7 @@ public final class CollectionsPlume {
    *     of the collection to the end
    * @return the transformed collection, as a new list (even if no changes were made)
    */
-  public static <T> List<T> replace(Iterable<T> c, Iterable<Replacement<T>> replacements) {
+  public static <T> @Modifiable List<T> replace(Iterable<T> c, Iterable<Replacement<T>> replacements) {
     List<T> result = new ArrayList<>();
     Iterator<T> cItor = c.iterator();
     int cIndex = -1; // the index into c

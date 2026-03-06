@@ -10,8 +10,8 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.modifiability.qual.PolyShrink;
+import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -28,8 +28,11 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @param <K> the type of keys of the map
  * @param <V> the type of values of the map
  */
-@SuppressWarnings("keyfor") // Keys for `this` are also keys for `this.map`
-public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
+@SuppressWarnings({"keyfor",                                        // keyfor: keys for `this` are also keys for `this.map`
+"Growable:declaration.inconsistent.with.extends.clause", 
+"Shrinkable:declaration.inconsistent.with.extends.clause",
+"Replaceable:declaration.inconsistent.with.extends.clause"}) 
+public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
   /** The serial version UID. */
   private static final long serialVersionUID = -5147442142854693854L;
@@ -55,7 +58,7 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
    * @param <K> the key type
    * @param <V> the value type
    */
-  public static <K, V> @Unmodifiable UnmodifiableIdentityHashMap<K, V> wrap(IdentityHashMap<K, V> map) {
+  public static <K, V> UnmodifiableIdentityHashMap<K, V> wrap(IdentityHashMap<K, V> map) {
     // avoid repeated wrapping
     if (map instanceof UnmodifiableIdentityHashMap) {
       return (UnmodifiableIdentityHashMap<K, V>) map;

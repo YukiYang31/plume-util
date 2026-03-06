@@ -8,6 +8,8 @@ import java.util.NoSuchElementException;
 import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -43,7 +45,7 @@ public class CombinationIterator<T> implements Iterator<List<T>> {
   private final @LengthOf({"listsOfCandidates", "iterators"}) int combinationSize;
 
   /** The next value to return, or null if to more values. */
-  private @Nullable List<T> nextValue;
+  private @Growable @Replaceable @Nullable List<T> nextValue;
 
   /**
    * Creates a {@link CombinationIterator} for lists constructed from the given candidates. Each
