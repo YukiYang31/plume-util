@@ -73,7 +73,8 @@ public final class CollectionsPlume {
    * @param elements the elements to insert into c
    * @return true if the argument collection changed as a result of the call
    */
-  public static <T> boolean addAll(@Modifiable Collection<? super T> c, Iterable<? extends T> elements) {
+  public static <T> boolean addAll(
+      @Modifiable Collection<? super T> c, Iterable<? extends T> elements) {
     boolean added = false;
     for (T elt : elements) {
       added = c.add(elt) || added;
@@ -1000,7 +1001,8 @@ public final class CollectionsPlume {
    *     of the collection to the end
    * @return the transformed collection, as a new list (even if no changes were made)
    */
-  public static <T> @Modifiable List<T> replace(Iterable<T> c, Iterable<Replacement<T>> replacements) {
+  public static <T> @Modifiable List<T> replace(
+      Iterable<T> c, Iterable<Replacement<T>> replacements) {
     List<T> result = new ArrayList<>();
     Iterator<T> cItor = c.iterator();
     int cIndex = -1; // the index into c
@@ -2255,7 +2257,8 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated // 2025-06-28
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(
+      @PolyNull M orig) {
     return cloneElements(orig, false);
   }
 

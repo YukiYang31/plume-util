@@ -13,9 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
 import org.checkerframework.checker.index.qual.Positive;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
-import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.NonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -63,7 +63,7 @@ public final class MapsP {
    * @throws Error if the key is in the Map but maps to a non-Integer
    */
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
-     @Growable @Replaceable Map<K, Integer> m, K key, int count) {
+      @Growable @Replaceable Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
     return m.put(key, newTotal);
   }
@@ -219,7 +219,7 @@ public final class MapsP {
       "PMD.UseDiamondOperator" // '<>' with anonymous inner classes is not supported in -source 8
   )
   public static <K, V> @Modifiable Map<K, V> createLruCache(@Positive int size) {
-    return new LinkedHashMap<K, V>(size, .75F, true) {
+    return new @Modifiable LinkedHashMap<K, V>(size, .75F, true) {
 
       private static final long serialVersionUID = 5261489276168775084L;
 
@@ -243,7 +243,8 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(
+      @PolyNull M orig) {
     return cloneElements(orig, true);
   }
 
@@ -258,7 +259,8 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(
+      @PolyNull M orig) {
     return cloneElements(orig, false);
   }
 

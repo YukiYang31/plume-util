@@ -1,9 +1,8 @@
 package org.plumelib.util;
 
-import org.checkerframework.checker.modifiability.qual.Modifiable;
-
 import java.util.HashSet;
 import java.util.Set;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 
 /** Records all the immutable types in the JDK, and can be queried. */
 public final class ImmutableTypes {

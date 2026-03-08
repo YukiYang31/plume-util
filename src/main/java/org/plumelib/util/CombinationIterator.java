@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;

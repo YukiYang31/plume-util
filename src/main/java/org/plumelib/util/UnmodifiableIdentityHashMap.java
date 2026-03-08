@@ -28,10 +28,12 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @param <K> the type of keys of the map
  * @param <V> the type of values of the map
  */
-@SuppressWarnings({"keyfor",                                        // keyfor: keys for `this` are also keys for `this.map`
-"Growable:declaration.inconsistent.with.extends.clause", 
-"Shrinkable:declaration.inconsistent.with.extends.clause",
-"Replaceable:declaration.inconsistent.with.extends.clause"}) 
+@SuppressWarnings({
+  "keyfor", // keyfor: keys for `this` are also keys for `this.map`
+  "Growable:declaration.inconsistent.with.extends.clause", // true false positive
+  "Shrinkable:declaration.inconsistent.with.extends.clause", // true false positive
+  "Replaceable:declaration.inconsistent.with.extends.clause" // true false positive
+})
 public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
   /** The serial version UID. */
@@ -133,17 +135,20 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  public @PolyShrink Set<K> keySet(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Set<K> keySet(
+      @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
-  public @PolyShrink Collection<V> values(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Collection<V> values(
+      @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
   @Override
-  public @PolyShrink Set<Map.Entry<K, V>> entrySet(@PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @PolyShrink Set<Map.Entry<K, V>> entrySet(
+      @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }
 
