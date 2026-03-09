@@ -24,6 +24,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.PolyShrink;
 import org.checkerframework.checker.nullness.qual.EnsuresKeyFor;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -485,7 +486,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Pure
   @SuppressWarnings("allcheckers:purity") // update cache
   @Override
-  public Set<@KeyFor("this") K> keySet() {
+  public @PolyShrink Set<@KeyFor("this") K> keySet(@PolyShrink ArrayMap<K,V> this) {
     if (keySet == null) {
       keySet = new KeySet();
     }

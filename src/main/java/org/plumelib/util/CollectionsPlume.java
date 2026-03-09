@@ -31,7 +31,7 @@ import java.util.function.Predicate;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
@@ -74,7 +74,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addAll(
-      @Modifiable Collection<? super T> c, Iterable<? extends T> elements) {
+      @Growable Collection<? super T> c, Iterable<? extends T> elements) {
     boolean added = false;
     for (T elt : elements) {
       added = c.add(elt) || added;
@@ -92,7 +92,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIf(
-      Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (p.test(elt)) {
@@ -112,7 +112,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIfNot(
-      Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (!p.test(elt)) {
