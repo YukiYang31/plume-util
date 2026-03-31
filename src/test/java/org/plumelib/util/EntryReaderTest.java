@@ -174,8 +174,8 @@ final class EntryReaderTest {
     try (EntryReader reader =
         new EntryReader(
             new StringReader(content1), "test", EntryFormat.DEFAULT, CommentFormat.NONE, null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -183,8 +183,8 @@ final class EntryReaderTest {
     try (EntryReader reader =
         new EntryReader(
             new StringReader(content2), "test", EntryFormat.DEFAULT, CommentFormat.NONE, null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -192,8 +192,8 @@ final class EntryReaderTest {
     try (EntryReader reader =
         new EntryReader(
             new StringReader(content3), "test", EntryFormat.DEFAULT, CommentFormat.NONE, null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
   }
@@ -210,7 +210,7 @@ final class EntryReaderTest {
             CommentFormat.NONE,
             null)) {
       assertEquals(
-          "para1 line1\npara1 line2\n\npara2 line1\npara2 line2\n", reader.getEntry().body);
+          "para1 line1\npara1 line2\n\npara2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -223,7 +223,7 @@ final class EntryReaderTest {
             CommentFormat.NONE,
             null)) {
       assertEquals(
-          "para1 line1\npara1 line2\n \npara2 line1\npara2 line2\n", reader.getEntry().body);
+          "para1 line1\npara1 line2\n \npara2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -235,8 +235,8 @@ final class EntryReaderTest {
             EntryFormat.TWO_BLANK_LINES,
             CommentFormat.NONE,
             null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -248,8 +248,8 @@ final class EntryReaderTest {
             EntryFormat.TWO_BLANK_LINES,
             CommentFormat.NONE,
             null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -261,8 +261,8 @@ final class EntryReaderTest {
             EntryFormat.TWO_BLANK_LINES,
             CommentFormat.NONE,
             null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
 
@@ -275,8 +275,8 @@ final class EntryReaderTest {
             EntryFormat.TWO_BLANK_LINES,
             CommentFormat.NONE,
             null)) {
-      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body);
-      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body);
+      assertEquals("para1 line1\npara1 line2\n", reader.getEntry().body());
+      assertEquals("para2 line1\npara2 line2\n", reader.getEntry().body());
       assertNull(reader.getEntry());
     }
   }
@@ -296,17 +296,17 @@ final class EntryReaderTest {
 
       EntryReader.Entry entry1 = reader.getEntry();
       assertNotNull(entry1);
-      assertEquals("entry1", entry1.firstLine);
-      assertTrue(entry1.body.contains("entry1"));
-      assertTrue(entry1.body.contains("entry1 line2"));
-      assertTrue(entry1.body.contains("entry1 line3"));
-      assertFalse(entry1.shortEntry);
+      assertEquals("entry1", entry1.firstLine());
+      assertTrue(entry1.body().contains("entry1"));
+      assertTrue(entry1.body().contains("entry1 line2"));
+      assertTrue(entry1.body().contains("entry1 line3"));
+      assertFalse(entry1.shortEntry());
 
       EntryReader.Entry entry2 = reader.getEntry();
       assertNotNull(entry2);
-      assertEquals("entry2", entry2.firstLine);
-      assertTrue(entry2.body.contains("entry2"));
-      assertFalse(entry2.shortEntry);
+      assertEquals("entry2", entry2.firstLine());
+      assertTrue(entry2.body().contains("entry2"));
+      assertFalse(entry2.shortEntry());
 
       assertNull(reader.getEntry());
     }
@@ -499,7 +499,7 @@ final class EntryReaderTest {
             new StringReader(content), "test", EntryFormat.DEFAULT, CommentFormat.NONE, null)) {
       EntryReader.Entry entry = reader.getEntry();
       assertNotNull(entry);
-      assertEquals("line1", entry.firstLine);
+      assertEquals("line1", entry.firstLine());
       assertNull(reader.getEntry());
     }
   }
@@ -517,8 +517,8 @@ final class EntryReaderTest {
             null)) {
       EntryReader.Entry entry = reader.getEntry();
       assertNotNull(entry);
-      assertEquals("testfile.txt", entry.filename);
-      assertEquals(2, entry.lineNumber); // line 2 after the leading blank line
+      assertEquals("testfile.txt", entry.filename());
+      assertEquals(2, entry.lineNumber()); // line 2 after the leading blank line
     }
   }
 
@@ -672,6 +672,7 @@ final class EntryReaderTest {
   /** Multiline comment across lines: preserve prefix from first line and suffix from last line. */
   @Test
   void testMultilineAcrossLines_preservePrefixAndSuffix() throws IOException {
+    @SuppressWarnings("StringConcatToTextBlock") // todo
     String content = "pre<!--mid\n" + "stillmid\n" + "end-->post\n" + "after\n";
     try (EntryReader reader =
         new EntryReader(
@@ -685,6 +686,7 @@ final class EntryReaderTest {
   /** If stripping a multiline comment results in an empty line, readLine skips to the next. */
   @Test
   void testMultilineWholeLineSkipped_sameLine() throws IOException {
+    @SuppressWarnings("StringConcatToTextBlock") // todo
     String content = "<!--wholeline-->\n" + "x\n";
     try (EntryReader reader =
         new EntryReader(
@@ -696,6 +698,7 @@ final class EntryReaderTest {
 
   @Test
   void testMultilineWholeLineSkipped_acrossLines() throws IOException {
+    @SuppressWarnings("StringConcatToTextBlock") // todo
     String content = "<!--start\n" + "middle\n" + "end-->\n" + "y\n";
     try (EntryReader reader =
         new EntryReader(
@@ -720,6 +723,7 @@ final class EntryReaderTest {
   /** Multiline comment on a single line: preserve prefix and suffix as if comment were absent. */
   @Test
   void testMultilineSameLine_multipleAbutting() throws IOException {
+    @SuppressWarnings("StringConcatToTextBlock") // todo
     String content = "a<!--b-->c<!--d-->e\n" + "<!--b--><!--d-->\n";
     try (EntryReader reader =
         new EntryReader(
@@ -734,6 +738,7 @@ final class EntryReaderTest {
   void testCommentPrecedence_singleLineBeforeMultiline() throws IOException {
     // On the first line, // starts before /*, so we should NOT enter multiline mode.
     // The next line that looks like a multiline end should be returned as normal text.
+    @SuppressWarnings("StringConcatToTextBlock") // todo
     String content = "code#slc <!-- not-started\n" + "-->still-text\n";
     try (EntryReader reader =
         new EntryReader(

@@ -2,11 +2,14 @@
 
 ## 2.0.0 (????-??-??)
 
-* Require Java 11.
+* Requires Java 17 to run.
 * Renamed `*Plume` classes to `*P`, for brevity; for example:
   * use `CollectionsP` instead of `CollectionsPlume`.
   * use `FilesP` instead of `FilesPlume`.
 * Removed all deprecated classes and methods.
+* Converted classes to records:
+  * `CollectionsPlume.Replacement`
+  * `EntryReader.Entry`
 
 ## 1.14.0 (2026-03-05)
 
@@ -21,7 +24,8 @@
   * Replaced String/Pattern argument to constructor (`commentRegex`) by a
     `CommentFormat` value.  This eases future extensions.  The old constructors
     still exist but are deprecated.
-  * Removed `setEntryStartStop()` methods
+  * Removed `setEntryStartStop()` methods.  Pass an `EntryFormat` to the
+    constructor instead.
   * When `entryStartRegex` has no capturing group, the whole thing is discarded
     rather than the whole thing being retained.
   * `EntryReader` supports multiline comments.

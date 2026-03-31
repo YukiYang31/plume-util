@@ -185,10 +185,7 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
     throw new UnsupportedOperationException();
   }
 
-  @SuppressWarnings({
-    "lock:unneeded.suppression", // see immediately below
-    "lock:override.param" // needed in Java 21, not needed in Java 8 or 11; not sure about Java 17
-  })
+  @SuppressWarnings({"lock:unneeded.suppression", "lock:override.param"})
   @Override
   public boolean remove(
       @GuardSatisfied @UnknownSignedness Object key,

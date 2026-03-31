@@ -2320,24 +2320,24 @@ public final class ArraysPlume {
   public static @NonNegative int length(Object a) {
     if (a == null) {
       throw new IllegalArgumentException("Argument is null");
-    } else if (a instanceof boolean[]) {
-      return ((boolean[]) a).length;
-    } else if (a instanceof byte[]) {
-      return ((byte[]) a).length;
-    } else if (a instanceof char[]) {
-      return ((char[]) a).length;
-    } else if (a instanceof double[]) {
-      return ((double[]) a).length;
-    } else if (a instanceof float[]) {
-      return ((float[]) a).length;
-    } else if (a instanceof int[]) {
-      return ((int[]) a).length;
-    } else if (a instanceof long[]) {
-      return ((long[]) a).length;
-    } else if (a instanceof short[]) {
-      return ((short[]) a).length;
-    } else if (a instanceof Object[]) {
-      return ((Object[]) a).length;
+    } else if (a instanceof boolean[] ba) {
+      return ba.length;
+    } else if (a instanceof byte[] ba) {
+      return ba.length;
+    } else if (a instanceof char[] ca) {
+      return ca.length;
+    } else if (a instanceof double[] da) {
+      return da.length;
+    } else if (a instanceof float[] fa) {
+      return fa.length;
+    } else if (a instanceof int[] ia) {
+      return ia.length;
+    } else if (a instanceof long[] la) {
+      return la.length;
+    } else if (a instanceof short[] sa) {
+      return sa.length;
+    } else if (a instanceof Object[] oa) {
+      return oa.length;
     } else {
       throw new IllegalArgumentException(
           "Argument is not an array, but has class " + a.getClass().getName());
@@ -2357,27 +2357,29 @@ public final class ArraysPlume {
   public static String toString(@Nullable Object a) {
     if (a == null) {
       return "null";
-    } else if (a instanceof boolean[]) {
-      return Arrays.toString((boolean[]) a);
-    } else if (a instanceof byte[]) {
-      return Arrays.toString((byte[]) a);
-    } else if (a instanceof char[]) {
-      return Arrays.toString((char[]) a);
-    } else if (a instanceof double[]) {
-      return Arrays.toString((double[]) a);
-    } else if (a instanceof float[]) {
-      return Arrays.toString((float[]) a);
-    } else if (a instanceof int[]) {
-      return Arrays.toString((int[]) a);
-    } else if (a instanceof long[]) {
-      return Arrays.toString((long[]) a);
-    } else if (a instanceof short[]) {
-      return Arrays.toString((short[]) a);
-    } else if (a instanceof Object[]) {
-      return Arrays.toString((Object[]) a);
-    } else if (a instanceof List<?>) {
-      // Handles lists, but this is not a documented feature
-      return a.toString();
+    }
+    if (a instanceof boolean[] ba) {
+      return Arrays.toString(ba);
+    } else if (a instanceof byte[] ba) {
+      return Arrays.toString(ba);
+    } else if (a instanceof char[] ca) {
+      return Arrays.toString(ca);
+    } else if (a instanceof double[] da) {
+      return Arrays.toString(da);
+    } else if (a instanceof float[] fa) {
+      return Arrays.toString(fa);
+    } else if (a instanceof int[] ia) {
+      return Arrays.toString(ia);
+    } else if (a instanceof long[] la) {
+      return Arrays.toString(la);
+    } else if (a instanceof short[] sa) {
+      return Arrays.toString(sa);
+    } else if (a instanceof Object[] oa) {
+      return Arrays.toString(oa);
+    } else
+    // Handles lists, but this is not a documented feature
+    if (a instanceof List<?> l) {
+      return l.toString();
     } else {
       throw new IllegalArgumentException(
           "Argument is not an array, but has class " + a.getClass().getName());
@@ -2415,8 +2417,8 @@ public final class ArraysPlume {
     }
     StringJoiner sj = new StringJoiner(", ", "[", "]");
     for (Object elt : a) {
-      if (quoted && elt instanceof String) {
-        sj.add("\"" + StringsPlume.escapeJava((String) elt) + "\"");
+      if (quoted && elt instanceof String s) {
+        sj.add("\"" + StringsPlume.escapeJava(s) + "\"");
       } else {
         sj.add(Objects.toString(elt));
       }
@@ -2456,8 +2458,8 @@ public final class ArraysPlume {
     }
     StringJoiner sj = new StringJoiner(", ", "[", "]");
     for (Object elt : a) {
-      if (quoted && elt instanceof String) {
-        sj.add("\"" + StringsPlume.escapeJava((String) elt) + "\"");
+      if (quoted && elt instanceof String s) {
+        sj.add("\"" + StringsPlume.escapeJava(s) + "\"");
       } else {
         sj.add(Objects.toString(elt));
       }
@@ -2503,7 +2505,7 @@ public final class ArraysPlume {
    * @return true iff the array is sorted
    * @deprecated use {@link #isSorted(int[])}
    */
-  @Deprecated // 2024-04-21
+  @Deprecated(since = "2024-04-21")
   @Pure
   public static boolean sorted(int[] a) {
     return isSorted(a);
@@ -2532,7 +2534,7 @@ public final class ArraysPlume {
    * @return true iff the array is sorted
    * @deprecated use {@link #isSorted(long[])}
    */
-  @Deprecated // 2024-04-21
+  @Deprecated(since = "2024-04-21")
   public static boolean sorted(long[] a) {
     return isSorted(a);
   }
@@ -2614,7 +2616,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2665,7 +2667,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2716,7 +2718,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2767,7 +2769,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2818,7 +2820,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2869,7 +2871,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2921,7 +2923,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -2973,7 +2975,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -3024,7 +3026,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -3075,7 +3077,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@code hasNoDuplicates}
    */
-  @Deprecated // 2023-12-01
+  @Deprecated(since = "2023-12-01")
   // @InlineMe(
   //     replacement = "!ArraysPlume.hasDuplicates(a)",
   //     imports = "org.plumelib.util.ArraysPlume")
@@ -3107,7 +3109,7 @@ public final class ArraysPlume {
    * @return true iff a does not contain duplicate elements
    * @deprecated use {@link CollectionsPlume#hasNoDuplicates}
    */
-  @Deprecated // 2021-04-09
+  @Deprecated(since = "2021-04-09")
   @SuppressWarnings({"allcheckers:purity", "lock"}) // side effect to local state (HashSet)
   @Pure
   public static <T> boolean noDuplicates(List<T> a) {
@@ -3409,7 +3411,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public IntArrayComparatorLexical() {}
 
     /**
@@ -3456,7 +3458,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public LongArrayComparatorLexical() {}
 
     /**
@@ -3504,7 +3506,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public DoubleArrayComparatorLexical() {}
 
     /**
@@ -3553,7 +3555,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public StringArrayComparatorLexical() {}
 
     /**
@@ -3680,7 +3682,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public ObjectArrayComparatorLexical() {}
 
     /**
@@ -3733,7 +3735,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public IntArrayComparatorLengthFirst() {}
 
     /**
@@ -3783,7 +3785,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public LongArrayComparatorLengthFirst() {}
 
     /**
@@ -3905,7 +3907,7 @@ public final class ArraysPlume {
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public ObjectArrayComparatorLengthFirst() {}
 
     /**
@@ -4249,9 +4251,8 @@ public final class ArraysPlume {
       return result;
     }
 
-    if (iterable instanceof Collection) {
-      @SuppressWarnings("unchecked") // checked just above
-      int len = ((Collection<?>) iterable).size();
+    if (iterable instanceof Collection<?> c) {
+      int len = c.size();
       @SuppressWarnings("unchecked") // reflection
       TO[] result = (TO[]) Array.newInstance(toClass, len);
       if (result.length == 0) {

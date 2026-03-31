@@ -134,8 +134,7 @@ public final class CollectionsPlume {
   @SuppressWarnings({"allcheckers:purity", "lock"}) // side effect to local state (HashSet)
   @Pure
   public static <T> boolean hasDuplicates(Collection<T> a) {
-    if (a instanceof List && a instanceof RandomAccess) {
-      List<T> alist = (List<T>) a;
+    if (a instanceof List<T> alist && alist instanceof RandomAccess) {
       HashSet<T> hs = new HashSet<>();
       for (int i = 0; i < alist.size(); i++) { // NOPMD: a foreach loop here would be less efficient
         T elt = alist.get(i);
@@ -180,7 +179,7 @@ public final class CollectionsPlume {
    * @return true iff {@code a} does not contain duplicate elements
    * @deprecated use {@link #hasNoDuplicates}
    */
-  @Deprecated // 2023-11-30
+  @Deprecated(since = "2023-11-30")
   // @InlineMe(
   //     replacement = "CollectionsPlume.hasNoDuplicates(a)",
   //     imports = "org.plumelib.util.CollectionsPlume")
@@ -198,7 +197,7 @@ public final class CollectionsPlume {
    * @return a copy of the list with duplicates removed
    * @deprecated use {@link withoutDuplicates} or {@link withoutDuplicatesComparable}
    */
-  @Deprecated // 2021-03-28
+  @Deprecated(since = "2021-03-28")
   public static <T> List<T> removeDuplicates(Collection<T> l) {
     HashSet<T> hs = new LinkedHashSet<>(l);
     List<T> result = new ArrayList<>(hs);
@@ -219,8 +218,8 @@ public final class CollectionsPlume {
    */
   public static <T> List<T> withoutDuplicates(Collection<T> values) {
     Set<T> s = ArraySet.<T>newArraySetOrLinkedHashSet(values);
-    if (values.size() == s.size() && values instanceof List) {
-      return (List<T>) values;
+    if (values.size() == s.size() && values instanceof List<T> l) {
+      return l;
     } else {
       return new ArrayList<>(s);
     }
@@ -242,8 +241,8 @@ public final class CollectionsPlume {
   public static <T extends Comparable<T>> List<T> withoutDuplicatesSorted(Collection<T> values) {
     // This adds O(n) time cost, and has the benefit of sometimes avoiding allocating a TreeSet.
     if (isSortedNoDuplicates(values)) {
-      if (values instanceof List) {
-        return (List<T>) values;
+      if (values instanceof List<T> l) {
+        return l;
       } else {
         return new ArrayList<>(values);
       }
@@ -274,16 +273,16 @@ public final class CollectionsPlume {
       Collection<T> values) {
     // This adds O(n) time cost, and has the benefit of sometimes avoiding allocating a TreeSet.
     if (isSortedNoDuplicates(values)) {
-      if (values instanceof List) {
-        return (List<T>) values;
+      if (values instanceof List<T> l) {
+        return l;
       } else {
         return new ArrayList<>(values);
       }
     }
 
     Set<T> set = new TreeSet<>(values);
-    if (values.size() == set.size() && values instanceof List) {
-      return (List<T>) values;
+    if (values.size() == set.size() && values instanceof List<T> l) {
+      return l;
     } else {
       return new ArrayList<>(set);
     }
@@ -314,7 +313,7 @@ public final class CollectionsPlume {
    * @return a sorted version of the list
    * @deprecated use {@link sorted}
    */
-  @Deprecated // 2025-11-13
+  @Deprecated(since = "2025-11-13")
   public static <T> List<T> sortList(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
     return sorted(l, c);
   }
@@ -331,8 +330,7 @@ public final class CollectionsPlume {
       return true;
     }
 
-    if (values instanceof List && values instanceof RandomAccess) {
-      List<T> valuesList = (List<T>) values;
+    if (values instanceof List<T> valuesList && valuesList instanceof RandomAccess) {
       // Per the Javadoc of RandomAccess, an indexed for loop is faster than a foreach loop.
       int size = valuesList.size();
       for (int i = 0; i < size - 1; i++) {
@@ -367,8 +365,7 @@ public final class CollectionsPlume {
       return true;
     }
 
-    if (values instanceof List && values instanceof RandomAccess) {
-      List<T> valuesList = (List<T>) values;
+    if (values instanceof List<T> valuesList && valuesList instanceof RandomAccess) {
       // Per the Javadoc of RandomAccess, an indexed for loop is faster than a foreach loop.
       int size = valuesList.size();
       for (int i = 0; i < size - 1; i++) {
@@ -442,29 +439,29 @@ public final class CollectionsPlume {
       return false;
     }
 
-    if (o1 instanceof boolean[] && o2 instanceof boolean[]) {
-      return Arrays.equals((boolean[]) o1, (boolean[]) o2);
+    if (o1 instanceof boolean[] ba1 && o2 instanceof boolean[] ba2) {
+      return Arrays.equals(ba1, ba2);
     }
-    if (o1 instanceof byte[] && o2 instanceof byte[]) {
-      return Arrays.equals((byte[]) o1, (byte[]) o2);
+    if (o1 instanceof byte[] ba1 && o2 instanceof byte[] ba2) {
+      return Arrays.equals(ba1, ba2);
     }
-    if (o1 instanceof char[] && o2 instanceof char[]) {
-      return Arrays.equals((char[]) o1, (char[]) o2);
+    if (o1 instanceof char[] ca1 && o2 instanceof char[] ca2) {
+      return Arrays.equals(ca1, ca2);
     }
-    if (o1 instanceof double[] && o2 instanceof double[]) {
-      return Arrays.equals((double[]) o1, (double[]) o2);
+    if (o1 instanceof double[] da1 && o2 instanceof double[] da2) {
+      return Arrays.equals(da1, da2);
     }
-    if (o1 instanceof float[] && o2 instanceof float[]) {
-      return Arrays.equals((float[]) o1, (float[]) o2);
+    if (o1 instanceof float[] fa1 && o2 instanceof float[] fa2) {
+      return Arrays.equals(fa1, fa2);
     }
-    if (o1 instanceof int[] && o2 instanceof int[]) {
-      return Arrays.equals((int[]) o1, (int[]) o2);
+    if (o1 instanceof int[] ia1 && o2 instanceof int[] ia2) {
+      return Arrays.equals(ia1, ia2);
     }
-    if (o1 instanceof long[] && o2 instanceof long[]) {
-      return Arrays.equals((long[]) o1, (long[]) o2);
+    if (o1 instanceof long[] la1 && o2 instanceof long[] la2) {
+      return Arrays.equals(la1, la2);
     }
-    if (o1 instanceof short[] && o2 instanceof short[]) {
-      return Arrays.equals((short[]) o1, (short[]) o2);
+    if (o1 instanceof short[] sa1 && o2 instanceof short[] sa2) {
+      return Arrays.equals(sa1, sa2);
     }
 
     WeakIdentityPair<Object, Object> mypair = WeakIdentityPair.of(o1, o2);
@@ -472,8 +469,8 @@ public final class CollectionsPlume {
       return true;
     }
 
-    if (o1 instanceof Object[] && o2 instanceof Object[]) {
-      return Arrays.deepEquals((Object[]) o1, (Object[]) o2);
+    if (o1 instanceof Object[] oa1 && o2 instanceof Object[] oa2) {
+      return Arrays.deepEquals(oa1, oa2);
     }
 
     if (o1 instanceof List<?> && o2 instanceof List<?>) {
@@ -576,9 +573,8 @@ public final class CollectionsPlume {
 
     List<TO> result;
 
-    if (iterable instanceof List && iterable instanceof RandomAccess) {
+    if (iterable instanceof List<FROM> list && list instanceof RandomAccess) {
       // Per the Javadoc of RandomAccess, an indexed for loop is faster than a foreach loop.
-      List<FROM> list = (List<FROM>) iterable;
       int size = list.size();
       result = new ArrayList<>(size);
       for (int i = 0; i < size; i++) {
@@ -595,8 +591,8 @@ public final class CollectionsPlume {
       return result;
     }
 
-    if (iterable instanceof Collection) {
-      result = new ArrayList<>(((Collection<?>) iterable).size());
+    if (iterable instanceof Collection<?> c) {
+      result = new ArrayList<>(c.size());
     } else {
       result = new ArrayList<>(); // no information about size is available
     }
@@ -798,7 +794,7 @@ public final class CollectionsPlume {
    * @return a new list with the elements for which the filter returns true
    * @deprecated use {@link #filter} instead
    */
-  @Deprecated // 2023-11-30
+  @Deprecated(since = "2023-11-30")
   // @InlineMe(
   //     replacement = "CollectionsPlume.filter(coll, filter)",
   //     imports = "org.plumelib.util.CollectionsPlume")
@@ -945,28 +941,20 @@ public final class CollectionsPlume {
    * Represents a replacement of one range of a collection by another collection.
    *
    * @param <T> the type of collection elements
+   * @param start the first line to replace, inclusive; may be equal to {@code start}-1
+   * @param end the last line to replace, exclusive
+   * @param elements the new (replacement) elements
    */
-  public static final class Replacement<T> {
-    /** The first line to replace, inclusive. */
-    public final int start;
-
-    /** The last line to replace, <em>inclusive</em>. May be equal to {@code start}-1. */
-    public final int end;
-
-    /** The new (replacement) elements. */
-    final Collection<T> elements;
+  public static record Replacement<T>(int start, int end, Collection<T> elements) {
 
     /**
      * Creates a new Replacement.
      *
-     * @param start the first line to replace, inclusive
+     * @param start the first line to replace, inclusive; may be equal to {@code start}-1
      * @param end the last line to replace, exclusive
      * @param elements the new (replacement) elements
      */
-    private Replacement(int start, int end, Collection<T> elements) {
-      this.start = start;
-      this.end = end;
-      this.elements = elements;
+    public Replacement {
       if (end < start - 1) {
         throw new Error("Invalid <start,end> pair: " + this);
       }
@@ -1460,12 +1448,9 @@ public final class CollectionsPlume {
    * @param <T> the element type
    * @return source, converted to Iterable
    */
-  @SuppressWarnings(
-      "PMD.UseDiamondOperator" // '<>' with anonymous inner classes is not supported in -source 8
-  )
   public static <T> Iterable<T> iteratorToIterable(final Iterator<T> source) {
     Objects.requireNonNull(source);
-    return new Iterable<T>() {
+    return new Iterable<>() {
       /** True if this Iterable object has been used. */
       private AtomicBoolean used = new AtomicBoolean();
 
@@ -1646,7 +1631,7 @@ public final class CollectionsPlume {
      * @param itor2 another Iterator
      * @deprecated use {@link CollectionsPlume#mergedIterator2}
      */
-    @Deprecated // use {@link #mergediterator2}
+    @Deprecated
     public MergedIterator2(Iterator<T> itor1, Iterator<T> itor2) {
       this.itor1 = itor1;
       this.itor2 = itor2;
@@ -2020,7 +2005,7 @@ public final class CollectionsPlume {
    * @throws Error if the key is in the Map but maps to a non-Integer
    * @deprecated use {@link MapsP#incrementMap}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
       @Modifiable Map<K, Integer> m, K key) {
     return incrementMap(m, key, 1);
@@ -2038,7 +2023,7 @@ public final class CollectionsPlume {
    * @throws Error if the key is in the Map but maps to a non-Integer
    * @deprecated use {@link MapsP#incrementMap}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @NonNull Object> @Nullable Integer incrementMap(
       @Modifiable Map<K, Integer> m, K key, int count) {
     Integer newTotal = m.getOrDefault(key, 0) + count;
@@ -2054,7 +2039,7 @@ public final class CollectionsPlume {
    * @return a sorted version of m.keySet()
    * @deprecated use {@link MapsP#sortedKeySet}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends Comparable<? super K>, V> Collection<@KeyFor("#1") K> sortedKeySet(
       Map<K, V> m) {
     ArrayList<@KeyFor("#1") K> theKeys = new ArrayList<>(m.keySet());
@@ -2072,7 +2057,7 @@ public final class CollectionsPlume {
    * @return a sorted version of m.keySet()
    * @deprecated use {@link MapsP#sortedKeySet}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K, V> Collection<@KeyFor("#1") K> sortedKeySet(
       Map<K, V> m, Comparator<K> comparator) {
     ArrayList<@KeyFor("#1") K> theKeys = new ArrayList<>(m.keySet());
@@ -2088,7 +2073,7 @@ public final class CollectionsPlume {
    * @return the initial capacity to pass to a HashMap or HashSet constructor
    * @deprecated use {@link MapsP#mapCapacity}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static int mapCapacity(int numElements) {
     // Equivalent to: (int) (numElements / 0.75) + 1
     // where 0.75 is the default load factor used throughout the JDK.
@@ -2104,7 +2089,7 @@ public final class CollectionsPlume {
    * @return the initial capacity to pass to a HashMap or HashSet constructor
    * @deprecated use {@link MapsP#mapCapacity}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <T> int mapCapacity(T[] a) {
     return mapCapacity(a.length);
   }
@@ -2117,7 +2102,7 @@ public final class CollectionsPlume {
    * @return the initial capacity to pass to a HashMap or HashSet constructor
    * @deprecated use {@link MapsP#mapCapacity}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static int mapCapacity(Collection<?> c) {
     return mapCapacity(c.size());
   }
@@ -2130,7 +2115,7 @@ public final class CollectionsPlume {
    * @return the initial capacity to pass to a HashMap or HashSet constructor
    * @deprecated use {@link MapsP#mapCapacity}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static int mapCapacity(Map<?, ?> m) {
     return mapCapacity(m.size());
   }
@@ -2149,7 +2134,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#deepCopy}
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <
           K extends @Nullable DeepCopyable<K>,
           V extends @Nullable DeepCopyable<V>,
@@ -2181,7 +2166,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#deepCopyValues}
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K, V extends @Nullable DeepCopyable<V>, M extends @Modifiable @Nullable Map<K, V>>
       @PolyNull M deepCopyValues(@PolyNull M orig) {
     if (orig == null) {
@@ -2209,12 +2194,9 @@ public final class CollectionsPlume {
    * @return a new cache with the provided size
    * @deprecated use {@link MapsP#createLruCache}
    */
-  @SuppressWarnings(
-      "PMD.UseDiamondOperator" // '<>' with anonymous inner classes is not supported in -source 8
-  )
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K, V> Map<K, V> createLruCache(@Positive int size) {
-    return new LinkedHashMap<K, V>(size, .75F, true) {
+    return new LinkedHashMap<>(size, .75F, true) {
 
       private static final long serialVersionUID = 5261489276168775084L;
 
@@ -2239,7 +2221,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#cloneElements}
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
     return cloneElements(orig, true);
   }
@@ -2256,7 +2238,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#cloneValues}
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(
       @PolyNull M orig) {
     return cloneElements(orig, false);
@@ -2309,7 +2291,7 @@ public final class CollectionsPlume {
    * @param linePrefix a prefix to put at the beginning of each line
    * @deprecated use {@link MapsP#mapToString}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       void mapToString(Appendable sb, Map<K, V> m, String linePrefix) {
     mapToStringMultiLine(sb, m, linePrefix);
@@ -2329,7 +2311,7 @@ public final class CollectionsPlume {
    * @param linePrefix a prefix to put at the beginning of each line
    * @deprecated use {@link MapsP#mapToStringMultiLine}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       void mapToStringMultiLine(Appendable sb, Map<K, V> m, String linePrefix) {
     try {
@@ -2386,7 +2368,7 @@ public final class CollectionsPlume {
    * @return a multi-line string representation of m
    * @deprecated use {@link MapsP#mapToString}
    */
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   @SideEffectFree
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToString(Map<K, V> m) {
@@ -2408,7 +2390,7 @@ public final class CollectionsPlume {
     "lock:method.guarantee.violated" // side effect to local state
   })
   @SideEffectFree
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToStringMultiLine(Map<K, V> m) {
     StringJoiner result = new StringJoiner(lineSep);
@@ -2434,7 +2416,7 @@ public final class CollectionsPlume {
     "lock:method.guarantee.violated" // side effect to local state
   })
   @SideEffectFree
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToStringMultiLine(Map<K, V> m, String linePrefix) {
     StringJoiner result = new StringJoiner(lineSep);
@@ -2455,7 +2437,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#mapToStringAndClassMultiLine}
    */
   @SideEffectFree
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToStringAndClassMultiLine(Map<K, V> m) {
     return mapToStringAndClassMultiLine(m, "");
@@ -2477,7 +2459,7 @@ public final class CollectionsPlume {
     "lock:method.guarantee.violated" // side effect to local state
   })
   @SideEffectFree
-  @Deprecated // 2025-06-28
+  @Deprecated(since = "2025-06-28")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToStringAndClassMultiLine(Map<K, V> m, String linePrefix) {
     StringJoiner result = new StringJoiner(lineSep);

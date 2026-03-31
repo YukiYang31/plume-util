@@ -11,6 +11,7 @@ import java.io.Reader;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.CharBuffer;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
@@ -38,8 +39,6 @@ import org.checkerframework.checker.regex.qual.Regex;
 // Here are some useful features that EntryReader should have.
 //  * It should implement some unimplemented methods from LineNumberReader (see
 //    "not yet implemented" in this file).
-//  * It should have constructors that take a Reader
-//    (in addition to the current BufferedReader, File, InputStream, and String versions).
 //  * It should have a `close()` method (it already implements AutoCloseable,
 //    though I don't know whether it does so adequately).
 //  * It should automatically close the underlying file/etc. when the
@@ -62,6 +61,7 @@ import org.checkerframework.checker.regex.qual.Regex;
  *
  * <pre>{@code
  * // EntryReader constructor args are: filename, EntryFormat, CommentFormat, include regex.
+ * // When reading by lines (as in this `for` loop), this EntryFormat is irrelevant.
  * // First argument can also be a File or Path; additional constructors also exist.
  * try (EntryReader er = new EntryReader(filename,
  *     EntryFormat.DEFAULT, CommentFormat.TEX, "\\\\include\\{(.*)\\}")) {
@@ -89,7 +89,6 @@ import org.checkerframework.checker.regex.qual.Regex;
 @SuppressWarnings({
   "IterableAndIterator",
   "builder:required.method.not.called", // Collection `readers` has element type @MustCall("close")
-  "PMD.CloseResource",
 })
 public class EntryReader extends LineNumberReader implements Iterable<String>, Iterator<String> {
 
@@ -137,7 +136,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * Create an EntryReader that uses the given character set.
    *
    * @param in source from which to read entries
-   * @param charsetName the character set to use
+   * @param charset the character set to use
    * @param filename non-null file name for stream being read
    * @param entryFormat indicates how entries begin and end
    * @param commentFormat indicates the syntax of comments
@@ -145,7 +144,37 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name.
    * @throws UnsupportedEncodingException if the charset encoding is not supported
    */
-  @SuppressWarnings("JdkObsolete") // due to use of string charsetName, remove in Java 11+
+  public @MustCallAlias EntryReader(
+      @MustCallAlias InputStream in,
+      Charset charset,
+      String filename,
+      EntryFormat entryFormat,
+      CommentFormat commentFormat,
+      @Nullable @Regex(1) String includeRegexString)
+      throws UnsupportedEncodingException {
+    this(
+        new InputStreamReader(in, charset),
+        filename,
+        entryFormat,
+        commentFormat,
+        includeRegexString);
+  }
+
+  /**
+   * Create an EntryReader that uses the given character set.
+   *
+   * @param in source from which to read entries
+   * @param charsetName the character set to use
+   * @param filename non-null file name for stream being read
+   * @param entryFormat indicates how entries begin and end
+   * @param commentFormat indicates the syntax of comments
+   * @param includeRegexString regular expression that matches include directives. The expression
+   *     should define one group that contains the include file name.
+   * @throws UnsupportedEncodingException if the charset encoding is not supported
+   * @deprecated use {@link EntryReader(InputStream,String,String,EntryFormat,CommentFormat,String)}
+   */
+  @Deprecated(since = "2026-03-05")
+  @SuppressWarnings("JdkObsolete") // this method is deprecated
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String charsetName,
@@ -177,8 +206,8 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @deprecated use {@link
    *     #EntryReader(InputStream,String,String,EntryFormat,CommentFormat,String)}
    */
-  @Deprecated // 2026-01-28
-  @SuppressWarnings("JdkObsolete") // due to use of string charsetName, remove in Java 11+
+  @Deprecated(since = "2026-01-28")
+  @SuppressWarnings("JdkObsolete") // this method is deprecated
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String charsetName,
@@ -210,7 +239,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(InputStream,String,String,String)
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-21
+  @Deprecated(since = "2026-01-21")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String charsetName,
@@ -242,7 +271,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(InputStream,String,String,String)
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String charsetName,
@@ -264,7 +293,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(InputStream,String,String,String)
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in, String charsetName, String filename)
       throws UnsupportedEncodingException {
@@ -305,7 +334,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name.
    * @deprecated use {@link #EntryReader(InputStream,String,EntryFormat,CommentFormat,String)}
    */
-  @Deprecated // 2026-01-28
+  @Deprecated(since = "2026-01-28")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String filename,
@@ -333,7 +362,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)},
    *     passing {@code UTF_8} as the charset
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String filename,
@@ -359,7 +388,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name.
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public @MustCallAlias EntryReader(
       @MustCallAlias InputStream in,
       String filename,
@@ -432,7 +461,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name
    * @deprecated see {@link #EntryReader(Reader,String,EntryFormat,CommentFormat,String)}
    */
-  @Deprecated // 2026-01-28
+  @Deprecated(since = "2026-01-28")
   @SuppressWarnings("builder") // storing into a collection
   public @MustCallAlias EntryReader(
       @MustCallAlias Reader reader,
@@ -465,7 +494,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name
    * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-21
+  @Deprecated(since = "2026-01-21")
   @SuppressWarnings("builder") // storing into a collection
   public @MustCallAlias EntryReader(
       @MustCallAlias Reader reader,
@@ -492,7 +521,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *     should define one group that contains the include file name
    * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   @SuppressWarnings("builder") // storing into a collection
   public @MustCallAlias EntryReader(
       @MustCallAlias Reader reader,
@@ -545,7 +574,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated see {@link #EntryReader(Path,EntryFormat,CommentFormat, String)}
    */
-  @Deprecated // 2026-01-28
+  @Deprecated(since = "2026-01-28")
   public EntryReader(
       Path path,
       EntryFormat entryFormat,
@@ -572,7 +601,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated use {@link #EntryReader(Path,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-21
+  @Deprecated(since = "2026-01-21")
   public EntryReader(
       Path path,
       boolean twoBlankLines,
@@ -597,7 +626,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated use {@link #EntryReader(Path,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(
       Path path, @Nullable @Regex String lineCommentRegex, @Nullable @Regex(1) String includeRegex)
       throws IOException {
@@ -624,7 +653,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(InputStream,String,String,EntryFormat,String,String)
    * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(Path path, String charsetName) throws IOException {
     this(
         FilesPlume.newFileInputStream(path),
@@ -668,7 +697,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated see {@link #EntryReader(File, EntryFormat,CommentFormat,String)}
    */
-  @Deprecated // 2026-01-28
+  @Deprecated(since = "2026-01-28")
   public EntryReader(
       File file,
       EntryFormat entryFormat,
@@ -695,7 +724,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-21
+  @Deprecated(since = "2026-01-21")
   public EntryReader(
       File file,
       boolean twoBlankLines,
@@ -720,7 +749,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @throws IOException if there is a problem reading the file
    * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(
       File file, @Nullable @Regex String lineCommentRegex, @Nullable @Regex(1) String includeRegex)
       throws IOException {
@@ -747,7 +776,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(File,EntryFormat,String,String)
    * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(File file, String charsetName) throws IOException {
     this(
         FilesPlume.newFileInputStream(file),
@@ -793,7 +822,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(File,EntryFormat,String,String)
    * @deprecated see {@link #EntryReader(String, EntryFormat,CommentFormat,String)}
    */
-  @Deprecated // 2026-01-28
+  @Deprecated(since = "2026-01-28")
   public EntryReader(
       String filename,
       EntryFormat entryFormat,
@@ -816,7 +845,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(File,EntryFormat,String,String)
    * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-21
+  @Deprecated(since = "2026-01-21")
   public EntryReader(
       String filename,
       boolean twoBlankLines,
@@ -842,7 +871,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(File,EntryFormat,String,String)
    * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(
       String filename,
       @Nullable @Regex String lineCommentRegex,
@@ -871,7 +900,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @see #EntryReader(String,EntryFormat,String,String)
    * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
    */
-  @Deprecated // 2026-01-05
+  @Deprecated(since = "2026-01-05")
   public EntryReader(String filename, String charsetName) throws IOException {
     this(
         Files.newInputStream(Path.of(filename)),
@@ -1492,40 +1521,17 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
     }
   }
 
-  /** Descriptor for an entry (record, paragraph, etc.). */
-  public static class Entry {
-    /** First line of the entry. */
-    public final String firstLine;
-
-    /** Complete body of the entry including the first line. */
-    public final String body;
-
-    /** True if this is a short entry (blank-line-separated). */
-    public final boolean shortEntry;
-
-    /** Filename in which the entry was found. */
-    public final String filename;
-
-    /** Line number of first line of entry. */
-    public final long lineNumber;
-
-    /**
-     * Create an entry.
-     *
-     * @param firstLine first line of the entry
-     * @param body complete body of the entry including the first line
-     * @param shortEntry true if this is a short entry (blank-line-separated)
-     * @param filename filename in which the entry was found
-     * @param lineNumber line number of first line of entry
-     */
-    public Entry(
-        String firstLine, String body, String filename, long lineNumber, boolean shortEntry) {
-      this.firstLine = firstLine;
-      this.body = body;
-      this.filename = filename;
-      this.lineNumber = lineNumber;
-      this.shortEntry = shortEntry;
-    }
+  /**
+   * Descriptor for an entry (record, paragraph, etc.).
+   *
+   * @param firstLine first line of the entry
+   * @param body complete body of the entry including the first line
+   * @param filename filename in which the entry was found
+   * @param lineNumber line number of first line of entry
+   * @param shortEntry true if this is a short entry (blank-line-separated)
+   */
+  public static record Entry(
+      String firstLine, String body, String filename, long lineNumber, boolean shortEntry) {
 
     /**
      * Returns a substring of the entry body that matches the specified regular expression. If no
@@ -1560,7 +1566,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
      *
      * @deprecated use {@link #it}.
      */
-    @Deprecated // 2022-07-25; to make private
+    @Deprecated(since = "2022-07-25") // to make private
     public DummyReader() {}
 
     @Override
@@ -1619,7 +1625,13 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   /** A regular expression that never matches. */
   private static final Pattern neverMatches = Pattern.compile("\\b\\B");
 
-  /** This class informs {@link EntryReader} where an entry begins and ends. */
+  /**
+   * This class informs {@link EntryReader} where an entry begins and ends.
+   *
+   * <p>When reading a file by lines (as {@link EntryReader#iterator} and {@link
+   * EntryReader#readLine} do), the EntryFormat is irrelevant, with one exception. If {@link
+   * EntryFormat#supportsFences} is true, then comments are not stripped inside fenced code blocks.
+   */
   public static class EntryFormat {
 
     /**

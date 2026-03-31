@@ -215,11 +215,8 @@ public final class MapsP {
    * @param size size of the cache
    * @return a new cache with the provided size
    */
-  @SuppressWarnings(
-      "PMD.UseDiamondOperator" // '<>' with anonymous inner classes is not supported in -source 8
-  )
-  public static <K, V> @Modifiable Map<K, V> createLruCache(@Positive int size) {
-    return new @Modifiable LinkedHashMap<K, V>(size, .75F, true) {
+  public static <K, V> Map<K, V> createLruCache(@Positive int size) {
+    return new LinkedHashMap<>(size, .75F, true) {
 
       private static final long serialVersionUID = 5261489276168775084L;
 
@@ -313,7 +310,7 @@ public final class MapsP {
    * @param linePrefix a prefix to put at the beginning of each line
    * @deprecated use {@link #mapToStringMultiLine(Appendable, Map, String)}
    */
-  @Deprecated // 2026-06-21
+  @Deprecated(since = "2025-06-21")
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       void mapToString(Appendable sb, Map<K, V> m, String linePrefix) {
     mapToStringMultiLine(sb, m, linePrefix);
@@ -405,7 +402,7 @@ public final class MapsP {
    * @return a multi-line string representation of m
    * @deprecated use {@link #mapToStringMultiLine(Map)}
    */
-  @Deprecated // 2025-06-21
+  @Deprecated(since = "2025-06-21")
   @SideEffectFree
   public static <K extends @Signed @Nullable Object, V extends @Signed @Nullable Object>
       String mapToString(Map<K, V> m) {
