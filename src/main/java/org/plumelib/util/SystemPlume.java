@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.dataflow.qual.Pure;
 
 /** Utility methods relating to the JVM runtime system: sleep and garbage collection. */
@@ -181,7 +182,7 @@ public final class SystemPlume {
   }
 
   /** The history of recent garbage collection runs. The queue is never empty. */
-  private static Deque<GcHistoryItem> gcHistory;
+  private static @Modifiable Deque<GcHistoryItem> gcHistory;
 
   static {
     gcHistory = new ArrayDeque<>();

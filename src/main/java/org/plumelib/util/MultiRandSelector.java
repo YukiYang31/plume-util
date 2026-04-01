@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 
 // TODO: This does not use the Random value that is passed in.
 
@@ -44,7 +45,7 @@ public class MultiRandSelector<T extends @Nullable Object> {
   private Partitioner<T, T> eq;
 
   /** Maps from partition representatives to the RandomSelector to use on that partition. */
-  private HashMap<T, RandomSelector<T>> map = new HashMap<>();
+  private @Modifiable HashMap<T, RandomSelector<T>> map = new HashMap<>();
 
   /**
    * Create a MultiRandSelector that chooses {@code numElts} elements from each bucket.

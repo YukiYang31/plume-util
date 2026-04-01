@@ -25,6 +25,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.PolyShrink;
+import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresKeyFor;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -574,7 +575,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Pure
   @SuppressWarnings("allcheckers:purity")
   @Override
-  public Collection<V> values() {
+  public @PolyShrink Collection<V> values(@PolyShrink ArrayMap<K,V> this) {
     if (valuesCollection == null) {
       valuesCollection = new Values();
     }
@@ -655,7 +656,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @SuppressWarnings("allcheckers:purity")
   @Pure
   @Override
-  public Set<Map.Entry<@KeyFor("this") K, V>> entrySet() {
+  public @PolyShrink Set<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> entrySet(@PolyModifiable ArrayMap<K,V> this) {
     if (entrySet == null) {
       entrySet = new EntrySet();
     }

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+
 /**
  * RandomSelector selects k elements uniformly at random from an arbitrary iterator, using O(k)
  * space. A naive algorithm would use O(n) space. For example, selecting 1 element from a FileStream
@@ -76,7 +78,7 @@ public class RandomSelector<T> {
   private Random generator;
 
   /** The values chosen. */
-  private ArrayList<T> values = new ArrayList<>();
+  private @Modifiable ArrayList<T> values = new ArrayList<>();
 
   /**
    * Creates a new RandomSelector.

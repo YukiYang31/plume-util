@@ -30,10 +30,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  * @param <V> the type of values of the map
  */
 @SuppressWarnings({
-  "keyfor", // keyfor: keys for `this` are also keys for `this.map`
-  "Growable:declaration.inconsistent.with.extends.clause", // true false positive
-  "Shrinkable:declaration.inconsistent.with.extends.clause", // true false positive
-  "Replaceable:declaration.inconsistent.with.extends.clause" // true false positive
+  "keyfor" // keyfor: keys for `this` are also keys for `this.map`
 })
 public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
@@ -152,7 +149,8 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   @Override
   @SuppressWarnings({"Shrinkable:return", 
   "Growable:type.arguments.not.inferred",
-  "Shrinkable:type.arguments.not.inferred"
+  "Shrinkable:type.arguments.not.inferred",
+  "Replaceable:type.arguments.not.inferred"
   })
   public @PolyShrink Set<Map.@PolyModifiable Entry<K, V>> entrySet(
       @PolyModifiable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {

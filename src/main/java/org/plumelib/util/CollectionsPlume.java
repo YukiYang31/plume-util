@@ -32,6 +32,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
@@ -407,7 +408,7 @@ public final class CollectionsPlume {
   }
 
   /** All calls to deepEquals that are currently underway. */
-  private static HashSet<WeakIdentityPair<Object, Object>> deepEqualsUnderway = new HashSet<>();
+  private static @Modifiable HashSet<WeakIdentityPair<Object, Object>> deepEqualsUnderway = new HashSet<>();
 
   /**
    * Determines deep equality for the elements.
@@ -2222,7 +2223,7 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated(since = "2025-06-28")
-  public static <K, V, M extends @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(@PolyNull M orig) {
     return cloneElements(orig, true);
   }
 
