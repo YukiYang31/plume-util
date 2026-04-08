@@ -1474,7 +1474,7 @@ public final class StringsPlume {
   }
 
   /** Exceptions to the usual English noun pluralization rules. */
-  private static final Map<String, String> nPluralExceptions = new HashMap<>();
+  private static final @Modifiable Map<String, String> nPluralExceptions = new HashMap<>();
 
   static {
     // No change
@@ -1638,7 +1638,7 @@ public final class StringsPlume {
   }
 
   /** Exceptions to the usual English verb pluralization rules. */
-  private static final Map<String, String> vPluralExceptions = new HashMap<>();
+  private static final @Modifiable Map<String, String> vPluralExceptions = new HashMap<>();
 
   static {
     vPluralExceptions.put("is", "are");
