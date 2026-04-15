@@ -32,6 +32,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
@@ -298,7 +299,7 @@ public final class CollectionsPlume {
    * @param c a comparator used to sort the returned list
    * @return a sorted version of the list
    */
-  public static <T> List<T> sorted(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
+  public static <T> @Growable @Replaceable List<T> sorted(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
     List<T> result = new ArrayList<>(l);
     Collections.sort(result, c);
     return result;
@@ -315,7 +316,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link sorted}
    */
   @Deprecated(since = "2025-11-13")
-  public static <T> List<T> sortList(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
+  public static <T> @Growable @Replaceable List<T> sortList(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
     return sorted(l, c);
   }
 
