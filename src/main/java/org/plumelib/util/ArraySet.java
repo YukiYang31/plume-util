@@ -91,8 +91,8 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "Shrinkable:super.invocation", // calls `super`
-    "Growable:super.invocation" // calls `super`
+    "shrinkable:super.invocation", // calls `super`
+    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   public ArraySet(int initialCapacity) {
@@ -123,8 +123,8 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "Shrinkable:super.invocation", // calls `super`
-    "Growable:super.invocation" // calls `super`
+    "shrinkable:super.invocation", // calls `super`
+    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   private ArraySet(@Nullable E @Nullable [] values, @LTEqLengthOf({"values"}) int size) {

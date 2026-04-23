@@ -11,6 +11,7 @@ import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.PolyShrink;
+import org.checkerframework.checker.modifiability.qual.Ungrowable;
 import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -133,26 +134,26 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  @SuppressWarnings("Shrinkable:return") 
-  public @PolyShrink Set<K> keySet(
+  @SuppressWarnings("shrinkable:return") 
+  public @PolyShrink @Ungrowable Set<K> keySet(
       @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
-  @SuppressWarnings("Shrinkable:return")
-  public @PolyShrink Collection<V> values(
+  @SuppressWarnings("shrinkable:return")
+  public @PolyShrink @Ungrowable Collection<V> values(
       @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
   @Override
-  @SuppressWarnings({"Shrinkable:return", 
-  "Growable:type.arguments.not.inferred",
-  "Shrinkable:type.arguments.not.inferred",
-  "Replaceable:type.arguments.not.inferred"
+  @SuppressWarnings({"shrinkable:return", 
+  "growable:type.arguments.not.inferred",
+  "shrinkable:type.arguments.not.inferred",
+  "replaceable:type.arguments.not.inferred"
   })
-  public @PolyShrink Set<Map.@PolyModifiable Entry<K, V>> entrySet(
+  public @PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
       @PolyModifiable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }

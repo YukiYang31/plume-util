@@ -69,7 +69,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "Growable:super.invocation" // calls `super`
+    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   public IdentityArraySet(int initialCapacity) {
@@ -100,7 +100,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "Growable:super.invocation" // calls `super`
+    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   private IdentityArraySet(E[] values, @LTEqLengthOf({"values"}) int size) {
