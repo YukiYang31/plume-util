@@ -12,13 +12,13 @@ org-checkerframework = { id = "org.checkerframework", version = "1.0.2" }
 
 [versions]
 
-junit-jupiter = "5.14.3"
+junit-jupiter = "5.14.4"
 
 [libraries]
 
-checker = "org.checkerframework:checker:3.54.0"
+checker-framework = "org.checkerframework:checker:4.0.0"
 
-error-prone-core = "com.google.errorprone:error_prone_core:2.48.0"
+error-prone-core = "com.google.errorprone:error_prone_core:2.49.0"
 
 hashmap-util = "org.plumelib:hashmap-util:0.0.1"
 

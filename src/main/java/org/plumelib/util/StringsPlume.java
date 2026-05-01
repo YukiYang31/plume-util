@@ -164,7 +164,7 @@ public final class StringsPlume {
     if (indent == 0) {
       return (o == null) ? "null" : o.toString();
     }
-    String prefix = new String(new char[indent]).replace('\0', ' ');
+    String prefix = " ".repeat(indent);
     return prefixLines(prefix, o);
   }
 
@@ -182,7 +182,7 @@ public final class StringsPlume {
     if (indent == 0) {
       return (o == null) ? "null" : o.toString();
     }
-    String prefix = new String(new char[indent]).replace('\0', ' ');
+    String prefix = " ".repeat(indent);
     return prefixLinesExceptFirst(prefix, o);
   }
 
@@ -752,8 +752,9 @@ public final class StringsPlume {
    * @deprecated use {@code String.isBlank()}
    */
   @SuppressWarnings({
-    "allcheckers:purity.not.sideeffectfree.call", // side effect to local state
+    "allcheckers:purity.not.deterministic.call", // used for lookup, so order does not matter
     "allcheckers:purity.not.deterministic.not.sideeffectfree.call", // side effect to local state
+    "allcheckers:purity.not.sideeffectfree.call", // side effect to local state
     "lock:method.guarantee.violated" // side effect to local state
   })
   @Deprecated(since = "2026-03-05")

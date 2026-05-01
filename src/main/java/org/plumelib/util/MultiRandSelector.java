@@ -29,7 +29,7 @@ import org.checkerframework.checker.modifiability.qual.Modifiable;
  */
 public class MultiRandSelector<T extends @Nullable Object> {
 
-  /** Whether to toss a coin or select a given number of elements. */
+  /** If true, choose one element. If false, select a given number of elements. */
   private boolean coinTossMode;
 
   /** Number of elements to select. -1 if coinTossMode==true. */
@@ -137,14 +137,6 @@ public class MultiRandSelector<T extends @Nullable Object> {
     }
     delegation.accept(next);
   }
-
-  // I assume this is only for testing?  Comment it out to see whether that causes a problem for
-  // any client.
-  // TODO: is there any reason not to simply return a copy?
-  // NOT safe from concurrent modification.
-  // private Map<T, RandomSelector<T>> values() {
-  //   return map;
-  // }
 
   /**
    * Returns an iterator of all objects selected.
