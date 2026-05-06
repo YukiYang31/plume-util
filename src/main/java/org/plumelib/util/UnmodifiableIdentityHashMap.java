@@ -10,6 +10,7 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.PolyShrink;
 import org.checkerframework.checker.modifiability.qual.Ungrowable;
 import org.checkerframework.checker.modifiability.qual.PolyModifiable;
@@ -135,14 +136,14 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
 
   @Override
   @SuppressWarnings("shrinkable:return") 
-  public @PolyShrink @Ungrowable Set<K> keySet(
+  public @IteratorPolyMod @PolyShrink @Ungrowable Set<K> keySet(
       @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
   @SuppressWarnings("shrinkable:return")
-  public @PolyShrink @Ungrowable Collection<V> values(
+  public @IteratorPolyMod @PolyShrink @Ungrowable Collection<V> values(
       @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
@@ -153,7 +154,7 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   "shrinkable:type.arguments.not.inferred",
   "replaceable:type.arguments.not.inferred"
   })
-  public @PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
+  public @IteratorPolyMod @PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
       @PolyModifiable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }
