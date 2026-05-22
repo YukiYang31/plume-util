@@ -4110,6 +4110,7 @@ public final class ArraysPlume {
    *
    * @param <T> the type of the elements of the sets
    */
+  @SuppressWarnings("modifiability:annotation.unverified")
   static @Modifiable class Partitioning<T extends @NonNull Object> extends ArrayList<ArrayList<T>> {
 
     /** Unique identifier for serialization. If you add or remove fields, change this number. */

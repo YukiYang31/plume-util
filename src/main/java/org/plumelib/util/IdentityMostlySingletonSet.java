@@ -15,7 +15,10 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  *
  * @param <T> the type of elements of the set
  */
-@SuppressWarnings("ExtendsObject")
+@SuppressWarnings({
+    "ExtendsObject",
+    "modifiability:annotation.unverified",
+})
 public final class IdentityMostlySingletonSet<T extends Object>
     extends AbstractMostlySingletonSet<T> {
 

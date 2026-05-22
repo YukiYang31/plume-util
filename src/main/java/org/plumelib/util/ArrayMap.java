@@ -74,6 +74,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "index", // TODO
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
+  "modifiability:annotation.unverified",
   "nullness" // temporary; nullness is tricky because of null-padded arrays
 })
 public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSignedness Object>
@@ -497,6 +498,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the keys. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
 
     /** Creates a new KeySet. */
@@ -585,6 +587,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the values. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class Values extends AbstractCollection<V> {
 
     /** Creates a new Values. */
@@ -658,7 +661,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @SuppressWarnings("allcheckers:purity")
   @Pure
   @Override
-  public @IteratorPolyMod@PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> entrySet(@PolyModifiable ArrayMap<K,V> this) {
+  public @IteratorPolyMod @PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> entrySet(@PolyModifiable ArrayMap<K,V> this) {
     if (entrySet == null) {
       entrySet = new EntrySet();
     }
@@ -666,6 +669,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the entries. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class EntrySet extends AbstractSet<Map.Entry<@KeyFor("this") K, V>> {
 
     /** Creates a new EntrySet. */
@@ -736,9 +740,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
    *
    * @param <T> the type of the iteration value
    */
-  @SuppressWarnings(
-      "AbstractClassWithoutAbstractMethod" // next() is generic but this class need not be
-  )
+  @SuppressWarnings({
+      "AbstractClassWithoutAbstractMethod", // next() is generic but this class need not be
+      "modifiability:annotation.unverified"
+    })
   abstract class ArrayMapIterator<T> implements Iterator<T> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;
@@ -792,6 +797,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the keys. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class KeyIterator extends ArrayMapIterator<@KeyFor("this") K> {
     /** Creates a new KeyIterator. */
     @SideEffectFree
@@ -808,6 +814,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the values. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class ValueIterator extends ArrayMapIterator<V> {
     /** Creates a new ValueIterator. */
     @SideEffectFree
@@ -824,6 +831,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the entries. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   final class EntryIterator extends ArrayMapIterator<Map.Entry<K, V>> {
     /** Creates a new EntryIterator. */
     @SideEffectFree

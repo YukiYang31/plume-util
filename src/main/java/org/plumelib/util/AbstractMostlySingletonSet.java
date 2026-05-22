@@ -28,6 +28,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
  *
  * @param <T> the type of elements of the set
  */
+@SuppressWarnings("modifiability:annotation.unverified")
 public abstract class AbstractMostlySingletonSet<T extends @Signed Object> implements Set<T> {
 
   /** The possible states of this set. */
@@ -104,7 +105,8 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
   @SuppressWarnings({
     "allcheckers:purity.not.sideeffectfree",
     "lock:override.receiver", // cannot specify the anonymous receiver type
-    "NotJavadoc" // Error prone forbids Javadoc comments on anonymous classes.
+    "NotJavadoc", // Error prone forbids Javadoc comments on anonymous classes.
+    "modifiability:annotation.unverified"
   })
   @SideEffectFree
   public Iterator<T> iterator() {

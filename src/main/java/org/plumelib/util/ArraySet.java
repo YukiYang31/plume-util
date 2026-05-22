@@ -59,7 +59,8 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
  */
 @SuppressWarnings({
   "index", // TODO
-  "lock" // not yet annotated for the Lock Checker
+  "lock", // not yet annotated for the Lock Checker
+  "modifiability:annotation.unverified", 
 })
 public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullable Object>
     extends AbstractSet<E> implements Cloneable {
@@ -375,6 +376,7 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
   }
 
   /** An iterator over the ArraySet. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   private @Modifiable class ArraySetIterator implements Iterator<E> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;

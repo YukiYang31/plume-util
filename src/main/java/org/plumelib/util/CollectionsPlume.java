@@ -1476,6 +1476,7 @@ public final class CollectionsPlume {
    *
    * @param <T> the type of elements of the enumeration and iterator
    */
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class EnumerationIterator<T> implements Iterator<T> {
     /** The enumeration that this object wraps. */
     Enumeration<T> e;
@@ -1554,6 +1555,7 @@ public final class CollectionsPlume {
    *
    * @param <T> the type of elements of the iterator
    */
+  @SuppressWarnings("modifiability:annotation.unverified")
   private static final class IteratorPlusOne<T> implements Iterator<T> {
     /** The iterator that this yields first. */
     private Iterator<T> itor;
@@ -1621,6 +1623,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link CollectionsPlume#mergedIterator2}
    */
   @Deprecated // make package-private
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class MergedIterator2<T> implements Iterator<T> {
     /** The first of the two iterators that this object merges. */
     Iterator<T> itor1;
@@ -1695,6 +1698,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link #mergedIterator(Iterable)} or {@link #mergedIterator(Iterator)}
    */
   @Deprecated // make package-private
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class MergedIterator<T> implements Iterator<T> {
 
     /** The iterators that this object merges. */
@@ -1758,6 +1762,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link #filteredIterator}
    */
   @Deprecated // make package-private
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class FilteredIterator<T> implements Iterator<T> {
     /** The iterator that this object is filtering. */
     Iterator<T> itor;
@@ -1843,6 +1848,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link #removeFirstAndLastIterator}
    */
   @Deprecated // make package-private
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static final class RemoveFirstAndLastIterator<T> implements Iterator<T> {
     /** The wrapped iterator. */
     Iterator<T> itor;
@@ -2199,6 +2205,7 @@ public final class CollectionsPlume {
    * @deprecated use {@link MapsP#createLruCache}
    */
   @Deprecated(since = "2025-06-28")
+  @SuppressWarnings("modifiability:annotation.unverified")
   public static <K, V> Map<K, V> createLruCache(@Positive int size) {
     return new LinkedHashMap<>(size, .75F, true) {
 

@@ -37,7 +37,8 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "index", // TODO
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
-  "nullness" // temporary; nullness is tricky because of null-padded arrays
+  "nullness", // temporary; nullness is tricky because of null-padded arrays
+  "modifiability:annotation.unverified" 
 })
 public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> extends AbstractSet<E>
     implements Cloneable {
@@ -301,6 +302,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
   }
 
   /** An iterator over the IdentityArraySet. */
+  @SuppressWarnings("modifiability:annotation.unverified")
   private class ArraySetIterator implements Iterator<E> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;
