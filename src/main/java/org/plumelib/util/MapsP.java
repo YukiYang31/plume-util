@@ -163,7 +163,7 @@ public final class MapsP {
           K extends @Nullable DeepCopyable<K>,
           V extends @Nullable DeepCopyable<V>,
           M extends @Modifiable @Nullable Map<K, V>>
-      @PolyNull M deepCopy(@PolyNull M orig) {
+      @Modifiable @PolyNull M deepCopy(@PolyNull M orig) {
     if (orig == null) {
       return null;
     }
@@ -190,7 +190,7 @@ public final class MapsP {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   public static <K, V extends @Nullable DeepCopyable<V>, M extends @Modifiable @Nullable Map<K, V>>
-      @PolyNull M deepCopyValues(@PolyNull M orig) {
+      @Modifiable @PolyNull M deepCopyValues(@PolyNull M orig) {
     if (orig == null) {
       return null;
     }
@@ -241,7 +241,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(
       @PolyNull M orig) {
     return cloneElements(orig, true);
   }
@@ -257,7 +257,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneValues(
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneValues(
       @PolyNull M orig) {
     return cloneElements(orig, false);
   }
@@ -274,7 +274,7 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @PolyNull M cloneElements(
+  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(
       @PolyNull M orig, boolean cloneKeys) {
     if (orig == null) {
       return null;

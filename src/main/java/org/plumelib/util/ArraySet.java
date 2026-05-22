@@ -62,7 +62,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "lock", // not yet annotated for the Lock Checker
   "modifiability:annotation.unverified", 
 })
-public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullable Object>
+public class ArraySet<E extends @UnknownSignedness @Nullable Object>
     extends AbstractSet<E> implements Cloneable {
 
   /** The values. Null if capacity=0. */
@@ -96,7 +96,7 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
     "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
-  public ArraySet(int initialCapacity) {
+  public @Growable @Shrinkable ArraySet(int initialCapacity) {
     if (initialCapacity < 0) {
       throw new IllegalArgumentException("Illegal initial capacity: " + initialCapacity);
     }
@@ -109,7 +109,7 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
 
   /** Constructs an empty {@code ArraySet} with the default initial capacity. */
   @SideEffectFree
-  public ArraySet() {
+  public @Growable @Shrinkable ArraySet() {
     this(4);
   }
 
@@ -128,7 +128,7 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
     "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
-  private ArraySet(@Nullable E @Nullable [] values, @LTEqLengthOf({"values"}) int size) {
+  private @Growable @Shrinkable ArraySet(@Nullable E @Nullable [] values, @LTEqLengthOf({"values"}) int size) {
     this.values = values;
     this.size = size;
   }
@@ -147,7 +147,7 @@ public @Growable @Shrinkable class ArraySet<E extends @UnknownSignedness @Nullab
     "PMD.ConstructorCallsOverridableMethod",
   })
   @SideEffectFree
-  public ArraySet(@Nullable Collection<? extends E> m) {
+  public @Growable @Shrinkable ArraySet(@Nullable Collection<? extends E> m) {
     this(m == null ? 0 : m.size());
     if (m != null) {
       addAll(m);

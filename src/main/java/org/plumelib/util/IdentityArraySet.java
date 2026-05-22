@@ -15,6 +15,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -40,7 +41,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "nullness", // temporary; nullness is tricky because of null-padded arrays
   "modifiability:annotation.unverified" 
 })
-public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> extends AbstractSet<E>
+public class IdentityArraySet<E extends @UnknownSignedness Object> extends AbstractSet<E>
     implements Cloneable {
 
   /** The values. Null if capacity=0. */
@@ -73,7 +74,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
     "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
-  public IdentityArraySet(int initialCapacity) {
+  public @Growable IdentityArraySet(int initialCapacity) {
     if (initialCapacity < 0) {
       throw new IllegalArgumentException("Illegal initial capacity: " + initialCapacity);
     }
@@ -86,7 +87,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
 
   /** Constructs an empty {@code IdentityArraySet} with the default initial capacity. */
   @SideEffectFree
-  public IdentityArraySet() {
+  public @Growable IdentityArraySet() {
     this(4);
   }
 
@@ -104,7 +105,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
     "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
-  private IdentityArraySet(E[] values, @LTEqLengthOf({"values"}) int size) {
+  private @Growable IdentityArraySet(E[] values, @LTEqLengthOf({"values"}) int size) {
     this.values = values;
     this.size = size;
   }
@@ -123,7 +124,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
     "PMD.ConstructorCallsOverridableMethod",
   })
   @SideEffectFree
-  public IdentityArraySet(Collection<? extends E> c) {
+  public @Growable IdentityArraySet(Collection<? extends E> c) {
     this(c.size());
     addAll(c);
   }
@@ -268,7 +269,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
   // Bulk Operations
 
   @Override
-  public boolean addAll(IdentityArraySet<E> this, Collection<? extends E> c) {
+  public boolean addAll(@Growable IdentityArraySet<E> this, Collection<? extends E> c) {
     if (c.isEmpty()) {
       return false;
     }
@@ -276,7 +277,7 @@ public @Growable class IdentityArraySet<E extends @UnknownSignedness Object> ext
   }
 
   @Override
-  public boolean removeAll(@Shrinkable IdentityArraySet<E> this, Collection<?> c) {
+  public boolean removeAll(@Shrinkable @IteratorPolyMod IdentityArraySet<E> this, Collection<?> c) {
     if (c.isEmpty()) {
       return false;
     }
