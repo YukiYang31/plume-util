@@ -11,7 +11,7 @@ import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
-import org.checkerframework.checker.modifiability.qual.PolyShrink;
+import org.checkerframework.checker.modifiability.qual.PolyShrinkable;
 import org.checkerframework.checker.modifiability.qual.Ungrowable;
 import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
@@ -137,15 +137,15 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
 
   @Override
   @SuppressWarnings("shrinkable:return") 
-  public @IteratorPolyMod @PolyShrink @Ungrowable Set<K> keySet(
-      @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<K> keySet(
+      @PolyShrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
   @SuppressWarnings("shrinkable:return")
-  public @IteratorPolyMod @PolyShrink @Ungrowable Collection<V> values(
-      @PolyShrink @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Collection<V> values(
+      @PolyShrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
@@ -155,7 +155,7 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   "shrinkable:type.arguments.not.inferred",
   "replaceable:type.arguments.not.inferred"
   })
-  public @IteratorPolyMod @PolyShrink @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
       @PolyModifiable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }
