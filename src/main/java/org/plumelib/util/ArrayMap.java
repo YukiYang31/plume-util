@@ -25,9 +25,9 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.SameLen;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
+import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.modifiability.qual.PolyShrinkable;
 import org.checkerframework.checker.modifiability.qual.Ungrowable;
-import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.nullness.qual.EnsuresKeyFor;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
@@ -490,7 +490,8 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Pure
   @SuppressWarnings("allcheckers:purity") // update cache
   @Override
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<@KeyFor("this") K> keySet(@PolyShrinkable ArrayMap<K,V> this) {
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<@KeyFor("this") K> keySet(
+      @PolyShrinkable ArrayMap<K, V> this) {
     if (keySet == null) {
       keySet = new KeySet();
     }
@@ -579,7 +580,8 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Pure
   @SuppressWarnings("allcheckers:purity")
   @Override
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Collection<V> values(@PolyShrinkable ArrayMap<K,V> this) {
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Collection<V> values(
+      @PolyShrinkable ArrayMap<K, V> this) {
     if (valuesCollection == null) {
       valuesCollection = new Values();
     }
@@ -661,7 +663,9 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @SuppressWarnings("allcheckers:purity")
   @Pure
   @Override
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> entrySet(@PolyModifiable ArrayMap<K,V> this) {
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<
+          Map.@PolyModifiable Entry<@KeyFor("this") K, V>>
+      entrySet(@PolyModifiable ArrayMap<K, V> this) {
     if (entrySet == null) {
       entrySet = new EntrySet();
     }
@@ -741,9 +745,9 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
    * @param <T> the type of the iteration value
    */
   @SuppressWarnings({
-      "AbstractClassWithoutAbstractMethod", // next() is generic but this class need not be
-      "modifiability:annotation.unverified"
-    })
+    "AbstractClassWithoutAbstractMethod", // next() is generic but this class need not be
+    "modifiability:annotation.unverified"
+  })
   abstract class ArrayMapIterator<T> implements Iterator<T> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;
