@@ -1,6 +1,6 @@
 [plugins]
 
-com-diffplug-spotless = { id = "com.diffplug.spotless", version = "8.4.0" }
+com-diffplug-spotless = { id = "com.diffplug.spotless", version = "8.5.1" }
 
 com-gradleup-shadow = { id = "com.gradleup.shadow", version = "9.4.1" }
 
@@ -16,7 +16,7 @@ junit-jupiter = "5.14.4"
 
 [libraries]
 
-checker-framework = "org.checkerframework:checker:4.1.0"
+checker-framework = "org.checkerframework:checker:4.1.1-SNAPSHOT"
 
 error-prone-core = "com.google.errorprone:error_prone_core:2.49.0"
 
