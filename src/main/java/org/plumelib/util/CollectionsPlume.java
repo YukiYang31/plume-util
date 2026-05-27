@@ -31,11 +31,11 @@ import java.util.function.Predicate;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.Positive;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
-import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
-import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
@@ -301,7 +301,8 @@ public final class CollectionsPlume {
    * @param c a comparator used to sort the returned list
    * @return a sorted version of the list
    */
-  public static <T> @Growable @Replaceable @IteratorPolyMod List<T> sorted(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
+  public static <T> @Growable @Replaceable @IteratorPolyMod List<T> sorted(
+      Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
     List<T> result = new ArrayList<>(l);
     Collections.sort(result, c);
     return result;
@@ -318,7 +319,8 @@ public final class CollectionsPlume {
    * @deprecated use {@link sorted}
    */
   @Deprecated(since = "2025-11-13")
-  public static <T> @Growable @Replaceable @IteratorPolyMod List<T> sortList(Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
+  public static <T> @Growable @Replaceable @IteratorPolyMod List<T> sortList(
+      Collection<T> l, Comparator<@MustCallUnknown ? super T> c) {
     return sorted(l, c);
   }
 
@@ -411,7 +413,8 @@ public final class CollectionsPlume {
   }
 
   /** All calls to deepEquals that are currently underway. */
-  private static @Modifiable HashSet<WeakIdentityPair<Object, Object>> deepEqualsUnderway = new HashSet<>();
+  private static @Modifiable HashSet<WeakIdentityPair<Object, Object>> deepEqualsUnderway =
+      new HashSet<>();
 
   /**
    * Determines deep equality for the elements.
@@ -744,7 +747,8 @@ public final class CollectionsPlume {
     "signedness", // problem with clone()
     "nullness" // generics problem
   })
-  public static <T extends @Nullable Object, C extends @Growable @Shrinkable @Nullable Collection<T>>
+  public static <
+          T extends @Nullable Object, C extends @Growable @Shrinkable @Nullable Collection<T>>
       @Growable @Shrinkable @PolyNull C cloneElements(@PolyNull C orig) {
     if (orig == null) {
       return null;
@@ -769,7 +773,9 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"signedness", "nullness:argument"}) // problem with clone()
-  public static <T extends @Nullable DeepCopyable<T>, C extends @Growable @Shrinkable @Nullable Collection<T>>
+  public static <
+          T extends @Nullable DeepCopyable<T>,
+          C extends @Growable @Shrinkable @Nullable Collection<T>>
       @Growable @Shrinkable @PolyNull C deepCopy(@PolyNull C orig) {
     if (orig == null) {
       return null;
@@ -2234,7 +2240,8 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated(since = "2025-06-28")
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(@PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneElements(@PolyNull M orig) {
     return cloneElements(orig, true);
   }
 
@@ -2251,8 +2258,8 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated(since = "2025-06-28")
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneValues(
-      @PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneValues(@PolyNull M orig) {
     return cloneElements(orig, false);
   }
 
@@ -2268,8 +2275,8 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(
-      @PolyNull M orig, boolean cloneKeys) {
+  private static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneElements(@PolyNull M orig, boolean cloneKeys) {
     if (orig == null) {
       return null;
     }

@@ -39,7 +39,8 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
   "nullness", // temporary; nullness is tricky because of null-padded arrays
-  "modifiability:annotation.unverified" 
+  "modifiability:annotation.unverified" // cannot verify the annotations placed in this class are
+  // correct.
 })
 public class IdentityArraySet<E extends @UnknownSignedness Object> extends AbstractSet<E>
     implements Cloneable {

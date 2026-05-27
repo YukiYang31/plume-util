@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 
 // TODO: This does not use the Random value that is passed in.
 

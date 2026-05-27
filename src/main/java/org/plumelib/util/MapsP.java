@@ -241,8 +241,8 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(
-      @PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneElements(@PolyNull M orig) {
     return cloneElements(orig, true);
   }
 
@@ -257,8 +257,8 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  public static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneValues(
-      @PolyNull M orig) {
+  public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneValues(@PolyNull M orig) {
     return cloneElements(orig, false);
   }
 
@@ -274,8 +274,8 @@ public final class MapsP {
    * @return a copy of {@code orig}, as described above
    */
   @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
-  private static <K, V, M extends @Modifiable @Nullable Map<K, V>> @Modifiable @PolyNull M cloneElements(
-      @PolyNull M orig, boolean cloneKeys) {
+  private static <K, V, M extends @Modifiable @Nullable Map<K, V>>
+      @Modifiable @PolyNull M cloneElements(@PolyNull M orig, boolean cloneKeys) {
     if (orig == null) {
       return null;
     }

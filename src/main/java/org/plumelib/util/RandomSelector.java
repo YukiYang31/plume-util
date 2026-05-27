@@ -3,7 +3,6 @@ package org.plumelib.util;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 
 /**

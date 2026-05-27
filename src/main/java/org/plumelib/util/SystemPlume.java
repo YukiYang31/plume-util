@@ -7,8 +7,8 @@ import java.lang.management.ManagementFactory;
 import java.time.Instant;
 import java.util.ArrayDeque;
 import java.util.Deque;
-import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.dataflow.qual.Pure;
 
 /** Utility methods relating to the JVM runtime system: sleep and garbage collection. */

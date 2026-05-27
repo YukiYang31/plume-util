@@ -60,10 +60,10 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 @SuppressWarnings({
   "index", // TODO
   "lock", // not yet annotated for the Lock Checker
-  "modifiability:annotation.unverified", 
+  "modifiability:annotation.unverified",
 })
-public class ArraySet<E extends @UnknownSignedness @Nullable Object>
-    extends AbstractSet<E> implements Cloneable {
+public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends AbstractSet<E>
+    implements Cloneable {
 
   /** The values. Null if capacity=0. */
   private @Nullable E @MonotonicNonNull [] values;
@@ -128,7 +128,8 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object>
     "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
-  private @Growable @Shrinkable ArraySet(@Nullable E @Nullable [] values, @LTEqLengthOf({"values"}) int size) {
+  private @Growable @Shrinkable ArraySet(
+      @Nullable E @Nullable [] values, @LTEqLengthOf({"values"}) int size) {
     this.values = values;
     this.size = size;
   }
@@ -389,6 +390,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object>
 
     /** Creates a new ArraySetIterator. */
     @SideEffectFree
+    @SuppressWarnings("modifiability:super.invocation") // calls `super`
     ArraySetIterator() {
       index = 0;
       removed = true; // can't remove until next() has been called
