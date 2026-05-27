@@ -11,9 +11,6 @@ import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
-import org.checkerframework.checker.modifiability.qual.PolyShrinkable;
-import org.checkerframework.checker.modifiability.qual.Ungrowable;
-import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -33,7 +30,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  */
 @SuppressWarnings({
   "keyfor", // keyfor: keys for `this` are also keys for `this.map`
-  "modifiability:annotation.unverified", 
+  "modifiability:annotation.unverified",
 })
 public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
@@ -48,6 +45,7 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
    *
    * @param map the map to wrap
    */
+  @SuppressWarnings("modifiability:super.invocation") // calls `super`
   private UnmodifiableIdentityHashMap(IdentityHashMap<K, V> map) {
     this.map = map;
   }
@@ -136,27 +134,33 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  @SuppressWarnings("shrinkable:return") 
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<K> keySet(
-      @PolyShrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  @SuppressWarnings("modifiability:override.return") // false positive.
+  // map.keySet() has to return @PolyShrinkable, but here we always want to return unmodifiable
+  // because this is an unmodifiable map.
+  public @IteratorPolyMod @Unmodifiable Set<K> keySet(
+      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
-  @SuppressWarnings("shrinkable:return")
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Collection<V> values(
-      @PolyShrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  @SuppressWarnings("modifiability:override.return") // false positive.
+  // map.values() has to return @PolyShrinkable, but here we always want to return unmodifiable
+  // because this is an unmodifiable map.
+  public @IteratorPolyMod @Unmodifiable Collection<V> values(
+      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
   @Override
-  @SuppressWarnings({"shrinkable:return", 
-  "growable:type.arguments.not.inferred",
-  "shrinkable:type.arguments.not.inferred",
-  "replaceable:type.arguments.not.inferred"
+  @SuppressWarnings({
+    "modifiability:override.return", // false positive.
+    // map.entrySet() has to return @PolyShrinkable, but here we always want to return unmodifiable
+    // because this is an unmodifiable map.
+    "modifiability:type.arguments.not.inferred" // true positive? Collections.unmodifiableSet only
+    // makes the set Unmodifiable, not the entries.
   })
-  public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<Map.@PolyModifiable Entry<K, V>> entrySet(
-      @PolyModifiable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public @IteratorPolyMod @Unmodifiable Set<Map.@Unmodifiable Entry<K, V>> entrySet(
+      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.entrySet());
   }
 
