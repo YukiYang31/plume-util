@@ -343,7 +343,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   // Bulk Operations
 
   @Override
-  public boolean addAll(Collection<? extends E> c) {
+  public boolean addAll(@Growable ArraySet<E> this, Collection<? extends E> c) {
     if (c.isEmpty()) {
       return false;
     }
