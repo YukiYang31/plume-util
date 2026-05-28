@@ -133,6 +133,8 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
     return map.hashCode();
   }
 
+  // TODO: Implement `clone()`.
+
   @Override
   @SuppressWarnings("modifiability:override.return") // false positive.
   // map.keySet() has to return @PolyShrinkable, but here we always want to return unmodifiable
