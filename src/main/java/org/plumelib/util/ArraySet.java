@@ -19,6 +19,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNull;
@@ -351,7 +352,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   }
 
   @Override
-  public boolean removeAll(Collection<?> c) {
+  public boolean removeAll(@Shrinkable @IteratorPolyMod ArraySet<E> this, Collection<?> c) {
     if (c.isEmpty()) {
       return false;
     }

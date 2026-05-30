@@ -34,6 +34,7 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.PreservesModifiability;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
@@ -220,6 +221,7 @@ public final class CollectionsPlume {
    * @param values a collection
    * @return the values, with duplicates removed
    */
+  @PreservesModifiability
   public static <T> List<T> withoutDuplicates(Collection<T> values) {
     Set<T> s = ArraySet.<T>newArraySetOrLinkedHashSet(values);
     if (values.size() == s.size() && values instanceof List<T> l) {
