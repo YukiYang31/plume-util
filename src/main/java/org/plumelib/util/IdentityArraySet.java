@@ -256,13 +256,15 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   // Modification Operations
 
   @Override
-  public boolean add(E value) {
+  public boolean add(@Growable IdentityArraySet<E> this, E value) {
     int index = indexOf(value);
     return add(index, value);
   }
 
   @Override
-  public boolean remove(@GuardSatisfied @Nullable @UnknownSignedness Object value) {
+  public boolean remove(
+      @Shrinkable IdentityArraySet<E> this,
+      @GuardSatisfied @Nullable @UnknownSignedness Object value) {
     int index = indexOf(value);
     return removeIndex(index);
   }
@@ -288,7 +290,7 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   // Inherit retainAll() from AbstractCollection.
 
   @Override
-  public void clear() {
+  public void clear(@Shrinkable IdentityArraySet<E> this) {
     if (size != 0) {
       size = 0;
       sizeModificationCount++;
@@ -345,7 +347,7 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
 
     /** Removes the previously-returned element. */
     @Override
-    public final void remove() {
+    public final void remove(@Shrinkable ArraySetIterator this) {
       if (removed) {
         throw new IllegalStateException(
             "Called remove() on ArraySetIterator without calling next() first.");

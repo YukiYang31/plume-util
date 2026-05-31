@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -195,7 +196,7 @@ public class OrderedPairIterator<T extends @Nullable Object>
   }
 
   @Override
-  public void remove(@GuardSatisfied OrderedPairIterator<T> this) {
+  public void remove(@Shrinkable @GuardSatisfied OrderedPairIterator<T> this) {
     throw new UnsupportedOperationException();
   }
 }

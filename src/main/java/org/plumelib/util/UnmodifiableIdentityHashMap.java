@@ -10,7 +10,11 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
+import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -32,7 +36,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
   "keyfor", // keyfor: keys for `this` are also keys for `this.map`
   "modifiability:annotation.unverified",
 })
-public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
+public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
   /** The serial version UID. */
   private static final long serialVersionUID = -5147442142854693854L;
@@ -46,7 +50,7 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
    * @param map the map to wrap
    */
   @SuppressWarnings("modifiability:super.invocation") // calls `super`
-  private UnmodifiableIdentityHashMap(IdentityHashMap<K, V> map) {
+  private @Unmodifiable UnmodifiableIdentityHashMap(IdentityHashMap<K, V> map) {
     this.map = map;
   }
 
@@ -59,7 +63,8 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
    * @param <K> the key type
    * @param <V> the value type
    */
-  public static <K, V> UnmodifiableIdentityHashMap<K, V> wrap(IdentityHashMap<K, V> map) {
+  public static <K, V> @Unmodifiable UnmodifiableIdentityHashMap<K, V> wrap(
+      IdentityHashMap<K, V> map) {
     // avoid repeated wrapping
     if (map instanceof UnmodifiableIdentityHashMap) {
       return (UnmodifiableIdentityHashMap<K, V>) map;
@@ -99,25 +104,29 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  public @Nullable V put(@GuardSatisfied UnmodifiableIdentityHashMap<K, V> this, K key, V value) {
+  public @Nullable V put(
+      @Growable @Replaceable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this,
+      K key,
+      V value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public void putAll(
-      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this, Map<? extends K, ? extends V> m) {
+      @Growable @Replaceable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this,
+      Map<? extends K, ? extends V> m) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public @Nullable V remove(
-      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this,
+      @Shrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this,
       @GuardSatisfied @Nullable @UnknownSignedness Object key) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clear(@GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  public void clear(@Shrinkable @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
     throw new UnsupportedOperationException();
   }
 
@@ -173,7 +182,9 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+  public void replaceAll(
+      @Replaceable UnmodifiableIdentityHashMap<K, V> this,
+      BiFunction<? super K, ? super V, ? extends V> function) {
     throw new UnsupportedOperationException();
   }
 
@@ -188,49 +199,60 @@ public final @Unmodifiable class UnmodifiableIdentityHashMap<K, V> extends Ident
   }
 
   @Override
-  public V putIfAbsent(K key, V value) {
+  public V putIfAbsent(@Growable UnmodifiableIdentityHashMap<K, V> this, K key, V value) {
     throw new UnsupportedOperationException();
   }
 
   @SuppressWarnings({"lock:unneeded.suppression", "lock:override.param"})
   @Override
   public boolean remove(
+      @Shrinkable UnmodifiableIdentityHashMap<K, V> this,
       @GuardSatisfied @UnknownSignedness Object key,
       @GuardSatisfied @UnknownSignedness Object value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean replace(K key, V oldValue, V newValue) {
+  public boolean replace(
+      @Replaceable UnmodifiableIdentityHashMap<K, V> this, K key, V oldValue, V newValue) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public V replace(K key, V value) {
+  public V replace(@Replaceable UnmodifiableIdentityHashMap<K, V> this, K key, V value) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public @PolyNull V computeIfAbsent(
-      K key, Function<? super K, ? extends @PolyNull V> mappingFunction) {
+      @Growable UnmodifiableIdentityHashMap<K, V> this,
+      K key,
+      Function<? super K, ? extends @PolyNull V> mappingFunction) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public @Nullable V computeIfPresent(
-      K key, BiFunction<? super K, ? super V, ? extends @Nullable V> remappingFunction) {
+      @Shrinkable @Replaceable UnmodifiableIdentityHashMap<K, V> this,
+      K key,
+      BiFunction<? super K, ? super V, ? extends @Nullable V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public @Nullable V compute(
-      K key, BiFunction<? super K, ? super V, ? extends @Nullable V> remappingFunction) {
+      @Modifiable UnmodifiableIdentityHashMap<K, V> this,
+      K key,
+      BiFunction<? super K, ? super V, ? extends @Nullable V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 
   @Override
   public @Nullable V merge(
-      K key, V value, BiFunction<? super V, ? super V, ? extends @Nullable V> remappingFunction) {
+      @Modifiable UnmodifiableIdentityHashMap<K, V> this,
+      K key,
+      V value,
+      BiFunction<? super V, ? super V, ? extends @Nullable V> remappingFunction) {
     throw new UnsupportedOperationException();
   }
 }

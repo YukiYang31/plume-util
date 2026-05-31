@@ -10,6 +10,7 @@ import org.checkerframework.checker.index.qual.LessThan;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyUpperBound;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Unsigned;
@@ -1474,7 +1475,7 @@ public final class MathPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied MissingNumbersIteratorInt this) {
+    public void remove(@Shrinkable @GuardSatisfied MissingNumbersIteratorInt this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1816,7 +1817,7 @@ public final class MathPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied MissingNumbersIteratorLong this) {
+    public void remove(@Shrinkable @GuardSatisfied MissingNumbersIteratorLong this) {
       throw new UnsupportedOperationException();
     }
   }

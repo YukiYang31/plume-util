@@ -9,6 +9,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
@@ -185,7 +186,8 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
 
   @Override
   public boolean remove(
-      @GuardSatisfied AbstractMostlySingletonSet<T> this, @Nullable @UnknownSignedness Object o) {
+      @Shrinkable @GuardSatisfied AbstractMostlySingletonSet<T> this,
+      @Nullable @UnknownSignedness Object o) {
     throw new UnsupportedOperationException();
   }
 
@@ -196,17 +198,19 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
   }
 
   @Override
-  public boolean retainAll(@GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<?> c) {
+  public boolean retainAll(
+      @Shrinkable @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<?> c) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public boolean removeAll(@GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<?> c) {
+  public boolean removeAll(
+      @Shrinkable @GuardSatisfied AbstractMostlySingletonSet<T> this, Collection<?> c) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  public void clear(@GuardSatisfied AbstractMostlySingletonSet<T> this) {
+  public void clear(@Shrinkable @GuardSatisfied AbstractMostlySingletonSet<T> this) {
     throw new UnsupportedOperationException();
   }
 }

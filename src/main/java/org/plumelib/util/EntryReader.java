@@ -25,6 +25,7 @@ import org.checkerframework.checker.index.qual.IndexOrLow;
 import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.mustcall.qual.MustCall;
 import org.checkerframework.checker.mustcall.qual.MustCallAlias;
 import org.checkerframework.checker.nullness.qual.NonNull;
@@ -1221,7 +1222,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
 
   /** remove() is not supported. */
   @Override
-  public void remove(@GuardSatisfied EntryReader this) {
+  public void remove(@Shrinkable @GuardSatisfied EntryReader this) {
     throw new UnsupportedOperationException("can't remove lines from file");
   }
 

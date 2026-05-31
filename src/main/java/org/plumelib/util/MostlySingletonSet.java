@@ -2,6 +2,7 @@ package org.plumelib.util;
 
 import java.util.LinkedHashSet;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
@@ -32,7 +33,7 @@ public final class MostlySingletonSet<T extends Object> extends AbstractMostlySi
 
   @Override
   @SuppressWarnings("lock:method.invocation") // #979?
-  public boolean add(@GuardSatisfied MostlySingletonSet<T> this, T e) {
+  public boolean add(@Growable @GuardSatisfied MostlySingletonSet<T> this, T e) {
     return switch (state) {
       case EMPTY -> {
         state = State.SINGLETON;

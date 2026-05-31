@@ -9,6 +9,7 @@ import org.checkerframework.checker.index.qual.LengthOf;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
+import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -115,7 +116,7 @@ public class CombinationIterator<T> implements Iterator<List<T>> {
   }
 
   @Override
-  public void remove(@GuardSatisfied CombinationIterator<T> this) {
+  public void remove(@Shrinkable @GuardSatisfied CombinationIterator<T> this) {
     throw new UnsupportedOperationException("Remove not implemented for CombinationIterator");
   }
 }

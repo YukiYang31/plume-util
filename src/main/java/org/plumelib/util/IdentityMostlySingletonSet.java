@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.IdentityHashMap;
 import org.checkerframework.checker.interning.qual.FindDistinct;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
+import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
 
 /**
@@ -37,7 +38,8 @@ public final class IdentityMostlySingletonSet<T extends Object>
   }
 
   @Override
-  public boolean add(@GuardSatisfied IdentityMostlySingletonSet<T> this, @FindDistinct T e) {
+  public boolean add(
+      @Growable @GuardSatisfied IdentityMostlySingletonSet<T> this, @FindDistinct T e) {
     return switch (state) {
       case EMPTY -> {
         state = State.SINGLETON;

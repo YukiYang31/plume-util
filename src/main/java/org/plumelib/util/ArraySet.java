@@ -330,13 +330,14 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   // Modification Operations
 
   @Override
-  public boolean add(E value) {
+  public boolean add(@Growable ArraySet<E> this, E value) {
     int index = indexOf(value);
     return add(index, value);
   }
 
   @Override
-  public boolean remove(@GuardSatisfied @Nullable @UnknownSignedness Object value) {
+  public boolean remove(
+      @Shrinkable ArraySet<E> this, @GuardSatisfied @Nullable @UnknownSignedness Object value) {
     int index = indexOf(value);
     return removeIndex(index);
   }
@@ -362,7 +363,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   // Inherit retainAll() from AbstractCollection.
 
   @Override
-  public void clear() {
+  public void clear(@Shrinkable ArraySet<E> this) {
     if (size != 0) {
       size = 0;
       sizeModificationCount++;

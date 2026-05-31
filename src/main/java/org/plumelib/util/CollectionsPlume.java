@@ -1512,7 +1512,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied EnumerationIterator<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied EnumerationIterator<T> this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1606,7 +1606,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied IteratorPlusOne<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied IteratorPlusOne<T> this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1670,7 +1670,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied MergedIterator2<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied MergedIterator2<T> this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1747,7 +1747,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied MergedIterator<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied MergedIterator<T> this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1832,7 +1832,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied FilteredIterator<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied FilteredIterator<T> this) {
       throw new UnsupportedOperationException();
     }
   }
@@ -1943,7 +1943,7 @@ public final class CollectionsPlume {
     }
 
     @Override
-    public void remove(@GuardSatisfied RemoveFirstAndLastIterator<T> this) {
+    public void remove(@Shrinkable @GuardSatisfied RemoveFirstAndLastIterator<T> this) {
       throw new UnsupportedOperationException();
     }
   }
