@@ -63,7 +63,7 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
    * @param <K> the key type
    * @param <V> the value type
    */
-  public static <K, V> @Unmodifiable UnmodifiableIdentityHashMap<K, V> wrap(
+  public static <K, V> UnmodifiableIdentityHashMap<K, V> wrap(
       IdentityHashMap<K, V> map) {
     // avoid repeated wrapping
     if (map instanceof UnmodifiableIdentityHashMap) {

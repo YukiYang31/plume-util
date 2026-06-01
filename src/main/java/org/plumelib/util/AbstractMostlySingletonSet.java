@@ -107,7 +107,8 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
     "allcheckers:purity.not.sideeffectfree",
     "lock:override.receiver", // cannot specify the anonymous receiver type
     "NotJavadoc", // Error prone forbids Javadoc comments on anonymous classes.
-    "modifiability:annotation.unverified"
+    "modifiability:annotation.unverified", // cannot type-check Iterator<T>
+    "modifiability:override.receiver" // cannot specify the anonymous receiver type
   })
   @SideEffectFree
   public Iterator<T> iterator() {
@@ -134,7 +135,7 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
             }
 
             @Override
-            public void remove(/*@GuardedBy Iterator<T> this*/ ) {
+            public void remove(/*@Shrinkable @GuardedBy Iterator<T> this*/ ) {
               state = State.EMPTY;
               value = null;
             }

@@ -520,7 +520,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     }
 
     @Override
-    public final void clear() {
+    public final void clear(@Shrinkable KeySet this) {
       ArrayMap.this.clear();
     }
 
@@ -611,7 +611,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     }
 
     @Override
-    public final void clear() {
+    public final void clear(@Shrinkable Values this) {
       ArrayMap.this.clear();
     }
 
@@ -695,7 +695,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     }
 
     @Override
-    public final void clear() {
+    public final void clear(@Shrinkable EntrySet this) {
       ArrayMap.this.clear();
     }
 
@@ -793,7 +793,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
     /** Removes the previously-returned element. */
     @Override
-    public final void remove() {
+    public final void remove(@Shrinkable ArrayMapIterator<T> this) {
       if (removed) {
         throw new IllegalStateException(
             "Called remove() on ArrayMapIterator without calling next() first.");
