@@ -78,7 +78,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "index", // TODO
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
-  "modifiability:annotation.unverified",
+  "modifiability:annotation.unverified", // cannnot verify that ArrayMap is modifiable
   "nullness" // temporary; nullness is tricky because of null-padded arrays
 })
 public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSignedness Object>

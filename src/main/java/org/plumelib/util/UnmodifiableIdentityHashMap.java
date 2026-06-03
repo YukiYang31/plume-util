@@ -34,7 +34,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  */
 @SuppressWarnings({
   "keyfor", // keyfor: keys for `this` are also keys for `this.map`
-  "modifiability:annotation.unverified",
+  "modifiability:annotation.unverified", // cannot verify that the map is unmodifiable. 
 })
 public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 

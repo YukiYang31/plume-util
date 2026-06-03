@@ -61,7 +61,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 @SuppressWarnings({
   "index", // TODO
   "lock", // not yet annotated for the Lock Checker
-  "modifiability:annotation.unverified",
+  "modifiability:annotation.unverified", // cannot verify that ArraySet is growable and shrinkable
 })
 public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends AbstractSet<E>
     implements Cloneable {
@@ -374,13 +374,12 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   // iterators
 
   @Override
-  public @Modifiable Iterator<E> iterator(ArraySet<E> this) {
+  public Iterator<E> iterator(ArraySet<E> this) {
     return new ArraySetIterator();
   }
 
   /** An iterator over the ArraySet. */
-  @SuppressWarnings("modifiability:annotation.unverified")
-  private @Modifiable class ArraySetIterator implements Iterator<E> {
+  private class ArraySetIterator implements Iterator<E> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;
 
@@ -392,7 +391,6 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
 
     /** Creates a new ArraySetIterator. */
     @SideEffectFree
-    @SuppressWarnings("modifiability:super.invocation") // calls `super`
     ArraySetIterator() {
       index = 0;
       removed = true; // can't remove until next() has been called
@@ -428,7 +426,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
 
     /** Removes the previously-returned element. */
     @Override
-    public final void remove() {
+    public final void remove(@Shrinkable ArraySetIterator this) {
       if (removed) {
         throw new IllegalStateException(
             "Called remove() on ArraySetIterator without calling next() first.");
