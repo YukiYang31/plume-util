@@ -106,8 +106,8 @@ public abstract class AbstractMostlySingletonSet<T extends @Signed Object> imple
     "allcheckers:purity.not.sideeffectfree",
     "lock:override.receiver", // cannot specify the anonymous receiver type
     "NotJavadoc", // Error prone forbids Javadoc comments on anonymous classes.
-    "modifiability:annotation.unverified", // cannot type-check Iterator<T>
-    "modifiability:override.receiver" // cannot specify the anonymous receiver type
+    "modifiability:override.receiver" // JLS bug: can't write receiver annotation on method of
+    // anonymous class
   })
   @SideEffectFree
   public Iterator<T> iterator() {
