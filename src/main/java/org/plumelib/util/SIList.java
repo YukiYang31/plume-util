@@ -709,7 +709,6 @@ public abstract class SIList<E> implements Iterable<E>, Serializable {
     //  2. Use `get` to obtain the elements one by one, from `fromIndex` to `toIndex`.
     // I'm not sure which approach is more efficient.
     /** An iterator over a SimpleSubList. */
-    @SuppressWarnings("modifiability:annotation.unverified")
     private class SimpleSubListIterator implements Iterator<E> {
 
       /** The index of the next element to return. */

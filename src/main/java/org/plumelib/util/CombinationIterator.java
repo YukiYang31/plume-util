@@ -33,7 +33,6 @@ import org.checkerframework.checker.nullness.qual.RequiresNonNull;
  *
  * @param <T> the type of the elements of the collections
  */
-@SuppressWarnings("modifiability:annotation.unverified")
 public class CombinationIterator<T> implements Iterator<List<T>> {
 
   /** Lists of candidate values for each position in generated lists. */

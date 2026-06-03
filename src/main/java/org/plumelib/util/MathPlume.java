@@ -1335,7 +1335,6 @@ public final class MathPlume {
    * is set, then the bracketing endpoints are also returned; otherwise, all returned values are
    * between the minimum and maximum of the original values.
    */
-  @SuppressWarnings("modifiability:annotation.unverified")
   static final class MissingNumbersIteratorInt implements Iterator<Integer> {
     // Exactly one of nums and numsItor is non-null.
     /** The numbers not to include in the iterator. */
@@ -1676,7 +1675,6 @@ public final class MathPlume {
    * is set, then the bracketing endpoints are also returned; otherwise, all returned values are
    * between the minimum and maximum of the original values.
    */
-  @SuppressWarnings("modifiability:annotation.unverified")
   static final class MissingNumbersIteratorLong implements Iterator<Long> {
     // Exactly one of nums and numsItor is non-null.
     /** The numbers not to include in the iterator. */

@@ -507,7 +507,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the keys. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
 
     /** Creates a new KeySet. */
@@ -598,7 +597,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the values. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class Values extends AbstractCollection<V> {
 
     /** Creates a new Values. */
@@ -682,7 +680,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the entries. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class EntrySet extends AbstractSet<Map.Entry<@KeyFor("this") K, V>> {
 
     /** Creates a new EntrySet. */
@@ -757,7 +754,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
    */
   @SuppressWarnings({
     "AbstractClassWithoutAbstractMethod", // next() is generic but this class need not be
-    "modifiability:annotation.unverified"
   })
   abstract class ArrayMapIterator<T> implements Iterator<T> {
     /** The first unread index; the index of the next value to return. */
@@ -812,7 +808,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the keys. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class KeyIterator extends ArrayMapIterator<@KeyFor("this") K> {
     /** Creates a new KeyIterator. */
     @SideEffectFree
@@ -829,7 +824,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the values. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class ValueIterator extends ArrayMapIterator<V> {
     /** Creates a new ValueIterator. */
     @SideEffectFree
@@ -846,7 +840,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the entries. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   final class EntryIterator extends ArrayMapIterator<Map.Entry<K, V>> {
     /** Creates a new EntryIterator. */
     @SideEffectFree

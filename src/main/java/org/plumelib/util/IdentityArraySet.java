@@ -306,7 +306,6 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   }
 
   /** An iterator over the IdentityArraySet. */
-  @SuppressWarnings("modifiability:annotation.unverified")
   private class ArraySetIterator implements Iterator<E> {
     /** The first unread index; the index of the next value to return. */
     @NonNegative int index;

@@ -18,7 +18,6 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  */
 @SuppressWarnings({
   "ExtendsObject",
-  "modifiability:annotation.unverified",
 })
 public final class IdentityMostlySingletonSet<T extends Object>
     extends AbstractMostlySingletonSet<T> {

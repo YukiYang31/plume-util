@@ -215,7 +215,6 @@ public final class MapsP {
    * @param size size of the cache
    * @return a new cache with the provided size
    */
-  @SuppressWarnings("modifiability:annotation.unverified")
   public static <K, V> Map<K, V> createLruCache(@Positive int size) {
     return new LinkedHashMap<>(size, .75F, true) {
 

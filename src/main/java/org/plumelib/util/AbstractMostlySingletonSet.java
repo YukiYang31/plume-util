@@ -29,7 +29,6 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
  *
  * @param <T> the type of elements of the set
  */
-@SuppressWarnings("modifiability:annotation.unverified")
 public abstract class AbstractMostlySingletonSet<T extends @Signed Object> implements Set<T> {
 
   /** The possible states of this set. */
