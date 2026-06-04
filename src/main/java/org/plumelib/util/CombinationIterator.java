@@ -10,6 +10,7 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -45,7 +46,7 @@ public class CombinationIterator<T> implements Iterator<List<T>> {
   private final @LengthOf({"listsOfCandidates", "iterators"}) int combinationSize;
 
   /** The next value to return, or null if to more values. */
-  private @Growable @Replaceable @Nullable List<T> nextValue;
+  private @Growable @Replaceable @IteratorPolyMod @Nullable List<T> nextValue;
 
   /**
    * Creates a {@link CombinationIterator} for lists constructed from the given candidates. Each

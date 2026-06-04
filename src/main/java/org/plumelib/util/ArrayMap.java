@@ -715,7 +715,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
     @Override
     public final boolean remove(
-        @Shrinkable ArrayMap<K, V>.EntrySet this,
+        @Shrinkable EntrySet this,
         @GuardSatisfied @Nullable @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;

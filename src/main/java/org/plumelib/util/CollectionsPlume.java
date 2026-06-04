@@ -79,7 +79,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addAll(
-      @Growable Collection<? super T> c, Iterable<? extends T> elements) {
+      @Growable @IteratorPolyMod Collection<? super T> c, Iterable<? extends T> elements) {
     boolean added = false;
     for (T elt : elements) {
       added = c.add(elt) || added;
@@ -97,7 +97,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIf(
-      @Growable Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable @IteratorPolyMod Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (p.test(elt)) {
@@ -117,7 +117,7 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIfNot(
-      @Growable Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable @IteratorPolyMod Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (!p.test(elt)) {
@@ -750,8 +750,8 @@ public final class CollectionsPlume {
     "nullness" // generics problem
   })
   public static <
-          T extends @Nullable Object, C extends @Growable @Shrinkable @Nullable Collection<T>>
-      @Growable @Shrinkable @PolyNull C cloneElements(@PolyNull C orig) {
+          T extends @Nullable Object, C extends @Growable @Shrinkable @IteratorPolyMod @Nullable Collection<T>>
+      @Growable @Shrinkable @IteratorPolyMod @PolyNull C cloneElements(@PolyNull C orig) {
     if (orig == null) {
       return null;
     }
@@ -777,8 +777,8 @@ public final class CollectionsPlume {
   @SuppressWarnings({"signedness", "nullness:argument"}) // problem with clone()
   public static <
           T extends @Nullable DeepCopyable<T>,
-          C extends @Growable @Shrinkable @Nullable Collection<T>>
-      @Growable @Shrinkable @PolyNull C deepCopy(@PolyNull C orig) {
+          C extends @Growable @Shrinkable @IteratorPolyMod @Nullable Collection<T>>
+      @Growable @Shrinkable @IteratorPolyMod @PolyNull C deepCopy(@PolyNull C orig) {
     if (orig == null) {
       return null;
     }
@@ -2521,7 +2521,7 @@ public final class CollectionsPlume {
    * @return true if the collection c changed (that is, if an element was added)
    */
   @SuppressWarnings("nullness:argument") // c might forbid null
-  public static <T> boolean adjoin(@Modifiable Collection<T> c, T e) {
+  public static <T> boolean adjoin(@Modifiable @IteratorPolyMod Collection<T> c, T e) {
     if (!c.contains(e)) {
       c.add(e);
       return true;
@@ -2541,7 +2541,7 @@ public final class CollectionsPlume {
    * @return true if the collection c changed (that is, if an element was added)
    */
   @SuppressWarnings("nullness:argument") // c might forbid null
-  public static <T> boolean adjoinAll(@Modifiable Collection<T> c, Collection<? extends T> toAdd) {
+  public static <T> boolean adjoinAll(@Modifiable @IteratorPolyMod Collection<T> c, Collection<? extends T> toAdd) {
     boolean result = false;
     for (T e : toAdd) {
       if (!c.contains(e)) {
