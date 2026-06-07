@@ -832,7 +832,7 @@ public final class CollectionsPlume {
    * @param filter a predicate
    * @return a new list with the elements for which the filter returns true
    */
-  public static <T> @Modifiable List<T> filter(Iterable<T> coll, Predicate<? super T> filter) {
+  public static <T> @Modifiable @IteratorPolyMod List<T> filter(Iterable<T> coll, Predicate<? super T> filter) {
     List<T> result = new ArrayList<>();
     for (T elt : coll) {
       if (filter.test(elt)) {
