@@ -1,8 +1,8 @@
 [plugins]
 
-com-diffplug-spotless = { id = "com.diffplug.spotless", version = "8.5.1" }
+com-diffplug-spotless = { id = "com.diffplug.spotless", version = "8.6.0" }
 
-com-gradleup-shadow = { id = "com.gradleup.shadow", version = "9.4.1" }
+com-gradleup-shadow = { id = "com.gradleup.shadow", version = "9.4.2" }
 
 com-vanniktech-maven-publish = { id = "com.vanniktech.maven.publish", version = "0.36.0" }
 
@@ -12,11 +12,11 @@ org-checkerframework = { id = "org.checkerframework", version = "1.0.2" }
 
 [versions]
 
-junit-jupiter = "5.14.4"
+junit-jupiter = "6.1.0"
 
 [libraries]
 
-checker-framework = "org.checkerframework:checker:4.1.1-SNAPSHOT"
+checker-framework = "org.checkerframework:checker:4.2.1-SNAPSHOT"
 
 error-prone-core = "com.google.errorprone:error_prone_core:2.49.0"
 

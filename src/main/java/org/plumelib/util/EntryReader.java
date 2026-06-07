@@ -91,6 +91,7 @@ import org.checkerframework.checker.regex.qual.Regex;
 @SuppressWarnings({
   "IterableAndIterator",
   "builder:required.method.not.called", // Collection `readers` has element type @MustCall("close")
+  "PMD.CloseResource", // false positives; use the Resource Leak Checker instead
 })
 public class EntryReader extends LineNumberReader implements Iterable<String>, Iterator<String> {
 
@@ -497,7 +498,6 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
    */
   @Deprecated(since = "2026-01-21")
-  @SuppressWarnings("builder") // storing into a collection
   public @MustCallAlias EntryReader(
       @MustCallAlias Reader reader,
       String filename,
@@ -524,7 +524,6 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
    */
   @Deprecated(since = "2026-01-05")
-  @SuppressWarnings("builder") // storing into a collection
   public @MustCallAlias EntryReader(
       @MustCallAlias Reader reader,
       String filename,

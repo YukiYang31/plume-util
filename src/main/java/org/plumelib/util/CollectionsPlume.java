@@ -485,12 +485,13 @@ public final class CollectionsPlume {
     if (o1 instanceof List<?> && o2 instanceof List<?>) {
       List<? extends @Signed Object> l1 = (List<? extends @Signed Object>) o1;
       List<? extends @Signed Object> l2 = (List<? extends @Signed Object>) o2;
-      if (l1.size() != l2.size()) {
+      int l1size = l1.size();
+      if (l1size != l2.size()) {
         return false;
       }
       try {
         deepEqualsUnderway.add(mypair);
-        for (int i = 0; i < l1.size(); i++) {
+        for (int i = 0; i < l1size; i++) {
           Object e1 = l1.get(i);
           Object e2 = l2.get(i);
           if (!deepEquals(e1, e2)) {
@@ -774,7 +775,7 @@ public final class CollectionsPlume {
    * @param orig a collection
    * @return a copy of {@code orig}, as described above
    */
-  @SuppressWarnings({"signedness", "nullness:argument"}) // problem with clone()
+  @SuppressWarnings("nullness:argument") // problem with clone()
   public static <
           T extends @Nullable DeepCopyable<T>,
           C extends @Growable @Shrinkable @IteratorPolyMod @Nullable Collection<T>>
@@ -1048,7 +1049,6 @@ public final class CollectionsPlume {
    * @return true if the second list is a subsequence (not necessarily contiguous) of the first
    */
   // TODO: This could take as input a RandomAccess.
-  @SuppressWarnings("signedness")
   public static <T> boolean isSubsequenceMaybeNonContiguous(
       Iterable<T> longer, Iterable<T> shorter) {
     Iterator<T> itorLonger = longer.iterator();
@@ -2146,7 +2146,7 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    * @deprecated use {@link MapsP#deepCopy}
    */
-  @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
+  @SuppressWarnings("nullness") // generics problem with clone
   @Deprecated(since = "2025-06-28")
   public static <
           K extends @Nullable DeepCopyable<K>,
@@ -2178,7 +2178,7 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    * @deprecated use {@link MapsP#deepCopyValues}
    */
-  @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
+  @SuppressWarnings("nullness") // generics problem with clone
   @Deprecated(since = "2025-06-28")
   public static <K, V extends @Nullable DeepCopyable<V>, M extends @Modifiable @Nullable Map<K, V>>
       @Modifiable @PolyNull M deepCopyValues(@PolyNull M orig) {
@@ -2233,7 +2233,6 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    * @deprecated use {@link MapsP#cloneElements}
    */
-  @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated(since = "2025-06-28")
   public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
       @Modifiable @PolyNull M cloneElements(@PolyNull M orig) {
@@ -2251,7 +2250,6 @@ public final class CollectionsPlume {
    * @return a copy of {@code orig}, as described above
    * @deprecated use {@link MapsP#cloneValues}
    */
-  @SuppressWarnings({"nullness", "signedness"}) // generics problem with clone
   @Deprecated(since = "2025-06-28")
   public static <K, V, M extends @Modifiable @Nullable Map<K, V>>
       @Modifiable @PolyNull M cloneValues(@PolyNull M orig) {

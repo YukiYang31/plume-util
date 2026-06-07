@@ -1500,10 +1500,11 @@ public final class ArraysPlume {
       @PolyNull @PolySigned Object[] a,
       List<? extends @PolyNull @PolySigned Object> sub,
       @NonNegative int aOffset) {
-    if (aOffset + sub.size() > a.length) {
+    int subSize = sub.size();
+    if (aOffset + subSize > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
+    for (int i = 0; i < subSize; i++) {
       if (!Objects.equals(sub.get(i), a[aOffset + i])) {
         return false;
       }
@@ -1525,10 +1526,11 @@ public final class ArraysPlume {
   @Pure
   public static <T> boolean isSubarrayEq(
       @PolyNull @PolySigned Object[] a, List<@PolySigned T> sub, @NonNegative int aOffset) {
-    if (aOffset + sub.size() > a.length) {
+    int subSize = sub.size();
+    if (aOffset + subSize > a.length) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
+    for (int i = 0; i < subSize; i++) {
       if (sub.get(i) != a[aOffset + i]) {
         return false;
       }
@@ -1600,10 +1602,11 @@ public final class ArraysPlume {
    */
   @Pure
   public static <T> boolean isSubarray(List<T> a, List<T> sub, @NonNegative int aOffset) {
-    if (aOffset + sub.size() > a.size()) {
+    int subSize = sub.size();
+    if (aOffset + subSize > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
+    for (int i = 0; i < subSize; i++) {
       if (!Objects.equals(sub.get(i), a.get(aOffset + i))) {
         return false;
       }
@@ -1624,10 +1627,11 @@ public final class ArraysPlume {
    */
   @Pure
   public static <T> boolean isSubarrayEq(List<T> a, List<T> sub, @NonNegative int aOffset) {
-    if (aOffset + sub.size() > a.size()) {
+    int subSize = sub.size();
+    if (aOffset + subSize > a.size()) {
       return false;
     }
-    for (int i = 0; i < sub.size(); i++) {
+    for (int i = 0; i < subSize; i++) {
       if (sub.get(i) != a.get(aOffset + i)) {
         return false;
       }
@@ -4065,11 +4069,12 @@ public final class ArraysPlume {
       @NonNegative int numEmptyParts,
       @NonNegative int numNonemptyParts) {
 
-    if (numEmptyParts > elts.size()) {
-      throw new IllegalArgumentException(numEmptyParts + " > " + elts.size());
+    int eltsSize = elts.size();
+    if (numEmptyParts > eltsSize) {
+      throw new IllegalArgumentException(numEmptyParts + " > " + eltsSize);
     }
 
-    if (elts.isEmpty()) {
+    if (eltsSize == 0) {
       return resultSoFar;
     }
 
@@ -4079,7 +4084,7 @@ public final class ArraysPlume {
     List<Partitioning<T>> result = new ArrayList<>();
 
     // Put elt in an existing part in the partitioning.
-    if (elts.size() > numEmptyParts) {
+    if (eltsSize > numEmptyParts) {
       List<Partitioning<T>> resultSoFar_augmented = new ArrayList<>();
       for (int i = 0; i < numNonemptyParts; i++) {
         for (Partitioning<T> p : resultSoFar) {
