@@ -490,7 +490,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   // Views
 
   /** A view of the keys. */
-  @MonotonicNonNull Set<@KeyFor("this") K> keySet = null;
+  @MonotonicNonNull @IteratorPolyMod @Ungrowable Set<@KeyFor("this") K> keySet = null;
 
   // Behavior is undefined if the map is changed while the sets are being iterated through, so these
   // implementations can assume there are no concurrent side effects.
@@ -506,10 +506,14 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the keys. */
+  @SuppressWarnings({
+    "modifiability:annotation.unverified", // cannot verify that KeySet is @IteratorPolyMod and Ungrowable 
+    "modifiability:super.invocation" // calls `super`
+  }) 
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
 
     /** Creates a new KeySet. */
-    public KeySet() {}
+    public @IteratorPolyMod @Ungrowable KeySet() {}
 
     @Pure
     @Override
@@ -581,7 +585,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** The view of the values. */
-  @MonotonicNonNull Collection<V> valuesCollection = null;
+  @MonotonicNonNull @IteratorPolyMod @Ungrowable Collection<V> valuesCollection = null;
 
   @Pure
   @SuppressWarnings("allcheckers:purity")
@@ -598,7 +602,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   final class Values extends AbstractCollection<V> {
 
     /** Creates a new Values. */
-    public Values() {}
+    public @IteratorPolyMod @Ungrowable Values() {}
 
     @Pure
     @Override
@@ -953,7 +957,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   @SideEffectFree
   @Override
-  public V getOrDefault(@GuardSatisfied @Nullable @UnknownSignedness Object key, V defaultValue) {
+  public @PolyModifiable V getOrDefault(ArrayMap<K, @PolyModifiable V> this, @GuardSatisfied @Nullable @UnknownSignedness Object key, @PolyModifiable V defaultValue) {
     int index = indexOfKey(key);
     if (index != -1) {
       return values[index];
