@@ -591,10 +591,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Override
   public @IteratorPolyMod @PolyShrinkable @Ungrowable Collection<V> values(
       @PolyShrinkable ArrayMap<K, V> this) {
-    if (valuesCollection == null) {
-      valuesCollection = new Values();
-    }
-    return valuesCollection;
+    return new Values();
   }
 
   /** Represents a view of the values. */
@@ -602,7 +599,8 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
     /** Creates a new Values. */
     @SuppressWarnings("modifiability:super.invocation") // calls `super`
-    public @IteratorPolyMod @Ungrowable Values() {}
+    public @IteratorPolyMod @Ungrowable @PolyShrinkable Values(
+        @PolyShrinkable ArrayMap<K, V> ArrayMap.this) {}
 
     @Pure
     @Override
@@ -675,17 +673,16 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<
           Map.@PolyModifiable Entry<@KeyFor("this") K, V>>
       entrySet(@PolyModifiable ArrayMap<K, V> this) {
-    if (entrySet == null) {
-      entrySet = new EntrySet();
-    }
-    return entrySet;
+    return new EntrySet();
   }
 
   /** Represents a view of the entries. */
-  final class EntrySet extends AbstractSet<Map.Entry<@KeyFor("this") K, V>> {
+  final class EntrySet extends AbstractSet<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> {
 
     /** Creates a new EntrySet. */
-    public EntrySet() {}
+    @SuppressWarnings("modifiability:super.invocation") // calls `super`
+    public @IteratorPolyMod @Ungrowable @PolyShrinkable EntrySet(
+        @PolyModifiable ArrayMap<K, V> ArrayMap.this) {}
 
     @Pure
     @Override
@@ -699,7 +696,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     }
 
     @Override
-    public final Iterator<Map.Entry<@KeyFor("ArrayMap.this") K, V>> iterator() {
+    public final Iterator<Map.@PolyModifiable Entry<@KeyFor("ArrayMap.this") K, V>> iterator() {
       return new EntryIterator();
     }
 
@@ -734,7 +731,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       "signature:argument", // TODO: investigate later
     })
     @Override
-    public final void forEach(Consumer<? super Map.Entry<@KeyFor("ArrayMap.this") K, V>> action) {
+    public final void forEach(Consumer<? super Map.@PolyModifiable Entry<@KeyFor("ArrayMap.this") K, V>> action) {
       int oldSizeModificationCount = sizeModificationCount;
       for (int index = 0; index < size(); index++) {
         action.accept(new Entry(index));
@@ -841,13 +838,13 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** An iterator over the entries. */
-  final class EntryIterator extends ArrayMapIterator<Map.Entry<K, V>> {
+  final class EntryIterator extends ArrayMapIterator<Map.@PolyModifiable Entry<K, V>> {
     /** Creates a new EntryIterator. */
     @SideEffectFree
     EntryIterator() {}
 
     @Override
-    public final Map.Entry<K, V> next() {
+    public final Map.@PolyModifiable Entry<K, V> next() {
       if (!hasNext()) {
         throw new NoSuchElementException();
       }
@@ -880,9 +877,12 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
      *
      * @param index the index
      */
-    @SuppressWarnings("allcheckers:purity") // initializes `this`
+    @SuppressWarnings({
+      "allcheckers:purity", // initializes `this`
+      "modifiability:super.invocation", // calls `super`
+    }) 
     @Pure
-    public Entry(@NonNegative int index) {
+    public @PolyModifiable Entry(@PolyModifiable ArrayMap<K, V> ArrayMap.this, @NonNegative int index) {
       this.index = index;
     }
 
