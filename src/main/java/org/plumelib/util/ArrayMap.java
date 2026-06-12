@@ -731,7 +731,8 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       "signature:argument", // TODO: investigate later
     })
     @Override
-    public final void forEach(Consumer<? super Map.@PolyModifiable Entry<@KeyFor("ArrayMap.this") K, V>> action) {
+    public final void forEach(
+        Consumer<? super Map.@PolyModifiable Entry<@KeyFor("ArrayMap.this") K, V>> action) {
       int oldSizeModificationCount = sizeModificationCount;
       for (int index = 0; index < size(); index++) {
         action.accept(new Entry(index));
@@ -880,9 +881,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     @SuppressWarnings({
       "allcheckers:purity", // initializes `this`
       "modifiability:super.invocation", // calls `super`
-    }) 
+    })
     @Pure
-    public @PolyModifiable Entry(@PolyModifiable ArrayMap<K, V> ArrayMap.this, @NonNegative int index) {
+    public @PolyModifiable Entry(
+        @PolyModifiable ArrayMap<K, V> ArrayMap.this, @NonNegative int index) {
       this.index = index;
     }
 
