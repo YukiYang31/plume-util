@@ -4115,21 +4115,24 @@ public final class ArraysPlume {
    *
    * @param <T> the type of the elements of the sets
    */
-  @SuppressWarnings("modifiability:annotation.unverified") // cannot verify that Partitioning is modifiable
+  @SuppressWarnings(
+      "modifiability:annotation.unverified") // cannot verify that Partitioning is modifiable
   static class Partitioning<T extends @NonNull Object> extends ArrayList<ArrayList<T>> {
 
     /** Unique identifier for serialization. If you add or remove fields, change this number. */
     static final long serialVersionUID = 20170418;
 
     /** Empty constructor. */
-    @Modifiable Partitioning() {}
+    @Modifiable
+    Partitioning() {}
 
     /**
      * Copy constructor.
      *
      * @param other the Partitioning to make a copy of
      */
-    @Modifiable Partitioning(Partitioning<T> other) {
+    @Modifiable
+    Partitioning(Partitioning<T> other) {
       super(other);
     }
 

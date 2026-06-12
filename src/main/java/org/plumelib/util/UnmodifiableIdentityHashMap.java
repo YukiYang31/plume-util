@@ -36,7 +36,7 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  */
 @SuppressWarnings({
   "keyfor", // keyfor: keys for `this` are also keys for `this.map`
-  "modifiability:annotation.unverified", // cannot verify that the map is unmodifiable. 
+  "modifiability:annotation.unverified", // cannot verify that the map is unmodifiable.
 })
 public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
@@ -200,7 +200,10 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
     "growable:return",
     "modifiability:return",
   })
-  public @PolyModifiable V getOrDefault(UnmodifiableIdentityHashMap<K, @PolyModifiable V> this, @GuardSatisfied @UnknownSignedness Object key, @PolyModifiable V defaultValue) {
+  public @PolyModifiable V getOrDefault(
+      UnmodifiableIdentityHashMap<K, @PolyModifiable V> this,
+      @GuardSatisfied @UnknownSignedness Object key,
+      @PolyModifiable V defaultValue) {
     return map.getOrDefault(key, defaultValue);
   }
 

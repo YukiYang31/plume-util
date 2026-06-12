@@ -97,7 +97,9 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIf(
-      @Growable @IteratorPolyMod Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable @IteratorPolyMod Collection<? super T> c,
+      Iterable<? extends T> elements,
+      Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (p.test(elt)) {
@@ -117,7 +119,9 @@ public final class CollectionsPlume {
    * @return true if the argument collection changed as a result of the call
    */
   public static <T> boolean addIfNot(
-      @Growable @IteratorPolyMod Collection<? super T> c, Iterable<? extends T> elements, Predicate<? super T> p) {
+      @Growable @IteratorPolyMod Collection<? super T> c,
+      Iterable<? extends T> elements,
+      Predicate<? super T> p) {
     boolean added = false;
     for (T elt : elements) {
       if (!p.test(elt)) {
@@ -751,7 +755,8 @@ public final class CollectionsPlume {
     "nullness" // generics problem
   })
   public static <
-          T extends @Nullable Object, C extends @Growable @Shrinkable @IteratorPolyMod @Nullable Collection<T>>
+          T extends @Nullable Object,
+          C extends @Growable @Shrinkable @IteratorPolyMod @Nullable Collection<T>>
       @Growable @Shrinkable @IteratorPolyMod @PolyNull C cloneElements(@PolyNull C orig) {
     if (orig == null) {
       return null;
@@ -832,7 +837,8 @@ public final class CollectionsPlume {
    * @param filter a predicate
    * @return a new list with the elements for which the filter returns true
    */
-  public static <T> @Modifiable @IteratorPolyMod List<T> filter(Iterable<T> coll, Predicate<? super T> filter) {
+  public static <T> @Modifiable @IteratorPolyMod List<T> filter(
+      Iterable<T> coll, Predicate<? super T> filter) {
     List<T> result = new ArrayList<>();
     for (T elt : coll) {
       if (filter.test(elt)) {
@@ -2539,7 +2545,8 @@ public final class CollectionsPlume {
    * @return true if the collection c changed (that is, if an element was added)
    */
   @SuppressWarnings("nullness:argument") // c might forbid null
-  public static <T> boolean adjoinAll(@Modifiable @IteratorPolyMod Collection<T> c, Collection<? extends T> toAdd) {
+  public static <T> boolean adjoinAll(
+      @Modifiable @IteratorPolyMod Collection<T> c, Collection<? extends T> toAdd) {
     boolean result = false;
     for (T e : toAdd) {
       if (!c.contains(e)) {

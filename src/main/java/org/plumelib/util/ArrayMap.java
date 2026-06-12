@@ -601,6 +601,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   final class Values extends AbstractCollection<V> {
 
     /** Creates a new Values. */
+    @SuppressWarnings("modifiability:super.invocation") // calls `super`
     public @IteratorPolyMod @Ungrowable Values() {}
 
     @Pure
@@ -716,8 +717,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
     @Override
     public final boolean remove(
-        @Shrinkable EntrySet this,
-        @GuardSatisfied @Nullable @UnknownSignedness Object o) {
+        @Shrinkable EntrySet this, @GuardSatisfied @Nullable @UnknownSignedness Object o) {
       if (o instanceof Map.Entry) {
         Map.Entry<?, ?> e = (Map.Entry<?, ?>) o;
         Object key = e.getKey();
@@ -956,7 +956,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   @SideEffectFree
   @Override
-  public @PolyModifiable V getOrDefault(ArrayMap<K, @PolyModifiable V> this, @GuardSatisfied @Nullable @UnknownSignedness Object key, @PolyModifiable V defaultValue) {
+  public @PolyModifiable V getOrDefault(
+      ArrayMap<K, @PolyModifiable V> this,
+      @GuardSatisfied @Nullable @UnknownSignedness Object key,
+      @PolyModifiable V defaultValue) {
     int index = indexOfKey(key);
     if (index != -1) {
       return values[index];
