@@ -499,21 +499,20 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Override
   public @IteratorPolyMod @PolyShrinkable @Ungrowable Set<@KeyFor("this") K> keySet(
       @PolyShrinkable ArrayMap<K, V> this) {
-    if (keySet == null) {
-      keySet = new KeySet();
-    }
-    return keySet;
+    return new KeySet();
   }
 
   /** Represents a view of the keys. */
   @SuppressWarnings({
-    "modifiability:annotation.unverified", // cannot verify that KeySet is @IteratorPolyMod and Ungrowable 
+    "modifiability:annotation.unverified", // cannot verify that KeySet is @IteratorPolyMod and
+    // Ungrowable
     "modifiability:super.invocation" // calls `super`
-  }) 
+  })
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
 
     /** Creates a new KeySet. */
-    public @IteratorPolyMod @Ungrowable KeySet() {}
+    public @IteratorPolyMod @PolyShrinkable @Ungrowable KeySet(
+        @PolyShrinkable ArrayMap<K, V> ArrayMap.this) {}
 
     @Pure
     @Override
