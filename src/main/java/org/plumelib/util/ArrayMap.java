@@ -504,10 +504,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   /** Represents a view of the keys. */
   @SuppressWarnings({
-    "modifiability:annotation.unverified", // cannot verify that KeySet is @IteratorPolyMod and
-    // Ungrowable
     "modifiability:super.invocation" // calls `super`
   })
+  // no suppression for "annotation.unverified" because this is handled by the suppression on
+  // ArrayMap.
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
 
     /** Creates a new KeySet. */
