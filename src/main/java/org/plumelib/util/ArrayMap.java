@@ -520,6 +520,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
+    @SuppressWarnings("modifiability:method.invocation") // outer this
     @Override
     public final void clear(@Shrinkable KeySet this) {
       ArrayMap.this.clear();
@@ -608,6 +609,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
+    @SuppressWarnings("modifiability:method.invocation") // outer this
     @Override
     public final void clear(@Shrinkable Values this) {
       ArrayMap.this.clear();
@@ -690,6 +692,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
+    @SuppressWarnings("modifiability:method.invocation") // outer this
     @Override
     public final void clear(@Shrinkable EntrySet this) {
       ArrayMap.this.clear();
@@ -712,6 +715,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return containsEntry(key, value);
     }
 
+    @SuppressWarnings("modifiability:method.invocation") // outer this
     @Override
     public final boolean remove(
         @Shrinkable EntrySet this, @GuardSatisfied @Nullable @UnknownSignedness Object o) {
@@ -956,6 +960,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   // Defaultable methods
 
+  @SuppressWarnings("modifiability:return") // triple @PolyModifiable
   @SideEffectFree
   @Override
   public @PolyModifiable V getOrDefault(
