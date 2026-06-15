@@ -958,10 +958,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   @SideEffectFree
   @Override
-  public V getOrDefault(
-      ArrayMap<K, V> this,
+  public @PolyModifiable V getOrDefault(
+      ArrayMap<K, @PolyModifiable V> this,
       @GuardSatisfied @Nullable @UnknownSignedness Object key,
-      V defaultValue) {
+      @PolyModifiable V defaultValue) {
     int index = indexOfKey(key);
     if (index != -1) {
       return values[index];

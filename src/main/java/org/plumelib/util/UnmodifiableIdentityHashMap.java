@@ -13,6 +13,7 @@ import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
+import org.checkerframework.checker.modifiability.qual.PolyModifiable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
@@ -195,10 +196,14 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
   }
 
   @Override
-  public V getOrDefault(
-      UnmodifiableIdentityHashMap<K, V> this,
+  @SuppressWarnings({
+    "growable:return",
+    "modifiability:return",
+  })
+  public @PolyModifiable V getOrDefault(
+      UnmodifiableIdentityHashMap<K, @PolyModifiable V> this,
       @GuardSatisfied @UnknownSignedness Object key,
-      V defaultValue) {
+      @PolyModifiable V defaultValue) {
     return map.getOrDefault(key, defaultValue);
   }
 
