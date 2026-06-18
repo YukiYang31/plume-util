@@ -54,7 +54,6 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
    *
    * @param map the map to wrap
    */
-  @SuppressWarnings("modifiability:super.invocation") // calls `super`
   private @Unmodifiable UnmodifiableIdentityHashMap(IdentityHashMap<K, V> map) {
     this.map = map;
   }
