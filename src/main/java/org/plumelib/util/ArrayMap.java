@@ -117,7 +117,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @SuppressWarnings({
     "unchecked", // generic array cast
     "samelen:assignment", // initialization
-    "modifiability:super.invocation", // calls `super`
   })
   @SideEffectFree
   public @Modifiable ArrayMap(int initialCapacity) {
@@ -147,9 +146,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
    * @param values the values
    * @param size the number of used items in the arrays; may be less than their lengths
    */
-  @SuppressWarnings({
-    "modifiability:super.invocation", // calls `super`
-  })
   @SideEffectFree
   private @Modifiable ArrayMap(
       K @SameLen("values") [] keys,
@@ -503,9 +499,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   }
 
   /** Represents a view of the keys. */
-  @SuppressWarnings({
-    "modifiability:super.invocation" // calls `super`
-  })
   // no suppression for "annotation.unverified" because this is handled by the suppression on
   // ArrayMap.
   final class KeySet extends AbstractSet<@KeyFor("this") K> {
@@ -599,7 +592,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   final class Values extends AbstractCollection<V> {
 
     /** Creates a new Values. */
-    @SuppressWarnings("modifiability:super.invocation") // calls `super`
     public @IteratorPolyMod @Ungrowable @PolyShrinkable Values(
         @PolyShrinkable ArrayMap<K, V> ArrayMap.this) {}
 
@@ -682,7 +674,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   final class EntrySet extends AbstractSet<Map.@PolyModifiable Entry<@KeyFor("this") K, V>> {
 
     /** Creates a new EntrySet. */
-    @SuppressWarnings("modifiability:super.invocation") // calls `super`
     public @IteratorPolyMod @Ungrowable @PolyShrinkable EntrySet(
         @PolyModifiable ArrayMap<K, V> ArrayMap.this) {}
 
