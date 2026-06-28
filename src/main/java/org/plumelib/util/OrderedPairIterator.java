@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.checkerframework.checker.initialization.qual.UnknownInitialization;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
 
@@ -67,7 +68,7 @@ public class OrderedPairIterator<T extends @Nullable Object>
    */
   // For this constructor, the arg type is actually Iterator<T extends
   // Comparable<T>>, but T is already bound above and can't be changed.
-  public OrderedPairIterator(Iterator<T> itor1, Iterator<T> itor2) {
+  public @Unshrinkable OrderedPairIterator(Iterator<T> itor1, Iterator<T> itor2) {
     this.itor1 = itor1;
     this.itor2 = itor2;
     setnext1();
@@ -82,7 +83,8 @@ public class OrderedPairIterator<T extends @Nullable Object>
    * @param itor2 iterator for second elements of pairs
    * @param comparator determines whether two elements are equal and should be paired together
    */
-  public OrderedPairIterator(Iterator<T> itor1, Iterator<T> itor2, Comparator<T> comparator) {
+  public @Unshrinkable OrderedPairIterator(
+      Iterator<T> itor1, Iterator<T> itor2, Comparator<T> comparator) {
     this(itor1, itor2);
     this.comparator = comparator;
   }

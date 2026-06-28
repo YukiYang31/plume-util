@@ -78,8 +78,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "index", // TODO
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
-  "modifiability:annotation.unverified", // cannnot verify that ArrayMap is modifiable
-  "nullness" // temporary; nullness is tricky because of null-padded arrays
+  "nullness", // temporary; nullness is tricky because of null-padded arrays
 })
 public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSignedness Object>
     extends AbstractMap<K, V> implements Cloneable {
@@ -168,7 +167,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     "nullness:method.invocation", // inference failure;
     // https://github.com/typetools/checker-framework/issues/979 ?
     "PMD.ConstructorCallsOverridableMethod",
-    "modifiability:super.invocation", // calls `super`
   })
   @SideEffectFree
   public @Modifiable ArrayMap(Map<? extends K, ? extends V> m) {
@@ -324,7 +322,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
    * @param index the index of the mapping to remove
    * @return true if this map was modified
    */
-  private boolean removeIndex(@GTENegativeOne int index) {
+  private boolean removeIndex(@Shrinkable ArrayMap<K, V> this, @GTENegativeOne int index) {
     if (index == -1) {
       return false;
     }
@@ -513,7 +511,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
-    @SuppressWarnings("modifiability:method.invocation") // outer this
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final void clear(@Shrinkable KeySet this) {
       ArrayMap.this.clear();
@@ -530,6 +528,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return containsKey(o);
     }
 
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final boolean remove(
         @Shrinkable KeySet this, @GuardSatisfied @Nullable @UnknownSignedness Object o) {
@@ -601,7 +600,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
-    @SuppressWarnings("modifiability:method.invocation") // outer this
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final void clear(@Shrinkable Values this) {
       ArrayMap.this.clear();
@@ -683,7 +682,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return ArrayMap.this.size();
     }
 
-    @SuppressWarnings("modifiability:method.invocation") // outer this
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final void clear(@Shrinkable EntrySet this) {
       ArrayMap.this.clear();
@@ -706,7 +705,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       return containsEntry(key, value);
     }
 
-    @SuppressWarnings("modifiability:method.invocation") // outer this
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final boolean remove(
         @Shrinkable EntrySet this, @GuardSatisfied @Nullable @UnknownSignedness Object o) {
@@ -782,6 +781,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     public abstract T next();
 
     /** Removes the previously-returned element. */
+    @SuppressWarnings("modifiability:method.invocation") // wrapper around outer this
     @Override
     public final void remove(@Shrinkable ArrayMapIterator<T> this) {
       if (removed) {
@@ -875,7 +875,6 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
      */
     @SuppressWarnings({
       "allcheckers:purity", // initializes `this`
-      "modifiability:super.invocation", // calls `super`
     })
     @Pure
     public @PolyModifiable Entry(
@@ -951,7 +950,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
 
   // Defaultable methods
 
-  @SuppressWarnings("modifiability:return") // triple @PolyModifiable
+  @SuppressWarnings(
+      "modifiability:return" // getOrDefault: given `ArrayMap<K, @PolyModifiable V> this` (where
+  // @PolyModifiable cannot vary), @PolyModifiable V is a supertype of V.
+  )
   @SideEffectFree
   @Override
   public @PolyModifiable V getOrDefault(

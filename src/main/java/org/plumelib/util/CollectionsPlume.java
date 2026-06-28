@@ -37,6 +37,7 @@ import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.PreservesModifiability;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.mustcall.qual.MustCallUnknown;
 import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.KeyForBottom;
@@ -1500,7 +1501,7 @@ public final class CollectionsPlume {
      *
      * @param e the Enumeration to make into an Iterator
      */
-    public EnumerationIterator(Enumeration<T> e) {
+    public @Unshrinkable EnumerationIterator(Enumeration<T> e) {
       this.e = e;
     }
 
@@ -1587,7 +1588,7 @@ public final class CollectionsPlume {
      * @param itor an Iterator
      * @param lastElement one element
      */
-    public IteratorPlusOne(Iterator<T> itor, T lastElement) {
+    public @Unshrinkable IteratorPlusOne(Iterator<T> itor, T lastElement) {
       this.itor = itor;
       this.lastElement = lastElement;
     }
@@ -1651,7 +1652,7 @@ public final class CollectionsPlume {
      * @deprecated use {@link CollectionsPlume#mergedIterator2}
      */
     @Deprecated
-    public MergedIterator2(Iterator<T> itor1, Iterator<T> itor2) {
+    public @Unshrinkable MergedIterator2(Iterator<T> itor1, Iterator<T> itor2) {
       this.itor1 = itor1;
       this.itor2 = itor2;
     }
@@ -1723,7 +1724,7 @@ public final class CollectionsPlume {
      * @deprecated use {@link mergedIterator(Iterator)}
      */
     @Deprecated // make package-private
-    public MergedIterator(Iterator<Iterator<T>> itorOfItors) {
+    public @Unshrinkable MergedIterator(Iterator<Iterator<T>> itorOfItors) {
       this.itorOfItors = itorOfItors;
     }
 
@@ -1788,7 +1789,7 @@ public final class CollectionsPlume {
      * @deprecated use {@link #filteredIterator}
      */
     @Deprecated // make package-private
-    public FilteredIterator(Iterator<T> itor, Predicate<T> predicate) {
+    public @Unshrinkable FilteredIterator(Iterator<T> itor, Predicate<T> predicate) {
       this.itor = itor;
       this.predicate = predicate;
     }
@@ -1882,7 +1883,7 @@ public final class CollectionsPlume {
      * @deprecated use {@link #removeFirstAndLastIterator}
      */
     @Deprecated // make package-private
-    public RemoveFirstAndLastIterator(Iterator<T> itor) {
+    public @Unshrinkable RemoveFirstAndLastIterator(Iterator<T> itor) {
       this.itor = itor;
       if (itor.hasNext()) {
         first = itor.next();

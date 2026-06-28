@@ -11,6 +11,7 @@ import org.checkerframework.checker.index.qual.NonNegative;
 import org.checkerframework.checker.index.qual.PolyUpperBound;
 import org.checkerframework.checker.lock.qual.GuardSatisfied;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.nullness.qual.MonotonicNonNull;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.signedness.qual.Unsigned;
@@ -1362,7 +1363,7 @@ public final class MathPlume {
      * @param nums a non-empty array
      * @param addEnds if true, include the bracketing endpoints
      */
-    MissingNumbersIteratorInt(int @MinLen(1) [] nums, boolean addEnds) {
+    @Unshrinkable MissingNumbersIteratorInt(int @MinLen(1) [] nums, boolean addEnds) {
       this.addEnds = addEnds;
       { // avoid modifying parameter
         int[] numsCopy = new int[nums.length];
@@ -1386,7 +1387,7 @@ public final class MathPlume {
      * @param numsItor a non-empty iterator; it must return integers in sorted order
      * @param addEnds if true, include the bracketing endpoints
      */
-    MissingNumbersIteratorInt(Iterator<Integer> numsItor, boolean addEnds) {
+    @Unshrinkable MissingNumbersIteratorInt(Iterator<Integer> numsItor, boolean addEnds) {
       this.addEnds = addEnds;
       if (!numsItor.hasNext()) {
         throw new Error("No elements in numsItor");
@@ -1702,7 +1703,7 @@ public final class MathPlume {
      * @param nums a non-empty array
      * @param addEnds if true, include the bracketing endpoints
      */
-    MissingNumbersIteratorLong(long @MinLen(1) [] nums, boolean addEnds) {
+    @Unshrinkable MissingNumbersIteratorLong(long @MinLen(1) [] nums, boolean addEnds) {
       this.addEnds = addEnds;
       { // avoid modifying parameter
         long[] numsCopy = new long[nums.length];
@@ -1726,7 +1727,7 @@ public final class MathPlume {
      * @param numsItor a non-empty array; must return longs in sorted order
      * @param addEnds if true, include the bracketing endpoints
      */
-    MissingNumbersIteratorLong(Iterator<Long> numsItor, boolean addEnds) {
+    @Unshrinkable MissingNumbersIteratorLong(Iterator<Long> numsItor, boolean addEnds) {
       this.addEnds = addEnds;
       if (!numsItor.hasNext()) {
         throw new Error("No elements in numsItor");

@@ -39,8 +39,6 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
   "keyfor", // https://tinyurl.com/cfissue/4558
   "lock", // not yet annotated for the Lock Checker
   "nullness", // temporary; nullness is tricky because of null-padded arrays
-  "modifiability:annotation.unverified" // cannot verify the annotations placed in this class are
-  // correct.
 })
 public class IdentityArraySet<E extends @UnknownSignedness Object> extends AbstractSet<E>
     implements Cloneable {
@@ -72,7 +70,6 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   public @Growable IdentityArraySet(int initialCapacity) {
@@ -103,7 +100,6 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   private @Growable IdentityArraySet(E[] values, @LTEqLengthOf({"values"}) int size) {
@@ -120,8 +116,7 @@ public class IdentityArraySet<E extends @UnknownSignedness Object> extends Abstr
   @SuppressWarnings({
     "allcheckers:purity", // initializes `this`
     "lock:method.guarantee.violated", // initializes `this`
-    "nullness:method.invocation", // inference failure;
-    // https://github.com/typetools/checker-framework/issues/979 ?
+    "nullness:method.invocation", // inference failure; https://tinyurl.com/cfissue/979 ?
     "PMD.ConstructorCallsOverridableMethod",
   })
   @SideEffectFree

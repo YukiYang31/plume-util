@@ -14,9 +14,13 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Modifiable;
 import org.checkerframework.checker.modifiability.qual.PolyModifiable;
+import org.checkerframework.checker.modifiability.qual.PolyShrinkable;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Ungrowable;
 import org.checkerframework.checker.modifiability.qual.Unmodifiable;
+import org.checkerframework.checker.nonempty.qual.PolyNonEmpty;
+import org.checkerframework.checker.nullness.qual.KeyFor;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.PolyNull;
 import org.checkerframework.checker.signedness.qual.UnknownSignedness;
@@ -36,7 +40,6 @@ import org.checkerframework.checker.signedness.qual.UnknownSignedness;
  */
 @SuppressWarnings({
   "keyfor", // keyfor: keys for `this` are also keys for `this.map`
-  "modifiability:annotation.unverified", // cannot verify that the map is unmodifiable.
 })
 public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, V> {
 
@@ -148,31 +151,31 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
   // TODO: Implement `clone()`.
 
   @Override
-  @SuppressWarnings("modifiability:override.return") // false positive.
-  // map.keySet() has to return @PolyShrinkable, but here we always want to return unmodifiable
-  // because this is an unmodifiable map.
-  public @IteratorPolyMod @Unmodifiable Set<K> keySet(
-      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  @SuppressWarnings(
+      "modifiability:return" // returning unmodifiable is OK because this is an unmodifiable map
+  )
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable @PolyNonEmpty Set<K> keySet(
+      @GuardSatisfied @PolyNonEmpty @PolyShrinkable UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableSet(map.keySet());
   }
 
   @Override
-  @SuppressWarnings("modifiability:override.return") // false positive.
-  // map.values() has to return @PolyShrinkable, but here we always want to return unmodifiable
-  // because this is an unmodifiable map.
-  public @IteratorPolyMod @Unmodifiable Collection<V> values(
-      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  @SuppressWarnings(
+      "modifiability:return" // returning unmodifiable is OK because this is an unmodifiable map
+  )
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable @PolyNonEmpty Collection<V> values(
+      @PolyShrinkable @GuardSatisfied @PolyNonEmpty UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableCollection(map.values());
   }
 
   @Override
-  @SuppressWarnings({
-    "modifiability:override.return", // false positive.
-    // map.entrySet() has to return @PolyShrinkable, but here we always want to return unmodifiable
-    // because this is an unmodifiable map.
-  })
-  public @IteratorPolyMod @Unmodifiable Set<Map.@Unmodifiable Entry<K, V>> entrySet(
-      @GuardSatisfied UnmodifiableIdentityHashMap<K, V> this) {
+  @SuppressWarnings(
+      "modifiability:return" // returning unmodifiable is OK because this is an unmodifiable map
+  )
+  public @IteratorPolyMod @PolyShrinkable @Ungrowable @PolyNonEmpty Set<
+          Map.@PolyModifiable Entry<@KeyFor({"this"}) K, V>>
+      entrySet(
+          @PolyModifiable @GuardSatisfied @PolyNonEmpty UnmodifiableIdentityHashMap<K, V> this) {
     return Collections.unmodifiableMap(map).entrySet();
   }
 
@@ -195,10 +198,10 @@ public final class UnmodifiableIdentityHashMap<K, V> extends IdentityHashMap<K, 
   }
 
   @Override
-  @SuppressWarnings({
-    "growable:return",
-    "modifiability:return",
-  })
+  @SuppressWarnings(
+      "modifiability:return" // getOrDefault: given `ArrayMap<K, @PolyModifiable V> this` (where
+  // @PolyModifiable cannot vary), @PolyModifiable V is a supertype of V.
+  )
   public @PolyModifiable V getOrDefault(
       UnmodifiableIdentityHashMap<K, @PolyModifiable V> this,
       @GuardSatisfied @UnknownSignedness Object key,

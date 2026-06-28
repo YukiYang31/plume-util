@@ -60,7 +60,6 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
 @SuppressWarnings({
   "index", // TODO
   "lock", // not yet annotated for the Lock Checker
-  "modifiability:annotation.unverified", // cannot verify that ArraySet is growable and shrinkable
 })
 public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends AbstractSet<E>
     implements Cloneable {
@@ -92,8 +91,6 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "shrinkable:super.invocation", // calls `super`
-    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   public @Growable @Shrinkable ArraySet(int initialCapacity) {
@@ -124,8 +121,6 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
     "samelen:assignment", // initialization
     "allcheckers:purity.not.sideeffectfree.assign.field", // initializes `this`
     "allcheckers:purity.not.sideeffectfree.call", // calls `super`
-    "shrinkable:super.invocation", // calls `super`
-    "growable:super.invocation" // calls `super`
   })
   @SideEffectFree
   private @Growable @Shrinkable ArraySet(
@@ -143,8 +138,7 @@ public class ArraySet<E extends @UnknownSignedness @Nullable Object> extends Abs
   @SuppressWarnings({
     "allcheckers:purity", // initializes `this`
     "lock:method.guarantee.violated", // initializes `this`
-    "nullness:method.invocation", // inference failure;
-    // https://github.com/typetools/checker-framework/issues/979 ?
+    "nullness:method.invocation", // inference failure; https://tinyurl.com/cfissue/979 ?
     "PMD.ConstructorCallsOverridableMethod",
   })
   @SideEffectFree

@@ -11,6 +11,7 @@ import org.checkerframework.checker.modifiability.qual.Growable;
 import org.checkerframework.checker.modifiability.qual.IteratorPolyMod;
 import org.checkerframework.checker.modifiability.qual.Replaceable;
 import org.checkerframework.checker.modifiability.qual.Shrinkable;
+import org.checkerframework.checker.modifiability.qual.Unshrinkable;
 import org.checkerframework.checker.nullness.qual.EnsuresNonNullIf;
 import org.checkerframework.checker.nullness.qual.Nullable;
 import org.checkerframework.checker.nullness.qual.RequiresNonNull;
@@ -54,8 +55,12 @@ public class CombinationIterator<T> implements Iterator<List<T>> {
    *
    * @param collectionsOfCandidates lists of candidate values for each position in generated lists
    */
-  @SuppressWarnings({"rawtypes", "unchecked"}) // for generic array creation
-  public CombinationIterator(Collection<? extends Collection<T>> collectionsOfCandidates) {
+  @SuppressWarnings({
+    "rawtypes",
+    "unchecked", // for generic array creation
+  })
+  public @Unshrinkable CombinationIterator(
+      Collection<? extends Collection<T>> collectionsOfCandidates) {
     int size = collectionsOfCandidates.size();
     // Just like collectionsOfCandidates, but indexable.
     ArrayList<? extends Collection<T>> listOfCollectionsOfCanditates =
