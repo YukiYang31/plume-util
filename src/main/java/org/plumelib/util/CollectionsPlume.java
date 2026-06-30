@@ -48,6 +48,7 @@ import org.checkerframework.checker.nullness.qual.UnknownKeyFor;
 import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
+import org.checkerframework.framework.qual.EnsuresQualifierIf;
 
 /** Utility functions for Collections, including Iterators. For maps, see {@link MapsP}. */
 @SuppressWarnings("PMD.ForLoopVariableCount")
@@ -1104,9 +1105,14 @@ public final class CollectionsPlume {
    */
   @SuppressWarnings({
     "allcheckers:purity.not.deterministic.call",
-    "lock:method.guarantee.violated"
+    "lock:method.guarantee.violated",
+    "modifiability:contracts.conditional.postcondition" // this function cannot guarantee that
+    // returning true means the colleciton is modifiable.
   }) // String.substring
   @Pure
+  @EnsuresQualifierIf(result = true, expression = "#1", qualifier = IteratorPolyMod.class)
+  @EnsuresQualifierIf(result = true, expression = "#1", qualifier = Growable.class)
+  @EnsuresQualifierIf(result = true, expression = "#1", qualifier = Shrinkable.class)
   public static boolean isModifiable(Collection<?> c) {
     // This is a hack, but I don't know how else to implement it.
     // This implementation is error-prone because (per the documentation of `Class.getName()`)
