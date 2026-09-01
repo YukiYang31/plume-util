@@ -10,7 +10,7 @@ import org.checkerframework.checker.modifiability.qual.Modifiable;
  * space. A naive algorithm would use O(n) space. For example, selecting 1 element from a FileStream
  * containing 1000 elements will take O(1) space. The class takes as input the number k during
  * initialization and then can accept() any number of Objects in the future. At any point in time,
- * getValues() will either return k randomly selected elements from the elements previous accepted
+ * getValues() will either return k randomly selected elements from the elements previously accepted
  * or if accept() was called fewer than k times, will return all elements previously accepted.
  *
  * <p>The random selection is independent between every constructed instance of RandomSelector
@@ -61,7 +61,7 @@ public class RandomSelector<T> {
   // 5. AF(selector_mode) = fixed amount if coinTossMode == true
   //                        fixed percentage if coinTossMode == false
 
-  /** If true, numElts and observers are -1. If false, keepProbability = -1. */
+  /** If true, numElts and observed are -1. If false, keepProbability = -1. */
   private boolean coinTossMode;
 
   /** The percentage of elements to keep. */

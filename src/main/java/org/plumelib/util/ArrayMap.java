@@ -67,7 +67,7 @@ import org.checkerframework.dataflow.qual.SideEffectFree;
  * </ul>
  *
  * All of those use the Apache License, version 2.0, whereas this implementation is licensed under
- * the more libral MIT License. In addition, some of those implementations forbid nulls or
+ * the more liberal MIT License. In addition, some of those implementations forbid nulls or
  * nondeterministically reorder the contents, and others don't specify their behavior regarding
  * nulls and ordering.
  *
@@ -84,7 +84,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     extends AbstractMap<K, V> implements Cloneable {
 
   // An alternate internal representation would be a list of Map.Entry objects (e.g.,
-  // AbstractMap.SimpleEntry) instead of two arrays for lists and values.  That is a bad idea
+  // AbstractMap.SimpleEntry) instead of two arrays for keys and values.  That is a bad idea
   // because it both uses more memory and makes some operations more expensive.
 
   /** The keys. Null if capacity=0. */
@@ -330,6 +330,9 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     System.arraycopy(keys, index + 1, keys, index, size - index - 1);
     System.arraycopy(values, index + 1, values, index, size - index - 1);
     size--;
+    // Clear the now-unused slot so it does not retain references.
+    keys[size] = null;
+    values[size] = null;
     sizeModificationCount++;
     return true;
   }
@@ -476,6 +479,10 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   @Override
   public void clear(@Shrinkable ArrayMap<K, V> this) {
     if (size != 0) {
+      // Clear the slots so they do not retain references.  A nonzero size implies that the arrays
+      // are non-null.
+      Arrays.fill(keys, 0, size, null);
+      Arrays.fill(values, 0, size, null);
       size = 0;
       sizeModificationCount++;
     }
@@ -540,14 +547,19 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     @Override
     public @PolySigned Object[] toArray() {
       // toArray must return a new array because clients are permitted to modify it.
+      if (keys == null) {
+        return new @PolySigned Object[0];
+      }
       return (@PolySigned Object[]) Arrays.copyOf(keys, size);
     }
 
     @SuppressWarnings({
       "unchecked", // generic array cast
-      "nullness" // Nullness Checker special-cases toArray
+      "nullness", // Nullness Checker special-cases toArray
+      // `toArray(T[])` is inherited as @SideEffectFree, but its specification requires writing
+      // into the caller-supplied array.
+      "allcheckers:purity.not.sideeffectfree.assign.array",
     })
-    @SideEffectFree
     @Override
     public <T> @Nullable T[] toArray(@PolyNull T[] a) {
       T[] result;
@@ -556,7 +568,12 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       } else {
         result = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
       }
-      System.arraycopy(keys, 0, result, 0, size);
+      if (keys != null) {
+        System.arraycopy(keys, 0, result, 0, size);
+      }
+      if (a.length > size) {
+        result[size] = null;
+      }
       return result;
     }
 
@@ -622,14 +639,19 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     @Override
     public @Nullable @PolySigned Object[] toArray() {
       // toArray must return a new array because clients are permitted to modify it.
+      if (values == null) {
+        return new @Nullable @PolySigned Object[0];
+      }
       return (@Nullable @PolySigned Object[]) Arrays.copyOf(values, size);
     }
 
     @SuppressWarnings({
       "unchecked", // generic array cast
-      "nullness" // Nullness Checker special-cases toArray
+      "nullness", // Nullness Checker special-cases toArray
+      // `toArray(T[])` is inherited as @SideEffectFree, but its specification requires writing
+      // into the caller-supplied array.
+      "allcheckers:purity.not.sideeffectfree.assign.array",
     })
-    @SideEffectFree
     @Override
     public <T> @Nullable T[] toArray(@PolyNull T[] a) {
       T[] result;
@@ -638,7 +660,12 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
       } else {
         result = (T[]) java.lang.reflect.Array.newInstance(a.getClass().getComponentType(), size);
       }
-      System.arraycopy(values, 0, result, 0, size);
+      if (values != null) {
+        System.arraycopy(values, 0, result, 0, size);
+      }
+      if (a.length > size) {
+        result[size] = null;
+      }
       return result;
     }
 
@@ -860,7 +887,7 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
   //    ConcurrentModificationException in that case, by checking that the values in the array still
   //    match those stored in the entry.
 
-  // Per the specification of Map.Entry, a map entry is  meaningful only during the execution of the
+  // Per the specification of Map.Entry, a map entry is meaningful only during the execution of the
   // iteration over the entry set, and only if the backing map has not been modified except through
   // calling {@code setValue} on the map entry.
   /** An entrySet() entry. Tracks the containing list and the index. */
@@ -941,12 +968,15 @@ public class ArrayMap<K extends @UnknownSignedness Object, V extends @UnknownSig
     @Pure
     @Override
     public int hashCode(ArrayMap<K, V>.Entry this) {
-      return Objects.hash(getKey(), getValue());
+      // Per the specification of Map.Entry.hashCode().
+      K key = getKey();
+      V value = getValue();
+      return (key == null ? 0 : key.hashCode()) ^ (value == null ? 0 : value.hashCode());
     }
   }
 
   // //////////////////////////////////////////////////////////////////////
-  // Comparison and hashing:  equals and hashCode are inherited from AbstractSet.
+  // Comparison and hashing:  equals and hashCode are inherited from AbstractMap.
 
   // Defaultable methods
 

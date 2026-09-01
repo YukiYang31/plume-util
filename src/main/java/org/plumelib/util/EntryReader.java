@@ -12,7 +12,6 @@ import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayDeque;
 import java.util.Iterator;
@@ -92,7 +91,6 @@ import org.checkerframework.checker.regex.qual.Regex;
 @SuppressWarnings({
   "IterableAndIterator",
   "builder:required.method.not.called", // Collection `readers` has element type @MustCall("close")
-  "PMD.CloseResource", // false positives; use the Resource Leak Checker instead
 })
 public class EntryReader extends LineNumberReader implements Iterable<String>, Iterator<String> {
 
@@ -164,146 +162,6 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
         includeRegexString);
   }
 
-  /**
-   * Create an EntryReader that uses the given character set.
-   *
-   * @param in source from which to read entries
-   * @param charsetName the character set to use
-   * @param filename non-null file name for stream being read
-   * @param entryFormat indicates how entries begin and end
-   * @param commentFormat indicates the syntax of comments
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @throws UnsupportedEncodingException if the charset encoding is not supported
-   * @deprecated use {@link EntryReader(InputStream,String,String,EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-03-05")
-  @SuppressWarnings("JdkObsolete") // this method is deprecated
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String charsetName,
-      String filename,
-      EntryFormat entryFormat,
-      CommentFormat commentFormat,
-      @Nullable @Regex(1) String includeRegexString)
-      throws UnsupportedEncodingException {
-    this(
-        new InputStreamReader(in, charsetName),
-        filename,
-        entryFormat,
-        commentFormat,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader that uses the given character set.
-   *
-   * @param in source from which to read entries
-   * @param charsetName the character set to use
-   * @param filename non-null file name for stream being read
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @throws UnsupportedEncodingException if the charset encoding is not supported
-   * @deprecated use {@link
-   *     #EntryReader(InputStream,String,String,EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  @SuppressWarnings("JdkObsolete") // this method is deprecated
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String charsetName,
-      String filename,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString)
-      throws UnsupportedEncodingException {
-    this(
-        new InputStreamReader(in, charsetName),
-        filename,
-        entryFormat,
-        lineCommentRegexString,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader that uses the given character set.
-   *
-   * @param in source from which to read entries
-   * @param charsetName the character set to use
-   * @param filename non-null file name for stream being read
-   * @param twoBlankLines true if entries are separated by two blank lines rather than one
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @throws UnsupportedEncodingException if the charset encoding is not supported
-   * @see #EntryReader(InputStream,String,String,String)
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-21")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String charsetName,
-      String filename,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString)
-      throws UnsupportedEncodingException {
-    this(
-        in,
-        charsetName,
-        filename,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegexString,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader that uses the given character set.
-   *
-   * @param in source from which to read entries
-   * @param charsetName the character set to use
-   * @param filename non-null file name for stream being read
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @throws UnsupportedEncodingException if the charset encoding is not supported
-   * @see #EntryReader(InputStream,String,String,String)
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String charsetName,
-      String filename,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString)
-      throws UnsupportedEncodingException {
-    this(
-        in, charsetName, filename, EntryFormat.DEFAULT, lineCommentRegexString, includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader that does not support comments or include directives.
-   *
-   * @param in the InputStream
-   * @param charsetName the character set to use
-   * @param filename the file name
-   * @throws UnsupportedEncodingException if the charset encoding is not supported
-   * @see #EntryReader(InputStream,String,String,String)
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in, String charsetName, String filename)
-      throws UnsupportedEncodingException {
-    this(in, charsetName, filename, EntryFormat.DEFAULT, CommentFormat.NONE, null);
-  }
-
   // InputStream (no charset) constructors
 
   /**
@@ -327,87 +185,11 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /**
-   * Create an EntryReader.
-   *
-   * @param in source from which to read entries
-   * @param filename non-null file name for stream being read
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @deprecated use {@link #EntryReader(InputStream,String,EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String filename,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    this(
-        new InputStreamReader(in, UTF_8),
-        filename,
-        entryFormat,
-        lineCommentRegexString,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param in source from which to read entries
-   * @param filename non-null file name for stream being read
-   * @param twoBlankLines true if entries are separated by two blank lines rather than one
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)},
-   *     passing {@code UTF_8} as the charset
-   */
-  @Deprecated(since = "2026-01-05")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String filename,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    this(
-        new InputStreamReader(in, UTF_8),
-        filename,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegexString,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param in source from which to read entries
-   * @param filename non-null file name for stream being read
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name.
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias InputStream in,
-      String filename,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    this(in, filename, EntryFormat.DEFAULT, lineCommentRegexString, includeRegexString);
-  }
-
-  /**
    * Create an EntryReader that uses the default character set and does not support comments or
    * include directives.
    *
    * @param in the InputStream
    * @param filename the file name
-   * @see #EntryReader(InputStream,String,String,String)
    */
   public @MustCallAlias @Unshrinkable EntryReader(@MustCallAlias InputStream in, String filename) {
     this(in, filename, EntryFormat.DEFAULT, CommentFormat.NONE, null);
@@ -417,7 +199,6 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * Create an EntryReader that does not support comments or include directives.
    *
    * @param in the InputStream
-   * @see #EntryReader(InputStream,String,String,String)
    */
   public @MustCallAlias @Unshrinkable EntryReader(@MustCallAlias InputStream in) {
     this(in, "(InputStream)", EntryFormat.DEFAULT, CommentFormat.NONE, null);
@@ -454,90 +235,9 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /**
-   * Create an EntryReader.
-   *
-   * @param reader source from which to read entries
-   * @param filename file name corresponding to reader, for use in error messages
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name
-   * @deprecated see {@link #EntryReader(Reader,String,EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  @SuppressWarnings("builder") // storing into a collection
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias Reader reader,
-      String filename,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    // We won't use superclass methods, but passing null as an argument
-    // leads to a NullPointerException.
-    super(DummyReader.it);
-    readers.addFirst(new FlnReader(reader, filename));
-    this.entryFormat = entryFormat;
-    this.commentFormat = new CommentFormat(lineCommentRegexString);
-    if (includeRegexString == null) {
-      includeRegex = null;
-    } else {
-      includeRegex = Pattern.compile(includeRegexString);
-    }
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param reader source from which to read entries
-   * @param filename file name corresponding to reader, for use in error messages
-   * @param twoBlankLines if true, then entries are separated by two blank lines rather than one
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name
-   * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-21")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias Reader reader,
-      String filename,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    this(
-        reader,
-        filename,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegexString,
-        includeRegexString);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param reader source from which to read entries
-   * @param filename file name corresponding to reader, for use in error messages
-   * @param lineCommentRegexString regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored
-   * @param includeRegexString regular expression that matches include directives. The expression
-   *     should define one group that contains the include file name
-   * @deprecated use {@link #EntryReader(Reader,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @MustCallAlias @Unshrinkable EntryReader(
-      @MustCallAlias Reader reader,
-      String filename,
-      @Nullable @Regex String lineCommentRegexString,
-      @Nullable @Regex(1) String includeRegexString) {
-    this(reader, filename, EntryFormat.DEFAULT, lineCommentRegexString, includeRegexString);
-  }
-
-  /**
    * Create an EntryReader that does not support comments or include directives.
    *
    * @param reader source from which to read entries
-   * @see #EntryReader(Reader,String,EntryFormat,String,String)
    */
   public @MustCallAlias @Unshrinkable EntryReader(@MustCallAlias Reader reader) {
     this(reader, reader.toString(), EntryFormat.DEFAULT, CommentFormat.NONE, null);
@@ -561,78 +261,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       CommentFormat commentFormat,
       @Nullable @Regex(1) String includeRegex)
       throws IOException {
-    this(FilesPlume.newFileReader(path), path.toString(), entryFormat, commentFormat, includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param path initial file to read
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated see {@link #EntryReader(Path,EntryFormat,CommentFormat, String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  public @Unshrinkable EntryReader(
-      Path path,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(
-        FilesPlume.newFileReader(path),
-        path.toString(),
-        entryFormat,
-        lineCommentRegex,
-        includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param path initial file to read
-   * @param twoBlankLines if true, then entries are separated by two blank lines rather than one
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated use {@link #EntryReader(Path,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-21")
-  public @Unshrinkable EntryReader(
-      Path path,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(
-        path,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegex,
-        includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param path initial file to read
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated use {@link #EntryReader(Path,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(
-      Path path, @Nullable @Regex String lineCommentRegex, @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(path, EntryFormat.DEFAULT, lineCommentRegex, includeRegex);
+    this(FilesP.newFileReader(path), path.toString(), entryFormat, commentFormat, includeRegex);
   }
 
   /**
@@ -640,30 +269,9 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *
    * @param path the file to read
    * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
    */
   public @Unshrinkable EntryReader(Path path) throws IOException {
     this(path, EntryFormat.DEFAULT, CommentFormat.NONE, null);
-  }
-
-  /**
-   * Create an EntryReader that does not support comments or include directives.
-   *
-   * @param path the file to read
-   * @param charsetName the character set to use
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(InputStream,String,String,EntryFormat,String,String)
-   * @deprecated use {@link #EntryReader(InputStream,String,String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(Path path, String charsetName) throws IOException {
-    this(
-        FilesPlume.newFileInputStream(path),
-        charsetName,
-        path.toString(),
-        EntryFormat.DEFAULT,
-        CommentFormat.NONE,
-        null);
   }
 
   // File constructors
@@ -684,78 +292,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
       CommentFormat commentFormat,
       @Nullable @Regex(1) String includeRegex)
       throws IOException {
-    this(FilesPlume.newFileReader(file), file.toString(), entryFormat, commentFormat, includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param file initial file to read
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated see {@link #EntryReader(File, EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  public @Unshrinkable EntryReader(
-      File file,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(
-        FilesPlume.newFileReader(file),
-        file.toString(),
-        entryFormat,
-        lineCommentRegex,
-        includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param file initial file to read
-   * @param twoBlankLines if true, then entries are separated by two blank lines rather than one
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-21")
-  public @Unshrinkable EntryReader(
-      File file,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(
-        file,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegex,
-        includeRegex);
-  }
-
-  /**
-   * Create an EntryReader.
-   *
-   * @param file initial file to read
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches
-   *     lineCommentRegex is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(
-      File file, @Nullable @Regex String lineCommentRegex, @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(file, EntryFormat.DEFAULT, lineCommentRegex, includeRegex);
+    this(FilesP.newFileReader(file), file.toString(), entryFormat, commentFormat, includeRegex);
   }
 
   /**
@@ -763,30 +300,9 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    *
    * @param file the file to read
    * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
    */
   public @Unshrinkable EntryReader(File file) throws IOException {
     this(file, EntryFormat.DEFAULT, CommentFormat.NONE, null);
-  }
-
-  /**
-   * Create an EntryReader that does not support comments or include directives.
-   *
-   * @param file the file to read
-   * @param charsetName the character set to use
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
-   * @deprecated use {@link #EntryReader(File,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(File file, String charsetName) throws IOException {
-    this(
-        FilesPlume.newFileInputStream(file),
-        charsetName,
-        file.toString(),
-        EntryFormat.DEFAULT,
-        CommentFormat.NONE,
-        null);
   }
 
   // Filename constructors
@@ -800,7 +316,6 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
    * @param includeRegex regular expression that matches include directives. The expression should
    *     define one group that contains the include file name.
    * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
    */
   public @Unshrinkable EntryReader(
       String filename,
@@ -812,105 +327,13 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /**
-   * Create a new EntryReader starting with the specified file.
-   *
-   * @param filename initial file to read
-   * @param entryFormat indicates how entries begin and end
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches {@code
-   *     lineCommentRegex} is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
-   * @deprecated see {@link #EntryReader(String, EntryFormat,CommentFormat,String)}
-   */
-  @Deprecated(since = "2026-01-28")
-  public @Unshrinkable EntryReader(
-      String filename,
-      EntryFormat entryFormat,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(new File(filename), entryFormat, lineCommentRegex, includeRegex);
-  }
-
-  /**
-   * Create a new EntryReader starting with the specified file.
-   *
-   * @param filename initial file to read
-   * @param twoBlankLines if true, then entries are separated by two blank lines rather than one
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches {@code
-   *     lineCommentRegex} is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
-   * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-21")
-  public @Unshrinkable EntryReader(
-      String filename,
-      boolean twoBlankLines,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(
-        filename,
-        twoBlankLines ? EntryFormat.TWO_BLANK_LINES : EntryFormat.DEFAULT,
-        lineCommentRegex,
-        includeRegex);
-  }
-
-  /**
-   * Create a new EntryReader starting with the specified file.
-   *
-   * @param filename initial file to read
-   * @param lineCommentRegex regular expression that matches comments. Any text that matches {@code
-   *     lineCommentRegex} is removed. A line that is entirely a comment is ignored.
-   * @param includeRegex regular expression that matches include directives. The expression should
-   *     define one group that contains the include file name.
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(File,EntryFormat,String,String)
-   * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(
-      String filename,
-      @Nullable @Regex String lineCommentRegex,
-      @Nullable @Regex(1) String includeRegex)
-      throws IOException {
-    this(filename, EntryFormat.DEFAULT, lineCommentRegex, includeRegex);
-  }
-
-  /**
    * Create an EntryReader that does not support comments or include directives.
    *
    * @param filename source from which to read entries
    * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(String,EntryFormat,String,String)
    */
   public @Unshrinkable EntryReader(String filename) throws IOException {
     this(filename, EntryFormat.DEFAULT, CommentFormat.NONE, null);
-  }
-
-  /**
-   * Create an EntryReader that does not support comments or include directives.
-   *
-   * @param filename source from which to read entries
-   * @param charsetName the character set to use
-   * @throws IOException if there is a problem reading the file
-   * @see #EntryReader(String,EntryFormat,String,String)
-   * @deprecated use {@link #EntryReader(String,EntryFormat,String,String)}
-   */
-  @Deprecated(since = "2026-01-05")
-  public @Unshrinkable EntryReader(String filename, String charsetName) throws IOException {
-    this(
-        Files.newInputStream(Path.of(filename)),
-        charsetName,
-        filename,
-        EntryFormat.DEFAULT,
-        CommentFormat.NONE,
-        null);
   }
 
   // ///////////////////////////////////////////////////////////////////////////
@@ -945,7 +368,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /**
-   * Set the current line number in the current file.
+   * Sets the current line number in the current file.
    *
    * @param lineNumber new line number for the current file
    */
@@ -959,7 +382,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /**
-   * Set debugging on or off.
+   * Sets debugging on or off.
    *
    * @param debug true if debugging is on
    */
@@ -972,7 +395,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   //
 
   /**
-   * Read a line, ignoring comments and processing includes. Returns null at end of file.
+   * Reads a line, ignoring comments and processing includes. Returns null at end of file.
    *
    * <p>A line that is completely a comment is ignored (and not returned as a blank line).
    *
@@ -1117,7 +540,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
     }
 
     // Handle include files.  Non-absolute pathnames are relative
-    // to the including file (the current file)
+    // to the including file (the current file).
     if (includeRegex != null) {
       Matcher m = includeRegex.matcher(line);
       if (m.matches()) {
@@ -1127,7 +550,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
               String.format(
                   "includeRegex (%s) does not capture group 1 in %s", includeRegex, line));
         }
-        File filename = new File(FilesPlume.expandFilename(filenameString));
+        File filename = new File(FilesP.expandFilename(filenameString));
         if (debug) {
           System.err.printf("Trying to include filename %s%n", filename);
         }
@@ -1343,7 +766,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
         line = readLine();
       }
 
-      // If this entry was terminated by the start of a new input file
+      // If this entry was terminated by the start of a new input file,
       // put that line back.
       if ((line != null) && !filename.equals(getFileName())) {
         putback(line);
@@ -1518,7 +941,7 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
      * @throws IOException if there is trouble reading the file
      */
     public FlnReader(String filename) throws IOException {
-      super(FilesPlume.newFileReader(filename));
+      super(FilesP.newFileReader(filename));
       this.filename = filename;
     }
   }
@@ -1558,18 +981,13 @@ public class EntryReader extends LineNumberReader implements Iterable<String>, I
   }
 
   /** A dummy Reader to be used when null is not acceptable. */
-  private static class DummyReader extends Reader {
+  private static final class DummyReader extends Reader {
 
     /** The canonical DummyReader. */
     public static final DummyReader it = new DummyReader();
 
-    /**
-     * Create a new DummyReader.
-     *
-     * @deprecated use {@link #it}.
-     */
-    @Deprecated(since = "2022-07-25") // to make private
-    public DummyReader() {}
+    /** Create a new DummyReader. */
+    private DummyReader() {}
 
     @Override
     public void close(@GuardSatisfied DummyReader this) {

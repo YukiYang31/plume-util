@@ -38,13 +38,13 @@ import org.checkerframework.common.value.qual.ArrayLen;
 import org.checkerframework.common.value.qual.StaticallyExecutable;
 import org.checkerframework.dataflow.qual.Pure;
 import org.checkerframework.dataflow.qual.SideEffectFree;
-import org.plumelib.reflection.ReflectionPlume;
+import org.plumelib.reflection.ReflectionP;
 
 /** Utilities for manipulating arrays. This complements {@link java.util.Arrays}. */
 @SuppressWarnings("interning") // to do later
-public final class ArraysPlume {
+public final class ArraysP {
   /** This class is a collection of methods; it does not represent anything. */
-  private ArraysPlume() {
+  private ArraysP() {
     throw new Error("do not instantiate");
   }
 
@@ -73,7 +73,7 @@ public final class ArraysPlume {
    *
    * @param <T> the type of the array elements
    * @param array the array
-   * @param lastElt the new last elemeent
+   * @param lastElt the new last element
    * @return a new array containing the array elements and the last element, in that order
    */
   @SuppressWarnings({
@@ -799,7 +799,7 @@ public final class ArraysPlume {
    * @param elt the element to search for
    * @param minindex first index at which to search
    * @param indexlimit first index at which not to search
-   * @return the first index i containing the specified element, such that {@code minindex <=; i <
+   * @return the first index i containing the specified element, such that {@code minindex <= i <
    *     indexlimit}, or -1 if the element is not found in the array
    * @see java.util.ArrayList#indexOf(java.lang.Object)
    */
@@ -825,7 +825,7 @@ public final class ArraysPlume {
    * @param elt the element to search for
    * @param minindex first index at which to search
    * @param indexlimit first index at which not to search
-   * @return the first index i containing the specified element, such that {@code minindex <=; i <
+   * @return the first index i containing the specified element, such that {@code minindex <= i <
    *     indexlimit}, or -1 if the element is not found in the array
    * @see java.util.ArrayList#indexOf(java.lang.Object)
    */
@@ -889,7 +889,7 @@ public final class ArraysPlume {
    * @param elt the element to search for
    * @param minindex first index at which to search
    * @param indexlimit first index at which not to search
-   * @return the first index i containing the specified element, such that {@code minindex <=; i <
+   * @return the first index i containing the specified element, such that {@code minindex <= i <
    *     indexlimit}, or -1 if the element is not found in the array
    * @see java.util.ArrayList#indexOf(java.lang.Object)
    */
@@ -1022,7 +1022,7 @@ public final class ArraysPlume {
   @Pure
   public static int indexOf(
       @PolyNull @PolySigned Object[] a, List<? extends @PolyNull @PolySigned Object> sub) {
-    int aIndexMax = a.length - sub.size() + 1;
+    int aIndexMax = a.length - sub.size();
     for (int i = 0; i <= aIndexMax; i++) {
       if (isSubarray(a, sub, i)) {
         return i;
@@ -1907,9 +1907,9 @@ public final class ArraysPlume {
      */
     @Nullable Class<? extends @Nullable Object> leastUpperBound() {
       if (theArray != null) {
-        return ReflectionPlume.leastUpperBound(theArray);
+        return ReflectionP.leastUpperBound(theArray);
       } else if (theList != null) {
-        return ReflectionPlume.leastUpperBound(theList);
+        return ReflectionP.leastUpperBound(theList);
       } else {
         throw new Error("both fields are null");
       }
@@ -2032,7 +2032,7 @@ public final class ArraysPlume {
       // from the elements in the arrays.  It might be a subtype of T, though, which is incorrect.
       @SuppressWarnings("unchecked")
       Class<T> resultType =
-          ReflectionPlume.leastUpperBound(
+          ReflectionP.leastUpperBound(
               (Class<T>) a.leastUpperBound(), (Class<T>) b.leastUpperBound());
 
       if (resultType == null) {
@@ -2422,7 +2422,7 @@ public final class ArraysPlume {
     StringJoiner sj = new StringJoiner(", ", "[", "]");
     for (Object elt : a) {
       if (quoted && elt instanceof String s) {
-        sj.add("\"" + StringsPlume.escapeJava(s) + "\"");
+        sj.add("\"" + StringsP.escapeJava(s) + "\"");
       } else {
         sj.add(Objects.toString(elt));
       }
@@ -2463,7 +2463,7 @@ public final class ArraysPlume {
     StringJoiner sj = new StringJoiner(", ", "[", "]");
     for (Object elt : a) {
       if (quoted && elt instanceof String s) {
-        sj.add("\"" + StringsPlume.escapeJava(s) + "\"");
+        sj.add("\"" + StringsP.escapeJava(s) + "\"");
       } else {
         sj.add(Objects.toString(elt));
       }
@@ -2507,19 +2507,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff the array is sorted
-   * @deprecated use {@link #isSorted(int[])}
-   */
-  @Deprecated(since = "2024-04-21")
-  @Pure
-  public static boolean sorted(int[] a) {
-    return isSorted(a);
-  }
-
-  /**
-   * Returns true if the array is sorted.
-   *
-   * @param a an array
-   * @return true iff the array is sorted
    */
   @Pure
   public static boolean isSorted(int[] a) {
@@ -2529,18 +2516,6 @@ public final class ArraysPlume {
       }
     }
     return true;
-  }
-
-  /**
-   * Returns true if the array is sorted.
-   *
-   * @param a an array
-   * @return true iff the array is sorted
-   * @deprecated use {@link #isSorted(long[])}
-   */
-  @Deprecated(since = "2024-04-21")
-  public static boolean sorted(long[] a) {
-    return isSorted(a);
   }
 
   /**
@@ -2618,24 +2593,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(boolean[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(boolean[] a) {
@@ -2660,24 +2617,6 @@ public final class ArraysPlume {
       }
     }
     return false;
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(byte[] a) {
-    return !hasDuplicates(a);
   }
 
   /**
@@ -2720,24 +2659,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(char[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(char[] a) {
@@ -2762,24 +2683,6 @@ public final class ArraysPlume {
       }
     }
     return false;
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(float[] a) {
-    return !hasDuplicates(a);
   }
 
   /**
@@ -2822,24 +2725,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(short[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(short[] a) {
@@ -2864,24 +2749,6 @@ public final class ArraysPlume {
       }
     }
     return false;
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(int[] a) {
-    return !hasDuplicates(a);
   }
 
   /**
@@ -2925,25 +2792,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(double[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements. Equality checking uses {@link
-   * Double#equals}.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(double[] a) {
@@ -2968,24 +2816,6 @@ public final class ArraysPlume {
       }
     }
     return false;
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(long[] a) {
-    return !hasDuplicates(a);
   }
 
   /**
@@ -3028,24 +2858,6 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(String[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(String[] a) {
@@ -3079,62 +2891,10 @@ public final class ArraysPlume {
    *
    * @param a an array
    * @return true iff a does not contain duplicate elements
-   * @deprecated use {@code hasNoDuplicates}
-   */
-  @Deprecated(since = "2023-12-01")
-  // @InlineMe(
-  //     replacement = "!ArraysPlume.hasDuplicates(a)",
-  //     imports = "org.plumelib.util.ArraysPlume")
-  @Pure
-  public static boolean noDuplicates(Object[] a) {
-    return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff a does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param a an array
-   * @return true iff a does not contain duplicate elements
    */
   @Pure
   public static boolean hasNoDuplicates(Object[] a) {
     return !hasDuplicates(a);
-  }
-
-  /**
-   * Returns true iff the list does not contain duplicate elements.
-   *
-   * <p>The implementation uses O(n) time and O(n) space.
-   *
-   * @param <T> the type of the elements
-   * @param a a list
-   * @return true iff a does not contain duplicate elements
-   * @deprecated use {@link CollectionsPlume#hasNoDuplicates}
-   */
-  @Deprecated(since = "2021-04-09")
-  @SuppressWarnings({"allcheckers:purity", "lock"}) // side effect to local state (HashSet)
-  @Pure
-  public static <T> boolean noDuplicates(List<T> a) {
-    if (a instanceof RandomAccess) {
-      HashSet<T> hs = new HashSet<>();
-      for (int i = 0; i < a.size(); i++) { // NOPMD: for loop is more efficient than foreach loop
-        T elt = a.get(i);
-        if (!hs.add(elt)) {
-          return false;
-        }
-      }
-      return true;
-    } else {
-      HashSet<T> hs = new HashSet<>();
-      for (T elt : a) {
-        if (!hs.add(elt)) {
-          return false;
-        }
-      }
-      return true;
-    }
   }
 
   // //////////////////////////////////////////////////////////////////////
@@ -3410,13 +3170,8 @@ public final class ArraysPlume {
     /** The canonical IntArrayComparatorLexical. */
     public static final IntArrayComparatorLexical it = new IntArrayComparatorLexical();
 
-    /**
-     * Create a new IntArrayComparatorLexical.
-     *
-     * @deprecated use {@link #it}.
-     */
-    @Deprecated(since = "2022-07-25") // to make private
-    public IntArrayComparatorLexical() {}
+    /** Create a new IntArrayComparatorLexical. External clients should use {@link #it}. */
+    private IntArrayComparatorLexical() {}
 
     /**
      * Compare two arrays lexically (element-by-element).
@@ -3457,13 +3212,8 @@ public final class ArraysPlume {
     /** The canonical LongArrayComparatorLexical. */
     public static final LongArrayComparatorLexical it = new LongArrayComparatorLexical();
 
-    /**
-     * Create a new LongArrayComparatorLexical.
-     *
-     * @deprecated use {@link #it}.
-     */
-    @Deprecated(since = "2022-07-25") // to make private
-    public LongArrayComparatorLexical() {}
+    /** Create a new LongArrayComparatorLexical. External clients should use {@link #it}. */
+    private LongArrayComparatorLexical() {}
 
     /**
      * Compare two arrays lexically (element-by-element).
@@ -3505,13 +3255,8 @@ public final class ArraysPlume {
     /** The canonical DoubleArrayComparatorLexical. */
     public static final DoubleArrayComparatorLexical it = new DoubleArrayComparatorLexical();
 
-    /**
-     * Create a new DoubleArrayComparatorLexical.
-     *
-     * @deprecated use {@link #it}.
-     */
-    @Deprecated(since = "2022-07-25") // to make private
-    public DoubleArrayComparatorLexical() {}
+    /** Create a new DoubleArrayComparatorLexical. External clients should use {@link #it}. */
+    private DoubleArrayComparatorLexical() {}
 
     /**
      * Compare two arrays lexically (element-by-element).
@@ -3557,10 +3302,9 @@ public final class ArraysPlume {
     /**
      * Create a new StringArrayComparatorLexical.
      *
-     * @deprecated use {@link #it}.
+     * <p>External clients should use {@link #it}.
      */
-    @Deprecated(since = "2022-07-25") // to make private
-    public StringArrayComparatorLexical() {}
+    private StringArrayComparatorLexical() {}
 
     /**
      * Compare two arrays lexically (element-by-element).
@@ -3684,10 +3428,9 @@ public final class ArraysPlume {
     /**
      * Create a new ObjectArrayComparatorLexical.
      *
-     * @deprecated use {@link #it}.
+     * <p>External clients should use {@link #it}.
      */
-    @Deprecated(since = "2022-07-25") // to make private
-    public ObjectArrayComparatorLexical() {}
+    private ObjectArrayComparatorLexical() {}
 
     /**
      * Compare two arrays lexically (element-by-element).
@@ -3737,10 +3480,9 @@ public final class ArraysPlume {
     /**
      * Create a new IntArrayComparatorLengthFirst.
      *
-     * @deprecated use {@link #it}.
+     * <p>External clients should use {@link #it}.
      */
-    @Deprecated(since = "2022-07-25") // to make private
-    public IntArrayComparatorLengthFirst() {}
+    private IntArrayComparatorLengthFirst() {}
 
     /**
      * Compare two arrays by length, then lexically (element-by-element).
@@ -3787,10 +3529,9 @@ public final class ArraysPlume {
     /**
      * Create a new LongArrayComparatorLengthFirst.
      *
-     * @deprecated use {@link #it}.
+     * <p>External clients should use {@link #it}.
      */
-    @Deprecated(since = "2022-07-25") // to make private
-    public LongArrayComparatorLengthFirst() {}
+    private LongArrayComparatorLengthFirst() {}
 
     /**
      * Compare two arrays by length, then lexically (element-by-element).
@@ -3882,8 +3623,7 @@ public final class ArraysPlume {
   }
 
   /** Sorts arbitrary objects; used to determine equal. */
-  private static final StringsPlume.ObjectComparator objectComparator =
-      StringsPlume.ObjectComparator.it;
+  private static final StringsP.ObjectComparator objectComparator = StringsP.ObjectComparator.it;
 
   /**
    * Compare two arrays first by length (a shorter array is considered less), and if of equal length
@@ -3909,10 +3649,9 @@ public final class ArraysPlume {
     /**
      * Create a new ObjectArrayComparatorLengthFirst.
      *
-     * @deprecated use {@link #it}.
+     * <p>External clients should use {@link #it}.
      */
-    @Deprecated(since = "2022-07-25") // to make private
-    public ObjectArrayComparatorLengthFirst() {}
+    private ObjectArrayComparatorLengthFirst() {}
 
     /**
      * Compare two arrays by length, then lexically (element-by-element). Null elements are
@@ -3969,7 +3708,7 @@ public final class ArraysPlume {
    * Returns true if all elements of a are null.
    *
    * @param a an array
-   * @return true iff all elements of a are null (unspecified result if a is zero-sized)
+   * @return true iff all elements of a are null (true if a is zero-sized)
    */
   @Pure
   public static boolean allNull(@PolyNull Object[] a) {
@@ -3984,7 +3723,7 @@ public final class ArraysPlume {
   /**
    * Returns true if a contains null.
    *
-   * @param a an array
+   * @param a a list
    * @return true iff some element of a is null (false if a is zero-sized)
    */
   @Pure
@@ -3999,8 +3738,8 @@ public final class ArraysPlume {
   /**
    * Returns true if all elements of a are null.
    *
-   * @param a an array
-   * @return true iff all elements of a are null (unspecified result if a is zero-sized)
+   * @param a a list
+   * @return true iff all elements of a are null (true if a is zero-sized)
    */
   @Pure
   public static boolean allNull(List<?> a) {
@@ -4226,7 +3965,7 @@ public final class ArraysPlume {
    * which produces an array whose run-time type is {@code Object[]} even though its compile-time
    * type is {@code TO[]}. Import this method with
    *
-   * <pre>import static org.plumelib.util.ArraysPlume.mapArray;</pre>
+   * <pre>import static org.plumelib.util.ArraysP.mapArray;</pre>
    *
    * <p>To perform replacement in place, see {@link #replaceAll}.
    *
@@ -4244,9 +3983,8 @@ public final class ArraysPlume {
       TO[] mapArray(
           Function<? super FROM, ? extends TO> f, Iterable<FROM> iterable, Class<TO> toClass) {
 
-    if (iterable instanceof RandomAccess) {
+    if (iterable instanceof List<FROM> list && list instanceof RandomAccess) {
       // Per the Javadoc of RandomAccess, an indexed for loop is faster than a foreach loop.
-      List<FROM> list = (List<FROM>) iterable;
       int len = list.size();
       @SuppressWarnings("unchecked") // reflection
       TO[] result = (TO[]) Array.newInstance(toClass, len);
@@ -4271,17 +4009,21 @@ public final class ArraysPlume {
       return result;
     }
 
-    List<TO> resultList = CollectionsPlume.mapList(f, iterable);
-    int len = ((Collection<?>) iterable).size();
+    // iterable is not a Collection here, so its size is not known in advance; map it to a list and
+    // use that list's size.
+    List<TO> resultList = CollectionsP.mapList(f, iterable);
+    int len = resultList.size();
     @SuppressWarnings("unchecked") // reflection
     TO[] result = (TO[]) Array.newInstance(toClass, len);
+    // Copy elementwise rather than calling resultList.toArray(result), whose annotated return type
+    // permits trailing nulls and so is not assignable to TO[].
     for (int i = 0; i < result.length; i++) {
       result[i] = resultList.get(i);
     }
     return result;
 
     // This does not work, because the underlying array has Object[] type at run time.
-    // return (TO[]) ((List<TO>) CollectionsPlume.mapList(f, a)).toArray();
+    // return (TO[]) ((List<TO>) CollectionsP.mapList(f, a)).toArray();
   }
 
   /**
@@ -4300,7 +4042,7 @@ public final class ArraysPlume {
    * which produces an array whose run-time type is {@code Object[]} even though its compile-time
    * type is {@code TO[]}. Import this method with
    *
-   * <pre>import static org.plumelib.util.ArraysPlume.mapArray;</pre>
+   * <pre>import static org.plumelib.util.ArraysP.mapArray;</pre>
    *
    * <p>To perform replacement in place, see {@link #replaceAll}.
    *
@@ -4325,11 +4067,11 @@ public final class ArraysPlume {
     return result;
 
     // This does not work, because the underlying array has Object[] type at run time.
-    // return (TO[]) ((List<TO>) CollectionsPlume.mapList(f, a)).toArray();
+    // return (TO[]) ((List<TO>) CollectionsP.mapList(f, a)).toArray();
   }
 
   /**
-   * Replaces all occurrences of one specified value in a array with another. More formally,
+   * Replaces all occurrences of one specified value in an array with another. More formally,
    * replaces with newVal each element e in array such that (oldVal==null ? e==null :
    * oldVal.equals(e)). (This method has no effect on the size of the array.)
    *

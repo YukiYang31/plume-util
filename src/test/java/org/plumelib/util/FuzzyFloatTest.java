@@ -4,8 +4,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
+import org.checkerframework.checker.signedness.qual.Signed;
 import org.checkerframework.common.value.qual.ArrayLen;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +35,7 @@ final class FuzzyFloatTest {
   private static void assertArraysEquals(double[] a1, double[] a2) {
     boolean result = Arrays.equals(a1, a2);
     if (!result) {
-      System.out.println(
-          "Arrays differ: " + ArraysPlume.toString(a1) + ", " + ArraysPlume.toString(a2));
+      System.out.println("Arrays differ: " + ArraysP.toString(a1) + ", " + ArraysP.toString(a2));
     }
     assertTrue(result);
   }
@@ -254,6 +259,49 @@ final class FuzzyFloatTest {
       assertTrue(ff.isElemMatch(d, c));
       assertTrue(ff.isElemMatch(b, b));
     }
+  }
+
+  /**
+   * Serializes and deserializes the given object.
+   *
+   * @param <T> the type of the object
+   * @param o the object to serialize
+   * @return a deserialized copy of the object
+   * @throws IOException if serialization fails
+   * @throws ClassNotFoundException if deserialization fails
+   */
+  @SuppressWarnings("unchecked") // deserialization
+  private static <T extends @Signed Object> T serializeAndDeserialize(T o)
+      throws IOException, ClassNotFoundException {
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    try (ObjectOutputStream oos = new ObjectOutputStream(baos)) {
+      oos.writeObject(o);
+    }
+    try (ObjectInputStream ois =
+        new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray()))) {
+      return (T) ois.readObject();
+    }
+  }
+
+  @Test
+  void test_serialization() throws IOException, ClassNotFoundException {
+    FuzzyFloat ff2 = new FuzzyFloat(0.001);
+    FuzzyFloat ffCopy = serializeAndDeserialize(ff2);
+    assertTrue(ffCopy.eq(1.0, 1.0005));
+    assertFalse(ffCopy.eq(1.0, 1.005));
+
+    // DoubleArrayComparatorLexical is a non-static inner class, so serializing it also serializes
+    // the enclosing FuzzyFloat.  This fails with NotSerializableException if FuzzyFloat is not
+    // itself serializable.
+    Comparator<double[]> comparator = ff2.new DoubleArrayComparatorLexical();
+    Comparator<double[]> comparatorCopy = serializeAndDeserialize(comparator);
+    double[] b1 = {0, 1, 2};
+    double[] b2 = {0, 1, 2.0005};
+    double[] b3 = {0, 1, 3};
+    // The deserialized comparator uses the deserialized FuzzyFloat's ratio, not the default one.
+    assertEquals(0, comparatorCopy.compare(b1, b2));
+    assertTrue(comparatorCopy.compare(b1, b3) < 0);
+    assertTrue(comparatorCopy.compare(b3, b1) > 0);
   }
 
   @Test
